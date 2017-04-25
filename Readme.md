@@ -44,6 +44,11 @@ $CFG->prefix    = 'mdl_';
 $CFG->wwwroot   = 'http://your.wwwroot';
 $CFG->dataroot  = '/path/to/your/moodledata';
 ```
+---
+
+# docker-moodle-db-oracle
+
+```docker run --name=moodle-db-oracle -p 1521:1521 -e ORACLE_ALLOW_REMOTE=true moodle-db-oracle```
 
 ---
 

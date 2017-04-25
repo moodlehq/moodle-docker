@@ -1,6 +1,4 @@
 conn sys/oracle as sysdba;
-ALTER profile default limit password_life_time unlimited;
-
 -- This file is part of Moodle - http://moodle.org/
 --
 -- Moodle is free software: you can redistribute it and/or modify
@@ -150,7 +148,3 @@ END MOODLELIB;
 
 SHOW ERRORS
 /
-
-
-GRANT EXECUTE ON moodlelib to system;
-GRANT EXECUTE ON DBMS_LOCK to system;
