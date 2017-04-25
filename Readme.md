@@ -10,6 +10,7 @@ So far there are two sets of images:
 ## A note about the php host
 
 Having all parts of the infrastructure dockerised has some elegant advantages, but due to issues like https://github.com/docker/for-mac/issues/77 there can be advantages to keeping the PHP side of the setup outside of docker for development purposes. You may wish to use the php host only in situations like testing oracle (where the php driver can be a pain).
+
 ---
 
 # docker-moodle-db-mssql
