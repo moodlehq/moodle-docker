@@ -1,7 +1,6 @@
 # docker-moodle-db-mssql
 
 ## Requirements
----
 - This image requires Docker Engine 1.8+ in any of [their supported platforms](https://www.docker.com/products/overview).
 - At least 3.25 GB of RAM. Make sure to assign enough memory to the Docker VM if you're running on Docker for [Mac](https://docs.docker.com/docker-for-mac/#/general) or [Windows](https://docs.docker.com/docker-for-windows/#/advanced).
 - Requires the following environment flags
@@ -31,6 +30,7 @@ $CFG->wwwroot   = 'http://your.wwwroot';
 $CFG->dataroot  = '/path/to/your/moodledata';
 ```
 
+---
 
 # docker-moodle-php
 
