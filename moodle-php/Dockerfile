@@ -19,6 +19,7 @@ RUN apt-get update && \
         php7.0-fpm \
         php7.0-zip \
         php7.0-ldap \
+        php7.0-soap \
         unzip \
         apt-transport-https \
         unixodbc-dev \
