@@ -10,7 +10,28 @@
     - A strong system administrator (SA) password: At least 8 characters including uppercase, lowercase letters, base-10 digits and/or non-alphanumeric symbols.
 
 
-``docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433``
+## Running Exposing SQL Server to localhost.
+
+### Docker command
+``docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=m@0dl3ing' -p 1433:1433 moodle-db-mssql``
+
+### Config.php
+```
+$CFG = new stdClass();
+
+$CFG->dbtype    = 'mssql'; // or sqlsrv
+$CFG->dblibrary = 'native';
+$CFG->dbhost    = 'localhost';
+$CFG->dbname    = 'moodle';
+$CFG->dbuser    = 'sa';
+$CFG->dbpass    = 'm@0dl3ing';
+$CFG->prefix    = 'mdl_';
+
+$CFG->wwwroot   = 'http://your.wwwroot';
+$CFG->dataroot  = '/path/to/your/moodledata';
+```
+
+
 # docker-moodle-php
 
 A php moodle installation which has support for Moodle DB drivers pgsql/mysqli/sqlsrv and oci8.
