@@ -1,3 +1,17 @@
+# Moodle Docker Containers for Developers
+
+The idea behind these docker containers is to provide a set of preconfigured images for developer convenience. They are currently designed to be ephemeral.
+
+So far there are two sets of images:
+
+* Database engines - containers to host the Moodle database, configured to run and go
+* A PHP host - configured to run php directly and serve moodle files with php-fpm
+
+## A note about the php host
+
+Having all parts of the infrastructure dockerised has some elegant advantages, but due to issues like https://github.com/docker/for-mac/issues/77 there can be advantages to keeping the PHP side of the setup outside of docker for development purposes. You may wish to use the php host only in situations like testing oracle (where the php driver can be a pain).
+---
+
 # docker-moodle-db-mssql
 
 ## Requirements
