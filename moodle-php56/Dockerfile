@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng12-dev \
+    libaio1 \
     unzip
 
 RUN docker-php-ext-install -j$(nproc) \
@@ -45,5 +46,11 @@ RUN ln -s /usr/local/instantclient_12_1 /usr/local/instantclient \
     && ln -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
 
 RUN echo 'instantclient,/usr/local/instantclient' | pecl install oci8-1.4.10 && docker-php-ext-enable oci8
+
+COPY freetds.conf /etc/freetds/freetds.conf
+
+# For some reason we do need en_US here..
+RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8\nen_AU.UTF-8 UTF-8" > /etc/locale.gen
+RUN locale-gen
 
 RUN mkdir /var/www/moodledata && chown www-data /var/www/moodledata
