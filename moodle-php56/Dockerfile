@@ -1,6 +1,7 @@
 FROM php:5.6-apache
 
 RUN apt-get update && apt-get install -y \
+    gettext \
     libpq-dev \
     libmysqlclient-dev \
     libldap2-dev \
@@ -12,7 +13,8 @@ RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     libpng12-dev \
     libaio1 \
-    unzip
+    unzip \
+    unixodbc-dev
 
 RUN docker-php-ext-install -j$(nproc) \
     intl \
@@ -44,10 +46,20 @@ RUN ln -s /usr/local/instantclient_12_1 /usr/local/instantclient \
 
 RUN echo 'instantclient,/usr/local/instantclient' | pecl install oci8-1.4.10 && docker-php-ext-enable oci8
 
-COPY freetds.conf /etc/freetds/freetds.conf
 
 # For some reason we do need en_US here..
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8\nen_AU.UTF-8 UTF-8" > /etc/locale.gen
 RUN locale-gen
+
+# Install the latest version of freetds manually, because we need it for emoji support (core_dml_testcase::test_four_byte_character_insertion)
+RUN curl ftp://ftp.freetds.org/pub/freetds/stable/freetds-1.00.33.tar.gz -o /tmp/freetds-1.00.33.tar.gz
+RUN cd /tmp && tar -xvf freetds-1.00.33.tar.gz && cd freetds-1.00.33 \
+        && ./configure --with-unixodbc=/usr --sysconfdir=/etc/freetds --enable-sybase-compat \
+        && make -j$(nproc) \
+        && make install
+COPY freetds.conf /etc/freetds/freetds.conf
+
+#RUN apt-get update && apt-get install -y unixodbc-dev
+RUN docker-php-ext-install -j$(nproc) mssql
 
 RUN mkdir /var/www/moodledata && chown www-data /var/www/moodledata
