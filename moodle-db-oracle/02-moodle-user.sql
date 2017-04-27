@@ -9,3 +9,7 @@ GRANT CREATE SESSION TO moodle WITH ADMIN OPTION;
 GRANT UNLIMITED TABLESPACE TO moodle;
 GRANT EXECUTE ON DBMS_LOCK to moodle;
 GRANT EXECUTE ON moodlelib to moodle;
+
+-- Why must I do this oracle?
+ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/XE/system.dbf' AUTOEXTEND ON;
+
