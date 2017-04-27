@@ -26,8 +26,7 @@ apt-get install -y \
     ghostscript \
     locales
 
-#RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8\nen_AU.UTF-8 UTF-8" > /etc/locale.gen
-locale-gen en_US.UTF-8 en_AU.UTF-8
+echo "en_US.UTF-8 UTF-8\nen_AU.UTF-8 UTF-8" > /etc/locale.gen && locale-gen
 
 echo "Installing php extensions"
 docker-php-ext-install -j$(nproc) \

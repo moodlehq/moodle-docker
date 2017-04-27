@@ -18,5 +18,4 @@ COPY freetds.conf /etc/freetds/freetds.conf
 COPY install-oracle-client.sh /tmp/
 RUN chmod +x /tmp/install-oracle-client.sh /tmp/install-oracle-client.sh
 
-
 RUN mkdir /var/www/moodledata && chown www-data /var/www/moodledata
