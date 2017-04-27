@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     libpng12-dev \
     libaio1 \
-    unzip
+    unzip \
+    ghostscript
 
 RUN docker-php-ext-install -j$(nproc) \
     intl \
@@ -48,6 +49,7 @@ RUN ln -s /usr/local/instantclient_12_1 /usr/local/instantclient \
     && ln -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
 
 RUN echo 'instantclient,/usr/local/instantclient' | pecl install oci8 && docker-php-ext-enable oci8
+RUN echo 'oci8.statement_cache_size = 0' >> /usr/local/etc/php/conf.d/docker-php-ext-oci8.ini
 
 
 # For some reason we do need en_US here..

@@ -39,7 +39,7 @@ services:
   redis:
     image: redis:3
   solr:
-    image: solr:6
+    image: solr:6.4
     entrypoint:
       - docker-entrypoint.sh
       - solr-precreate
