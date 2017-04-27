@@ -1,0 +1,48 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:9
+    environment:
+      POSTGRES_USER: moodle
+      POSTGRES_PASSWORD: "m@0dl3ing"
+      POSTGRES_DB: moodle
+  mysql:
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: "m@0dl3ing"
+      MYSQL_USER: moodle
+      MYSQL_PASSWORD: "m@0dl3ing"
+      MYSQL_DATABASE: moodle
+  oracle:
+    build: ./moodle-db-oracle
+    environment:
+      ORACLE_ALLOW_REMOTE: "true"
+  mssql:
+    build: ./moodle-db-mssql
+    environment:
+      ACCEPT_EULA: "y"
+      SA_PASSWORD: "m@0dl3ing"
+  php71:
+    build: ./moodle-php71
+    ports:
+      - "8000:80"
+    volumes:
+      - "$PWD:/var/www/html"
+  php56:
+    build: ./moodle-php56
+    ports:
+      - "8001:80"
+    volumes:
+      - "$PWD:/var/www/html"
+  memcached:
+    image: memcached:1
+  redis:
+    image: redis:3
+  solr:
+    image: solr:6
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - test
+  mongo:
+    image: mongo:3
