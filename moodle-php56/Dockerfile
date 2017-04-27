@@ -1,7 +1,8 @@
 FROM php:5.6-apache
 
 COPY setup-php-extensions.sh /tmp/
-RUN chmod +x /tmp/setup-php-extensions.sh && /tmp/setup-php-extensions.sh
+RUN chmod +x /tmp/setup-php-extensions.sh
+RUN /tmp/setup-php-extensions.sh
 
 
 # Install the latest version of freetds manually, because we need it for emoji support (core_dml_testcase::test_four_byte_character_insertion)
@@ -16,6 +17,7 @@ RUN docker-php-ext-install -j$(nproc) mssql
 COPY freetds.conf /etc/freetds/freetds.conf
 
 COPY install-oracle-client.sh /tmp/
-RUN chmod +x /tmp/install-oracle-client.sh /tmp/install-oracle-client.sh
+RUN chmod +x /tmp/install-oracle-client.sh
+RUN /tmp/install-oracle-client.sh
 
 RUN mkdir /var/www/moodledata && chown www-data /var/www/moodledata
