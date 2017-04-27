@@ -48,3 +48,5 @@ services:
       - test
   mongo:
     image: mongo:3
+  ldap:
+    image: larrycai/openldap
