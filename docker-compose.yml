@@ -34,7 +34,9 @@ services:
       - "8001:80"
     volumes:
       - "$PWD:/var/www/html"
-  memcached:
+  memcached0:
+    image: memcached:1
+  memcached1:
     image: memcached:1
   redis:
     image: redis:3
