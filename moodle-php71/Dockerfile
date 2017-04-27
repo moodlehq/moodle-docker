@@ -32,8 +32,10 @@ RUN docker-php-ext-install -j$(nproc) \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
     && docker-php-ext-install -j$(nproc) ldap \
-    && pecl install solr memcached redis mongodb apcu \
-    && docker-php-ext-enable solr memcached redis mongodb apcu
+    && pecl install solr memcached redis mongodb apcu igbinary \
+    && docker-php-ext-enable solr memcached redis mongodb apcu igbinary
+    && echo 'apc.enable_cli = On' >> /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini
+
 
 # Add Oracle..
 RUN cd /tmp && curl https://raw.githubusercontent.com/AminMkh/docker-php7-oci8-apache/b7c740638776552f00178a5d12905cefb50c7848/oracle/instantclient-basic-linux.x64-12.1.0.2.0.zip -o instantclient-basic-linux.x64-12.1.0.2.0.zip \
@@ -55,5 +57,6 @@ RUN echo 'oci8.statement_cache_size = 0' >> /usr/local/etc/php/conf.d/docker-php
 # For some reason we do need en_US here..
 RUN apt-get install -y locales && echo "en_US.UTF-8 UTF-8\nen_AU.UTF-8 UTF-8" > /etc/locale.gen
 RUN locale-gen
+
 
 RUN mkdir /var/www/moodledata && chown www-data /var/www/moodledata
