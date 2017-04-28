@@ -41,7 +41,7 @@ services:
   redis:
     image: redis:3
   solr:
-    image: solr:6.4
+    image: solr:6.5
     entrypoint:
       - docker-entrypoint.sh
       - solr-precreate
@@ -50,3 +50,5 @@ services:
     image: mongo:3
   ldap:
     image: larrycai/openldap
+  selenium:
+    image: selenium/standalone-chrome
