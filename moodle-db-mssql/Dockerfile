@@ -2,7 +2,9 @@ FROM microsoft/mssql-server-linux:latest
 
 RUN apt-get -y update  && apt-get install -y netcat
 
-COPY . /
+COPY docker-entrypoint.sh /
+COPY setup-db-for-moodle.sh /
+COPY setup.sql /
 RUN chmod +x /setup-db-for-moodle.sh
 RUN chmod +x /docker-entrypoint.sh
 
