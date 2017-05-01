@@ -10,5 +10,5 @@ do
 done
 
 echo "[moodle-db-setup] Setting up Moodle data"
-/opt/mssql/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i setup.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i setup.sql
 echo "[moodle-db-setup] Setup complete."
