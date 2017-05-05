@@ -11,5 +11,6 @@ GRANT EXECUTE ON DBMS_LOCK to moodle;
 GRANT EXECUTE ON moodlelib to moodle;
 
 -- Why must I do this oracle?
-ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/XE/system.dbf' AUTOEXTEND ON;
+ALTER SYSTEM SET processes=200 scope=spfile;
+ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/XE/system.dbf' AUTOEXTEND ON MAXSIZE UNLIMITED;
 
