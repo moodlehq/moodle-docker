@@ -14,3 +14,6 @@ GRANT EXECUTE ON moodlelib to moodle;
 ALTER SYSTEM SET processes=200 scope=spfile;
 ALTER DATABASE DATAFILE '/u01/app/oracle/oradata/XE/system.dbf' AUTOEXTEND ON MAXSIZE UNLIMITED;
 
+-- Restart for the process change above to take effect.
+SHUTDOWN IMMEDIATE;
+STARTUP;
