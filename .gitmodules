@@ -1,0 +1,9 @@
+[submodule "moodle-db-oracle"]
+	path = moodle-db-oracle
+	url = https://github.com/danpoltawski/moodle-db-oracle
+[submodule "moodle-db-mssql"]
+	path = moodle-db-mssql
+	url = https://github.com/danpoltawski/moodle-db-mssql
+[submodule "moodle-php-apache"]
+	path = moodle-php-apache
+	url = https://github.com/danpoltawski/moodle-php-apache

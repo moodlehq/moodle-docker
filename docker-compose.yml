@@ -14,24 +14,18 @@ services:
       MYSQL_PASSWORD: "m@0dl3ing"
       MYSQL_DATABASE: moodle
   oracle:
-    image: danpoltawski/moodle-db-oracle
+    build: ./moodle-db-oracle
     environment:
       ORACLE_ALLOW_REMOTE: "true"
   mssql:
-    image: danpoltawski/moodle-db-mssql
+    build: ./moodle-db-mssql
     environment:
       ACCEPT_EULA: "y"
       SA_PASSWORD: "m@0dl3ing"
   php71:
-    image: danpoltawski/moodle-php-apache:7.1
+    build: ./moodle-php-apache
     ports:
       - "8000:80"
-    volumes:
-      - "$PWD:/var/www/html"
-  php56:
-    image: danpoltawski/moodle-php-apache:5.6
-    ports:
-      - "8001:80"
     volumes:
       - "$PWD:/var/www/html"
   memcached0:
