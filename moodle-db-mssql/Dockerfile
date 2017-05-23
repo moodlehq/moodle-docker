@@ -1,4 +1,4 @@
-FROM microsoft/mssql-server-linux:ctp-2.0
+FROM microsoft/mssql-server-linux:ctp2-1
 
 RUN apt-get -y update  && apt-get install -y netcat
 
