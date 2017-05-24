@@ -10,7 +10,7 @@ $CFG->dbhost    = 'db';
 $CFG->dbname    = getenv('MOODLE_DOCKER_DBNAME');
 $CFG->dbuser    = getenv('MOODLE_DOCKER_DBUSER');
 $CFG->dbpass    = getenv('MOODLE_DOCKER_DBPASS');
-$CFG->prefix    = 'a_';
+$CFG->prefix    = 'm_';
 $CFG->dboptions = array (
   'dbpersist' => 0,
 );
@@ -23,7 +23,7 @@ $CFG->directorypermissions = 0777;
 $CFG->phpunit_dataroot  = '/var/www/moodledata/phpunit';
 $CFG->phpunit_prefix = 't_';
 
-$CFG->behat_wwwroot   = 'http://php71';
+$CFG->behat_wwwroot   = 'http://webserver';
 $CFG->behat_dataroot  = '/var/www/moodledata/behat';
 $CFG->behat_prefix = 'b_';
 $CFG->behat_profiles = array(

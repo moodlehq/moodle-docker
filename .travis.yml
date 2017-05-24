@@ -34,6 +34,8 @@ script:
     - set -e
     - $COMPOSE_CMD exec -T webserver php admin/tool/phpunit/cli/init.php
     - $COMPOSE_CMD exec -T webserver vendor/bin/phpunit core_dml_testcase lib/dml/tests/dml_test.php
+    - $COMPOSE_CMD exec -T webserver php admin/tool/behat/cli/init.php
+    - $COMPOSE_CMD exec -T webserver php admin/tool/behat/cli/run.php --tags=@mod_forum
 after_failure:
     - $COMPOSE_CMD logs db
 after_script:
