@@ -1,0 +1,16 @@
+version: "2"
+services:
+  memcached0:
+    image: memcached:1
+  memcached1:
+    image: memcached:1
+  redis:
+    image: redis:3
+  solr:
+    image: solr:6.5
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - test
+  ldap:
+    image: larrycai/openldap

@@ -1,0 +1,40 @@
+language: bash
+services: docker
+fast_finish: true
+env:
+    - DB: pgsql
+    - DB: mssql
+    - DB: mysql
+    - DB: oracle
+install:
+    - git clone --branch v3.3.0 --depth 1 git://github.com/moodle/moodle $HOME/moodle
+    - cp config.docker-template.php $HOME/moodle/config.php
+before_script:
+    - export MOODLE_DOCKER_WWWROOT="$HOME/moodle"
+    - export COMPOSE_CMD="docker-compose -f base.yml"
+    - >
+        if [ "$DB" != 'pgsql' ];
+        then
+            COMPOSE_CMD="${COMPOSE_CMD} -f db.${DB}.yml"
+        fi
+    - echo "\$COMPOSE_CMD=${COMPOSE_CMD}"
+    - $COMPOSE_CMD pull
+    - $COMPOSE_CMD up -d
+    - >
+        if [ "$DB" = "mssql" ];
+        then
+            $COMPOSE_CMD exec -T db /wait-for-mssql-to-come-up.sh
+        elif [ "$DB" = "oracle" ];
+        then
+            until $COMPOSE_CMD logs db | grep -q 'Database opened.'; do echo 'Waiting for oracle to come up...' && sleep 15; done
+        else
+            sleep 5
+        fi
+script:
+    - set -e
+    - $COMPOSE_CMD exec -T webserver php admin/tool/phpunit/cli/init.php
+    - $COMPOSE_CMD exec -T webserver vendor/bin/phpunit core_dml_testcase lib/dml/tests/dml_test.php
+after_failure:
+    - $COMPOSE_CMD logs db
+after_script:
+    - $COMPOSE_CMD down

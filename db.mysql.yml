@@ -1,0 +1,14 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_DBTYPE: mysqli
+  db:
+    image: mysql:5
+    volumes:
+      - "./mysql/etc/mysql/conf.d/moodle.conf:/etc/mysql/conf.d/moodle.conf"
+    environment:
+      MYSQL_ROOT_PASSWORD: "m@0dl3ing"
+      MYSQL_USER: moodle
+      MYSQL_PASSWORD: "m@0dl3ing"
+      MYSQL_DATABASE: moodle
