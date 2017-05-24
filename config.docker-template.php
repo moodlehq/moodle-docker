@@ -11,9 +11,7 @@ $CFG->dbname    = getenv('MOODLE_DOCKER_DBNAME');
 $CFG->dbuser    = getenv('MOODLE_DOCKER_DBUSER');
 $CFG->dbpass    = getenv('MOODLE_DOCKER_DBPASS');
 $CFG->prefix    = 'm_';
-$CFG->dboptions = array (
-  'dbpersist' => 0,
-);
+$CFG->dboptions = ['dbcollation' => getenv('MOODLE_DOCKER_DBCOLLATION')];
 
 $CFG->wwwroot   = 'http://localhost:8000';
 $CFG->dataroot  = '/var/www/moodledata';
