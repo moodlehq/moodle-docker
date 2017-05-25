@@ -48,6 +48,20 @@ Started at 25-05-2017, 19:04
 $ bin/moodle-docker-compose down
 ```
 
+## Branching Model
+
+This repo uses branches to accomodate different php versions as well as some of the higher/lower versions of PostgreSQL/MySQL:
+
+
+| Branch Name  | PHP Version | Build Status | Notes |
+|--------------|-------------|--------------|-------|
+| master | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=master)](https://travis-ci.org/danpoltawski/docker-moodle) | Same as branch php71 |
+| php71 | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php71)](https://travis-ci.org/danpoltawski/docker-moodle) | |
+| php70 | 7.0.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php70)](https://travis-ci.org/danpoltawski/docker-moodle) | |
+| php56 | 5.6.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php56)](https://travis-ci.org/danpoltawski/docker-moodle) | |
+| latest | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=latest)](https://travis-ci.org/danpoltawski/docker-moodle) | Latest versions of PHP, MySQL and PostgresSQL  |
+| lowest | 5.6.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=latest)](https://travis-ci.org/danpoltawski/docker-moodle) | Lowest supported versions of PHP (5.6) , MySQL (5.5) and PostgresSQL (9.3) |
+
 ## Advanced usage
 
 As can be seen in [bin/moodle-docker-compose](https://github.com/danpoltawski/docker-moodle/blob/travis/bin/moodle-docker-compose),
