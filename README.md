@@ -1,5 +1,5 @@
 # docker-moodle: Docker Containers for Moodle Developers
-[![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=master)](https://travis-ci.org/danpoltawski/docker-moodle)
+[![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=master)](https://travis-ci.org/danpoltawski/docker-moodle/branches)
 
 This repository contains Docker configuration aimed at Moodle developers and testers to easily deploy a testing environment for Moodle.
 
