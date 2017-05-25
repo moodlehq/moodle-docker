@@ -30,7 +30,7 @@ bin/moodle-docker-compose up -d
 
 # Run behat tests..
 bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
-[..]
+# [..]
 
 bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
 Running single behat site:
