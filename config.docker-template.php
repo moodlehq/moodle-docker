@@ -26,7 +26,7 @@ $CFG->behat_dataroot  = '/var/www/moodledata/behat';
 $CFG->behat_prefix = 'b_';
 $CFG->behat_profiles = array(
     'default' => array(
-        'browser' => 'firefox',
+        'browser' => getenv('MOODLE_DOCKER_BROWSER'),
         'wd_host' => 'http://selenium:4444/wd/hub',
         'tags' => '~@_file_upload',
     ),

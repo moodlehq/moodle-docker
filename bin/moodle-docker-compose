@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -e
+
+if [ -z "$MOODLE_DOCKER_DB" ];
+then
+    echo 'Error: $MOODLE_DOCKER_DB is not set'
+    exit 1
+fi
+
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+
+dockercompose="docker-compose -f ${basedir}/base.yml"
+if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
+then
+    dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
+fi
+
+if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" != "firefox" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/selenium.${MOODLE_DOCKER_BROWSER}.yml"
+fi
+
+$dockercompose $@

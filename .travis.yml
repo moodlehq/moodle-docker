@@ -2,41 +2,25 @@ language: bash
 services: docker
 fast_finish: true
 env:
-    - DB: pgsql
-    - DB: mssql
-    - DB: mysql
-    - DB: oracle
+    - "DB=pgsql SUITE=phpunit"
+    - "DB=pgsql SUITE=behat BROWSER=firefox"
+    - "DB=pgsql SUITE=behat BROWSER=chrome"
+    - "DB=pgsql SUITE=phpunit-full"
+    - "DB=oracle SUITE=phpunit"
+    - "DB=oracle SUITE=behat BROWSER=firefox"
+    - "DB=mssql SUITE=phpunit"
+    - "DB=mssql SUITE=behat BROWSER=firefox"
+    - "DB=mysql SUITE=phpunit"
+    - "DB=mysql SUITE=behat BROWSER=firefox"
 install:
     - git clone --branch v3.3.0 --depth 1 git://github.com/moodle/moodle $HOME/moodle
     - cp config.docker-template.php $HOME/moodle/config.php
-before_script:
+    - export MOODLE_DOCKER_DB=$DB
+    - export MOODLE_DOCKER_BROWSER=$BROWSER
     - export MOODLE_DOCKER_WWWROOT="$HOME/moodle"
-    - export COMPOSE_CMD="docker-compose -f base.yml"
-    - >
-        if [ "$DB" != 'pgsql' ];
-        then
-            COMPOSE_CMD="${COMPOSE_CMD} -f db.${DB}.yml"
-        fi
-    - echo "\$COMPOSE_CMD=${COMPOSE_CMD}"
-    - $COMPOSE_CMD pull
-    - $COMPOSE_CMD up -d
-    - >
-        if [ "$DB" = "mssql" ];
-        then
-            $COMPOSE_CMD exec -T db /wait-for-mssql-to-come-up.sh
-        elif [ "$DB" = "oracle" ];
-        then
-            until $COMPOSE_CMD logs db | grep -q 'Database opened.'; do echo 'Waiting for oracle to come up...' && sleep 15; done
-        else
-            sleep 5
-        fi
+before_script:
+    - tests/setup.sh
 script:
-    - set -e
-    - $COMPOSE_CMD exec -T webserver php admin/tool/phpunit/cli/init.php
-    - $COMPOSE_CMD exec -T webserver vendor/bin/phpunit core_dml_testcase lib/dml/tests/dml_test.php
-    - $COMPOSE_CMD exec -T webserver php admin/tool/behat/cli/init.php
-    - $COMPOSE_CMD exec -T webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
-after_failure:
-    - $COMPOSE_CMD logs db
+    - tests/test.sh
 after_script:
-    - $COMPOSE_CMD down
+    - bin/moodle-docker-compose down

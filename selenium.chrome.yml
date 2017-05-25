@@ -1,0 +1,7 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_BROWSER: chrome
+  selenium:
+    image: selenium/standalone-chrome
