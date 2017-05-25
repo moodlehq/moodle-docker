@@ -2,7 +2,7 @@ version: "2"
 services:
   webserver:
     environment:
-      MOODLE_DOCKER_DBTYPE: sqlsrv
+      MOODLE_DOCKER_DBTYPE: mssql
       MOODLE_DOCKER_DBUSER: sa
   db:
     image: danpoltawski/moodle-db-mssql
