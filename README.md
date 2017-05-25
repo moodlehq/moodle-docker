@@ -19,20 +19,20 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 
 ```bash
 # Set up path to code and choose a db server (pgsql/mssql/oracle/mysql)
-$ export MOODLE_DOCKER_WWWROOT=/path/to/moodle/code
-$ export MOODLE_DOCKER_DB=mssql
+export MOODLE_DOCKER_WWWROOT=/path/to/moodle/code
+export MOODLE_DOCKER_DB=mssql
 
 # Ensure config.php is in place
-$ cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 
 # Start up containers
-$ bin/moodle-docker-compose up -d
+bin/moodle-docker-compose up -d
 
 # Run behat tests..
-$ bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
+bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 [..]
 
-$ bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
+bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
 Running single behat site:
 Moodle 3.3rc1 (Build: 20170505), 381db2fe8df5c381f633fa2a92e61c6f0d7308cb
 Php: 7.1.5, sqlsrv: 14.00.0500, OS: Linux 4.9.13-moby x86_64
@@ -45,7 +45,7 @@ Started at 25-05-2017, 19:04
 1m35.32s (41.60Mb)
 
 # Shut down containers
-$ bin/moodle-docker-compose down
+bin/moodle-docker-compose down
 ```
 
 ## Branching Model
