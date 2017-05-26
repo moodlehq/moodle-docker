@@ -6,8 +6,12 @@ services:
       MOODLE_DOCKER_DBCOLLATION: utf8mb4_bin
   db:
     image: mysql:5
-    volumes:
-      - "./mysql/etc/mysql/conf.d/moodle.conf:/etc/mysql/conf.d/moodle.conf"
+    command: >
+                --character-set-server=utf8mb4
+                --collation-server=utf8mb4_bin
+                --innodb_file_format=barracuda
+                --innodb_file_per_table=On
+                --innodb_large_prefix=On
     environment:
       MYSQL_ROOT_PASSWORD: "m@0dl3ing"
       MYSQL_USER: moodle
