@@ -1,5 +1,8 @@
 version: "2"
 services:
+  webserver:
+      environment:
+        MOODLE_DOCKER_PHPUNIT_EXTRAS: "true"
   memcached0:
     image: memcached:1
   memcached1:
