@@ -4,6 +4,8 @@ services:
     image: danpoltawski/moodle-php-apache:5.6
     ports:
       - "8000:80"
+    depends_on:
+      - db
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html"
     environment:

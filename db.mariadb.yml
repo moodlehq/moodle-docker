@@ -1,0 +1,19 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_DBTYPE: mariadb
+      MOODLE_DOCKER_DBCOLLATION: utf8mb4_bin
+  db:
+    image: mariadb:10
+    command: >
+              --character-set-server=utf8mb4
+              --collation-server=utf8mb4_bin
+              --innodb_file_format=barracuda
+              --innodb_file_per_table=On
+              --innodb_large_prefix=On
+    environment:
+      MYSQL_ROOT_PASSWORD: "m@0dl3ing"
+      MYSQL_USER: moodle
+      MYSQL_PASSWORD: "m@0dl3ing"
+      MYSQL_DATABASE: moodle
