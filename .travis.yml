@@ -12,6 +12,8 @@ env:
     - "DB=mssql SUITE=behat BROWSER=firefox"
     - "DB=mysql SUITE=phpunit"
     - "DB=mysql SUITE=behat BROWSER=firefox"
+    - "DB=mariadb SUITE=phpunit"
+    - "DB=mariadb SUITE=behat BROWSER=firefox"
 install:
     - git clone --branch v3.3.0 --depth 1 git://github.com/moodle/moodle $HOME/moodle
     - cp config.docker-template.php $HOME/moodle/config.php

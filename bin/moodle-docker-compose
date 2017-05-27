@@ -20,4 +20,9 @@ then
     dockercompose="${dockercompose} -f ${basedir}/selenium.${MOODLE_DOCKER_BROWSER}.yml"
 fi
 
+if [[ ! -z "$MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
+fi
+
 $dockercompose $@
