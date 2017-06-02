@@ -8,7 +8,7 @@ then
     testcmd="bin/moodle-docker-compose exec -T webserver vendor/bin/phpunit core_dml_testcase lib/dml/tests/dml_test.php"
 elif [ "$SUITE" = "behat" ];
 then
-    testcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/run.php --tags=@auth_manual"
+    testcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/run.php --tags=@core_tag"
 elif [ "$SUITE" = "phpunit-full" ];
 then
     testcmd="bin/moodle-docker-compose exec -T webserver vendor/bin/phpunit --verbose"
