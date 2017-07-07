@@ -47,6 +47,11 @@ if (getenv('MOODLE_DOCKER_PHPUNIT_EXTRAS')) {
     define('TEST_CACHESTORE_MEMCACHED_TESTSERVERS', "memcached0:11211\nmemcached1:11211");
     define('TEST_CACHESTORE_MEMCACHE_TESTSERVERS', "memcached0:11211\nmemcached1:11211");
 
+    define('TEST_LDAPLIB_HOST_URL', 'ldap://ldap');
+    define('TEST_LDAPLIB_BIND_DN', 'cn=admin,dc=openstack,dc=org');
+    define('TEST_LDAPLIB_BIND_PW', 'password');
+    define('TEST_LDAPLIB_DOMAIN', 'ou=Users,dc=openstack,dc=org');
+
     define('TEST_AUTH_LDAP_HOST_URL', 'ldap://ldap');
     define('TEST_AUTH_LDAP_BIND_DN', 'cn=admin,dc=openstack,dc=org');
     define('TEST_AUTH_LDAP_BIND_PW', 'password');
