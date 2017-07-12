@@ -28,7 +28,6 @@ $CFG->behat_profiles = array(
     'default' => array(
         'browser' => getenv('MOODLE_DOCKER_BROWSER'),
         'wd_host' => 'http://selenium:4444/wd/hub',
-        'tags' => '~@_file_upload',
     ),
 );
 
