@@ -5,3 +5,5 @@ services:
       MOODLE_DOCKER_BROWSER: chrome
   selenium:
     image: selenium/standalone-chrome
+    volumes:
+        - /dev/shm:/dev/shm
