@@ -63,8 +63,6 @@ This repo uses branches to accomodate different php versions as well as some of 
 | php71 | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php71)](https://travis-ci.org/danpoltawski/docker-moodle) | |
 | php70 | 7.0.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php70)](https://travis-ci.org/danpoltawski/docker-moodle) | |
 | php56 | 5.6.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php56)](https://travis-ci.org/danpoltawski/docker-moodle) | |
-| latest | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=latest)](https://travis-ci.org/danpoltawski/docker-moodle) | Latest versions of PHP, MySQL and PostgresSQL  |
-| lowest | 5.6.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=latest)](https://travis-ci.org/danpoltawski/docker-moodle) | Lowest supported versions of PHP (5.6) , MySQL (5.5) and PostgresSQL (9.3) |
 
 ## Advanced usage
 
