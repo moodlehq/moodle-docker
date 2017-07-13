@@ -22,3 +22,5 @@ services:
       POSTGRES_DB: moodle
   selenium:
     image: selenium/standalone-firefox:2.53.1
+    volumes:
+      - "${MOODLE_DOCKER_WWWROOT}:/var/www/html:ro"
