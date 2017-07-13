@@ -44,6 +44,10 @@ Started at 25-05-2017, 19:04
 15 steps (15 passed)
 1m35.32s (41.60Mb)
 
+# Install for manual testing (optional)
+bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminpass="test" --adminemail="admin@example.com"
+# Access http://localhost:8000/ on your browser
+
 # Shut down containers
 bin/moodle-docker-compose down
 ```
