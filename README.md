@@ -82,6 +82,18 @@ The following Moodle customised docker images are close companions of this proje
 
 Mounting host directories into the docker container currently has some performance issues (see https://github.com/docker/for-mac/issues/77) and you may find your code perform slower than expected. [docker-sync](https://github.com/EugenMayer/docker-sync) may be a solution to this, but it has yet been considered in thsi repo.
 
+## Environment variables
+
+You can change the configuration of the docker images by setting various environment variables before calling `bin/moodle-docker-compose up`.
+
+| Environment Variable                      | Options                               | Notes                                                                   |
+|-------------------------------------------|---------------------------------------|-------------------------------------------------------------------------|
+| `MOODLE_DOCKER_DB`                        | pgsql, mariadb, mysql, mssql, oracle  | Database server to run agianst                                          |
+| `MOODLE_DOCKER_WWWROOT`                   | Path on your file system              | The path to the Moodle codebase you intend to test.                     |
+| `MOODLE_DOCKER_BROWSER`                   | firefox, chrome                       | The browser to run Behat against                                        |
+| `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | Empty, or set                         | If set, dependencies for memcached, redis, solr, and openldap are added |
+
+
 ## Contributions
 
 Are extremely welcome!
