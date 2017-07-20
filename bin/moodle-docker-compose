@@ -7,7 +7,7 @@ then
     exit 1
 fi
 
-basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+basedir="$( cd "$( dirname "$(readlink -f "${BASH_SOURCE[0]}")" )/../" && pwd )"
 
 dockercompose="docker-compose -f ${basedir}/base.yml"
 if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
