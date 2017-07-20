@@ -92,6 +92,7 @@ You can change the configuration of the docker images by setting various environ
 | `MOODLE_DOCKER_WWWROOT`                   | Path on your file system              | The path to the Moodle codebase you intend to test.                     |
 | `MOODLE_DOCKER_BROWSER`                   | firefox, chrome                       | The browser to run Behat against                                        |
 | `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | Empty, or set                         | If set, dependencies for memcached, redis, solr, and openldap are added |
+| `MOODLE_DOCKER_BEHAT_FAILDUMP`            | Path on your file system              | If set, screenshots from Behat fails will be placed in this directory   |
 
 
 ## Contributions
