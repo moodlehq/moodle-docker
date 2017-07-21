@@ -1,5 +1,5 @@
-# docker-moodle: Docker Containers for Moodle Developers
-[![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=master)](https://travis-ci.org/danpoltawski/docker-moodle/branches)
+# moodle-docker: Docker Containers for Moodle Developers
+[![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=master)](https://travis-ci.org/danpoltawski/moodle-docker/branches)
 
 This repository contains Docker configuration aimed at Moodle developers and testers to easily deploy a testing environment for Moodle.
 
@@ -9,7 +9,7 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 * All PHP Extensions enabled configured for external services (e.g. solr, ldap)
 * All supported PHP versions
 * Zero-configuration approach
-* Backed by [automated tests](https://travis-ci.org/danpoltawski/docker-moodle/branches)
+* Backed by [automated tests](https://travis-ci.org/danpoltawski/moodle-docker/branches)
 
 ## Prerequistes
 * [Docker](https://docs.docker.com) and [Docker Compose](https://docs.docker.com/compose/) installed
@@ -59,14 +59,14 @@ This repo uses branches to accomodate different php versions as well as some of 
 
 | Branch Name  | PHP Version | Build Status | Notes |
 |--------------|-------------|--------------|-------|
-| master | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=master)](https://travis-ci.org/danpoltawski/docker-moodle) | Same as branch php71 |
-| php71 | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php71)](https://travis-ci.org/danpoltawski/docker-moodle) | |
-| php70 | 7.0.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php70)](https://travis-ci.org/danpoltawski/docker-moodle) | |
-| php56 | 5.6.x | [![Build Status](https://travis-ci.org/danpoltawski/docker-moodle.svg?branch=php56)](https://travis-ci.org/danpoltawski/docker-moodle) | |
+| master | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=master)](https://travis-ci.org/danpoltawski/moodle-docker) | Same as branch php71 |
+| php71 | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=php71)](https://travis-ci.org/danpoltawski/moodle-docker) | |
+| php70 | 7.0.x | [![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=php70)](https://travis-ci.org/danpoltawski/moodle-docker) | |
+| php56 | 5.6.x | [![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=php56)](https://travis-ci.org/danpoltawski/moodle-docker) | |
 
 ## Advanced usage
 
-As can be seen in [bin/moodle-docker-compose](https://github.com/danpoltawski/docker-moodle/blob/travis/bin/moodle-docker-compose),
+As can be seen in [bin/moodle-docker-compose](https://github.com/danpoltawski/moodle-docker/blob/travis/bin/moodle-docker-compose),
 this repo is just a series of docker-compose configurations and light wrapper which make use of companion docker images. Each part
 is designed to be reusable and you are encouraged to use the docker[-compose] commands as needed.
 
