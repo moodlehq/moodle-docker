@@ -78,10 +78,6 @@ The following Moodle customised docker images are close companions of this proje
 * [moodle-db-mssql](https://github.com/danpoltawski/moodle-db-mssql): Microsoft SQL Server for Linux configured for Moodle
 * [moodle-db-oracle](https://github.com/danpoltawski/moodle-db-oracle): Oracle XE configured for Moodle
 
-## Note for Mac users
-
-Mounting host directories into the docker container currently has some performance issues (see https://github.com/docker/for-mac/issues/77) and you may find your code perform slower than expected. [docker-sync](https://github.com/EugenMayer/docker-sync) may be a solution to this, but it has yet been considered in thsi repo.
-
 ## Environment variables
 
 You can change the configuration of the docker images by setting various environment variables before calling `bin/moodle-docker-compose up`.
