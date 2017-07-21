@@ -7,7 +7,16 @@ then
     exit 1
 fi
 
-basedir="$( cd "$( dirname "$(readlink -f "${BASH_SOURCE[0]}")" )/../" && pwd )"
+# Nasty portable way to the directory of this script, following symlink,
+# because readlink -f not on OSX. Thanks stack overflow..
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+basedir="$( cd -P "$( dirname "$SOURCE" )/../" && pwd )"
+
 
 dockercompose="docker-compose -f ${basedir}/base.yml"
 if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
