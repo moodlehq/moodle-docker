@@ -25,4 +25,9 @@ then
     dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
 fi
 
+if [[ ! -z "$MOODLE_DOCKER_BEHAT_FAILDUMP" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/behat-faildump.yml"
+fi
+
 $dockercompose $@

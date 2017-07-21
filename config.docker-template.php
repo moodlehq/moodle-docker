@@ -24,6 +24,11 @@ $CFG->phpunit_prefix = 't_';
 $CFG->behat_wwwroot   = 'http://webserver';
 $CFG->behat_dataroot  = '/var/www/moodledata/behat';
 $CFG->behat_prefix = 'b_';
+
+if (!empty(getenv('MOODLE_DOCKER_BEHAT_FAILDUMP'))) {
+    $CFG->behat_faildump_path = $CFG->behat_screenshots_path = '/var/www/faildump';
+}
+
 $CFG->behat_profiles = array(
     'default' => array(
         'browser' => getenv('MOODLE_DOCKER_BROWSER'),
