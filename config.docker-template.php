@@ -17,6 +17,7 @@ $CFG->wwwroot   = 'http://localhost:8000';
 $CFG->dataroot  = '/var/www/moodledata';
 $CFG->admin     = 'admin';
 $CFG->directorypermissions = 0777;
+$CFG->smtphosts = 'mail';
 
 $CFG->phpunit_dataroot  = '/var/www/moodledata/phpunit';
 $CFG->phpunit_prefix = 't_';

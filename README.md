@@ -6,6 +6,7 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 ## Features:
 * All supported database servers (PostgreSQL, MySQL, Micosoft SQL Server, Oracle XE)
 * Behat/Selenium configuration for Firefox and Chrome
+* Catch-all smtp server and web interface to messages using [mailcatcher](https://github.com/sj26/mailcatcher/)
 * All PHP Extensions enabled configured for external services (e.g. solr, ldap)
 * All supported PHP versions
 * Zero-configuration approach
@@ -51,6 +52,10 @@ bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --ag
 # Shut down containers
 bin/moodle-docker-compose down
 ```
+
+## Manual testing
+
+Moodle is configured to listen on `http://localhost:8000/` and mailcatcher is listening on `http://localhost:2525/` to view emails which Moodle has sent out.
 
 ## Branching Model
 
