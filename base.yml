@@ -2,8 +2,6 @@ version: "2"
 services:
   webserver:
     image: danpoltawski/moodle-php-apache:7.0
-    ports:
-      - "8000:80"
     depends_on:
       - db
       - mail
