@@ -6,6 +6,7 @@ services:
       - "8000:80"
     depends_on:
       - db
+      - mail
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html"
     environment:
@@ -24,3 +25,7 @@ services:
     image: selenium/standalone-firefox:2.53.1
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html:ro"
+  mail:
+    image: tophfr/mailcatcher
+    ports:
+      - "2525:80"
