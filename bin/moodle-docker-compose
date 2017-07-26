@@ -34,6 +34,12 @@ then
     dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
 fi
 
+export MOODLE_DOCKER_WEB_PORT=${MOODLE_DOCKER_WEB_PORT:-8000}
+if [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
+then
+    dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
+fi
+
 if [[ "$(uname)" == "Darwin" ]]; then
     # Support https://docs.docker.com/docker-for-mac/osxfs-caching/
     dockercompose="${dockercompose} -f ${basedir}/volumes-cached.yml"

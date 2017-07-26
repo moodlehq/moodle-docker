@@ -1,0 +1,5 @@
+version: "2"
+services:
+  webserver:
+    ports:
+      - "${MOODLE_DOCKER_WEB_PORT}:80"
