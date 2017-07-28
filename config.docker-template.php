@@ -21,7 +21,7 @@ if (!empty($port)) {
 $CFG->dataroot  = '/var/www/moodledata';
 $CFG->admin     = 'admin';
 $CFG->directorypermissions = 0777;
-$CFG->smtphosts = 'mail';
+$CFG->smtphosts = 'mailhog:1025';
 
 $CFG->phpunit_dataroot  = '/var/www/moodledata/phpunit';
 $CFG->phpunit_prefix = 't_';
