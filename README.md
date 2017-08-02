@@ -53,9 +53,12 @@ bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --ag
 bin/moodle-docker-compose down
 ```
 
+Note that the behat faildump directory is exposed at http://localhost:8000/_/faildumps/.
+
 ## Manual testing
 
-Moodle is configured to listen on `http://localhost:8000/` and mailcatcher is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
+Moodle is configured to listen on `http://localhost:8000/` and mailhog is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
+
 
 ## Branching Model
 
