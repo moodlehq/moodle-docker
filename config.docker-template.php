@@ -23,11 +23,11 @@ $CFG->admin     = 'admin';
 $CFG->directorypermissions = 0777;
 $CFG->smtphosts = 'mailhog:1025';
 
-$CFG->phpunit_dataroot  = '/var/www/moodledata/phpunit';
+$CFG->phpunit_dataroot  = '/var/www/phpunitdata';
 $CFG->phpunit_prefix = 't_';
 
 $CFG->behat_wwwroot   = 'http://webserver';
-$CFG->behat_dataroot  = '/var/www/moodledata/behat';
+$CFG->behat_dataroot  = '/var/www/behatdata';
 $CFG->behat_prefix = 'b_';
 $CFG->behat_profiles = array(
     'default' => array(
@@ -35,6 +35,7 @@ $CFG->behat_profiles = array(
         'wd_host' => 'http://selenium:4444/wd/hub',
     ),
 );
+$CFG->behat_faildump_path = '/var/www/behatfaildumps';
 
 define('PHPUNIT_LONGTEST', true);
 
