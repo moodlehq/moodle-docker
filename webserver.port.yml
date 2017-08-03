@@ -1,0 +1,7 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_WEB_PORT: "${MOODLE_DOCKER_WEB_PORT}"
+    ports:
+      - "${MOODLE_DOCKER_WEB_PORT}:80"

@@ -16,9 +16,11 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
   [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
 basedir="$( cd -P "$( dirname "$SOURCE" )/../" && pwd )"
+export ASSETDIR="${basedir}/assets"
 
 
 dockercompose="docker-compose -f ${basedir}/base.yml"
+dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
 then
     dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
@@ -32,6 +34,12 @@ fi
 if [[ ! -z "$MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES" ]];
 then
     dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
+fi
+
+export MOODLE_DOCKER_WEB_PORT=${MOODLE_DOCKER_WEB_PORT:-8000}
+if [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
+then
+    dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
 fi
 
 if [[ "$(uname)" == "Darwin" ]]; then

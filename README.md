@@ -6,12 +6,13 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 ## Features:
 * All supported database servers (PostgreSQL, MySQL, Micosoft SQL Server, Oracle XE)
 * Behat/Selenium configuration for Firefox and Chrome
+* Catch-all smtp server and web interface to messages using [MailHog](https://github.com/mailhog/MailHog/)
 * All PHP Extensions enabled configured for external services (e.g. solr, ldap)
 * All supported PHP versions
 * Zero-configuration approach
 * Backed by [automated tests](https://travis-ci.org/danpoltawski/moodle-docker/branches)
 
-## Prerequistes
+## Prerequisites
 * [Docker](https://docs.docker.com) and [Docker Compose](https://docs.docker.com/compose/) installed
 * 3.25GB of RAM (to [run Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup#prerequisites))
 
@@ -52,6 +53,10 @@ bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --ag
 bin/moodle-docker-compose down
 ```
 
+## Manual testing
+
+Moodle is configured to listen on `http://localhost:8000/` and mailcatcher is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
+
 ## Branching Model
 
 This repo uses branches to accomodate different php versions as well as some of the higher/lower versions of PostgreSQL/MySQL:
@@ -82,12 +87,13 @@ The following Moodle customised docker images are close companions of this proje
 
 You can change the configuration of the docker images by setting various environment variables before calling `bin/moodle-docker-compose up`.
 
-| Environment Variable                      | Options                               | Notes                                                                   |
-|-------------------------------------------|---------------------------------------|-------------------------------------------------------------------------|
-| `MOODLE_DOCKER_DB`                        | pgsql, mariadb, mysql, mssql, oracle  | Database server to run agianst                                          |
-| `MOODLE_DOCKER_WWWROOT`                   | Path on your file system              | The path to the Moodle codebase you intend to test.                     |
-| `MOODLE_DOCKER_BROWSER`                   | firefox, chrome                       | The browser to run Behat against                                        |
-| `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | Empty, or set                         | If set, dependencies for memcached, redis, solr, and openldap are added |
+| Environment Variable                      | Options                               | Notes                                                                        |
+|-------------------------------------------|---------------------------------------|------------------------------------------------------------------------------|
+| `MOODLE_DOCKER_DB`                        | pgsql, mariadb, mysql, mssql, oracle  | Database server to run agianst                                               |
+| `MOODLE_DOCKER_WWWROOT`                   | Path on your file system              | The path to the Moodle codebase you intend to test.                          |
+| `MOODLE_DOCKER_BROWSER`                   | firefox, chrome                       | The browser to run Behat against                                             |
+| `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | Empty, or set                         | If set, dependencies for memcached, redis, solr, and openldap are added      |
+| `MOODLE_DOCKER_WEB_PORT`                  | Empty, or set to an integer           | Used as the port number for web. If set to 0, no port is used (default 8000) |
 
 
 ## Contributions
