@@ -5,4 +5,4 @@ services:
       MOODLE_DOCKER_DBTYPE: oci
       MOODLE_DOCKER_DBNAME: XE
   db:
-    image: danpoltawski/moodle-db-oracle
+    image: moodlehq/moodle-db-oracle
