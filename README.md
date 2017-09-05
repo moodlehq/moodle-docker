@@ -1,5 +1,5 @@
 # moodle-docker: Docker Containers for Moodle Developers
-[![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=master)](https://travis-ci.org/danpoltawski/moodle-docker/branches)
+[![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=master)](https://travis-ci.org/moodlehq/moodle-docker/branches)
 
 This repository contains Docker configuration aimed at Moodle developers and testers to easily deploy a testing environment for Moodle.
 
@@ -10,7 +10,7 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 * All PHP Extensions enabled configured for external services (e.g. solr, ldap)
 * All supported PHP versions
 * Zero-configuration approach
-* Backed by [automated tests](https://travis-ci.org/danpoltawski/moodle-docker/branches)
+* Backed by [automated tests](https://travis-ci.org/moodlehq/moodle-docker/branches)
 
 ## Prerequisites
 * [Docker](https://docs.docker.com) and [Docker Compose](https://docs.docker.com/compose/) installed
@@ -67,14 +67,14 @@ This repo uses branches to accomodate different php versions as well as some of 
 
 | Branch Name  | PHP Version | Build Status | Notes |
 |--------------|-------------|--------------|-------|
-| master | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=master)](https://travis-ci.org/danpoltawski/moodle-docker) | Same as branch php71 |
-| php71 | 7.1.x | [![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=php71)](https://travis-ci.org/danpoltawski/moodle-docker) | |
-| php70 | 7.0.x | [![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=php70)](https://travis-ci.org/danpoltawski/moodle-docker) | |
-| php56 | 5.6.x | [![Build Status](https://travis-ci.org/danpoltawski/moodle-docker.svg?branch=php56)](https://travis-ci.org/danpoltawski/moodle-docker) | |
+| master | 7.1.x | [![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=master)](https://travis-ci.org/moodlehq/moodle-docker) | Same as branch php71 |
+| php71 | 7.1.x | [![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=php71)](https://travis-ci.org/moodlehq/moodle-docker) | |
+| php70 | 7.0.x | [![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=php70)](https://travis-ci.org/moodlehq/moodle-docker) | |
+| php56 | 5.6.x | [![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=php56)](https://travis-ci.org/moodlehq/moodle-docker) | |
 
 ## Advanced usage
 
-As can be seen in [bin/moodle-docker-compose](https://github.com/danpoltawski/moodle-docker/blob/travis/bin/moodle-docker-compose),
+As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle-docker/blob/travis/bin/moodle-docker-compose),
 this repo is just a series of docker-compose configurations and light wrapper which make use of companion docker images. Each part
 is designed to be reusable and you are encouraged to use the docker[-compose] commands as needed.
 
@@ -82,9 +82,9 @@ is designed to be reusable and you are encouraged to use the docker[-compose] co
 
 The following Moodle customised docker images are close companions of this project:
 
-* [moodle-apache-php](https://github.com/danpoltawski/moodle-php-apache): Apache/PHP Environment preconfigured for all Moodle environments
-* [moodle-db-mssql](https://github.com/danpoltawski/moodle-db-mssql): Microsoft SQL Server for Linux configured for Moodle
-* [moodle-db-oracle](https://github.com/danpoltawski/moodle-db-oracle): Oracle XE configured for Moodle
+* [moodle-apache-php](https://github.com/moodlehq/moodle-php-apache): Apache/PHP Environment preconfigured for all Moodle environments
+* [moodle-db-mssql](https://github.com/moodlehq/moodle-db-mssql): Microsoft SQL Server for Linux configured for Moodle
+* [moodle-db-oracle](https://github.com/moodlehq/moodle-db-oracle): Oracle XE configured for Moodle
 
 ## Environment variables
 
