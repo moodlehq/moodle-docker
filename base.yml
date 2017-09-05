@@ -1,7 +1,7 @@
 version: "2"
 services:
   webserver:
-    image: danpoltawski/moodle-php-apache:7.0
+    image: moodlehq/moodle-php-apache:7.0
     depends_on:
       - db
     volumes:
