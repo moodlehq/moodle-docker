@@ -5,7 +5,7 @@ services:
       MOODLE_DOCKER_DBTYPE: mssql
       MOODLE_DOCKER_DBUSER: sa
   db:
-    image: danpoltawski/moodle-db-mssql
+    image: moodlehq/moodle-db-mssql
     environment:
         ACCEPT_EULA: "y"
         SA_PASSWORD: "m@0dl3ing"
