@@ -4,9 +4,9 @@ services:
       environment:
         MOODLE_DOCKER_PHPUNIT_EXTRAS: "true"
   memcached0:
-    image: memcached:1
+    image: memcached:1.4
   memcached1:
-    image: memcached:1
+    image: memcached:1.4
   redis:
     image: redis:3
   solr:
