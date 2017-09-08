@@ -49,6 +49,10 @@ Started at 25-05-2017, 19:04
 bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminpass="test" --adminemail="admin@example.com"
 # Access http://localhost:8000/ on your browser
 
+# Access phpMyAdmin (for MySQL and MariaDB databases)
+
+If you are running MySQL or MariaDB, you can navigate to http://localhost:8001 to access phpMyAdmin for database management.
+
 # Shut down containers
 bin/moodle-docker-compose down
 ```
