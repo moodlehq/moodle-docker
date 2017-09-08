@@ -17,3 +17,15 @@ services:
       MYSQL_USER: moodle
       MYSQL_PASSWORD: "m@0dl3ing"
       MYSQL_DATABASE: moodle
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+       - PMA_ARBITRARY=1
+       - PMA_USER=root
+       - PMA_PASSWORD=m@0dl3ing
+    restart: always
+    ports:
+       - 8001:80
+    volumes:
+       - /sessions
