@@ -45,6 +45,12 @@ Started at 25-05-2017, 19:04
 15 steps (15 passed)
 1m35.32s (41.60Mb)
 
+# Using VNC to view Behat tests
+
+1. Download a VNC client: https://www.realvnc.com/en/connect/download/viewer/
+2. With the containers running, enter 0.0.0.0:5900 as the port in VNC Viewer. You will be prompted for a password. The password is 'test' by default, but you can change it by editing ./selenium/Dockerfile
+3. You should be able to see an empty Desktop. When you run any Behat tests a browser will popup and you will see the tests execute.
+
 # Install for manual testing (optional)
 bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminpass="test" --adminemail="admin@example.com"
 # Access http://localhost:8000/ on your browser
