@@ -74,7 +74,7 @@ This repo uses branches to accomodate different php versions as well as some of 
 
 ## Advanced usage
 
-As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle-docker/blob/travis/bin/moodle-docker-compose),
+As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle-docker/blob/master/bin/moodle-docker-compose),
 this repo is just a series of docker-compose configurations and light wrapper which make use of companion docker images. Each part
 is designed to be reusable and you are encouraged to use the docker[-compose] commands as needed.
 
@@ -82,7 +82,7 @@ is designed to be reusable and you are encouraged to use the docker[-compose] co
 
 The following Moodle customised docker images are close companions of this project:
 
-* [moodle-apache-php](https://github.com/moodlehq/moodle-php-apache): Apache/PHP Environment preconfigured for all Moodle environments
+* [moodle-php-apache](https://github.com/moodlehq/moodle-php-apache): Apache/PHP Environment preconfigured for all Moodle environments
 * [moodle-db-mssql](https://github.com/moodlehq/moodle-db-mssql): Microsoft SQL Server for Linux configured for Moodle
 * [moodle-db-oracle](https://github.com/moodlehq/moodle-db-oracle): Oracle XE configured for Moodle
 
