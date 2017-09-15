@@ -1,6 +1,11 @@
 @ECHO OFF
 
-if "%MOODLE_DOCKER_DB%"=="" (
+IF NOT EXIST "%MOODLE_DOCKER_WWWROOT%" (
+    ECHO Error: MOODLE_DOCKER_WWWROOT is not set or not an existing directory
+    EXIT /B 1
+)
+
+IF "%MOODLE_DOCKER_DB%"=="" (
     ECHO Error: MOODLE_DOCKER_DB is not set
     EXIT /B 1
 )

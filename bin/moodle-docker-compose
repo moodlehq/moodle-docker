@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
+if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
+then
+    echo 'Error: $MOODLE_DOCKER_WWWROOT is not set or not an existing directory'
+    exit 1
+fi
+
 if [ -z "$MOODLE_DOCKER_DB" ];
 then
     echo 'Error: $MOODLE_DOCKER_DB is not set'
