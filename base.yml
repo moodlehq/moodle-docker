@@ -20,9 +20,6 @@ services:
       POSTGRES_PASSWORD: "m@0dl3ing"
       POSTGRES_DB: moodle
   selenium:
-    image: selenium/standalone-firefox-debug:2.53.1
-    build: ./selenium/
-    ports:
-      - 5900:5900
+    image: "selenium/standalone-firefox${MOODLE_DOCKER_SELENIUM_SUFFIX}:2.53.1"
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html:ro"
