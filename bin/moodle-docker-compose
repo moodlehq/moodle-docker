@@ -47,4 +47,12 @@ if [[ "$(uname)" == "Darwin" ]]; then
     dockercompose="${dockercompose} -f ${basedir}/volumes-cached.yml"
 fi
 
+if [[ -z "$MOODLE_DOCKER_SELENIUM_VNC_PORT" ]]
+then
+    export MOODLE_DOCKER_SELENIUM_SUFFIX=""
+else
+    export MOODLE_DOCKER_SELENIUM_SUFFIX="-debug"
+    dockercompose="${dockercompose} -f ${basedir}/selenium.debug.yml"
+fi
+
 $dockercompose $@

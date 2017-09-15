@@ -59,6 +59,27 @@ Note that the behat faildump directory is exposed at http://localhost:8000/_/fai
 
 Moodle is configured to listen on `http://localhost:8000/` and mailhog is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
 
+## Using VNC to view behat tests
+
+If `MOODLE_DOCKER_SELENIUM_VNC_PORT` is defined, selenium will expose a VNC session on the port specified so behat tests can be viewed in progress.
+
+For example, if you set `MOODLE_DOCKER_SELENIUM_VNC_PORT` to 5900..
+1. Download a VNC client: https://www.realvnc.com/en/connect/download/viewer/
+2. With the containers running, enter 0.0.0.0:5900 as the port in VNC Viewer. You will be prompted for a password. The password is 'secret'.
+3. You should be able to see an empty Desktop. When you run any Behat tests a browser will popup and you will see the tests execute.
+
+## Environment variables
+
+You can change the configuration of the docker images by setting various environment variables before calling `bin/moodle-docker-compose up`.
+
+| Environment Variable                      | Options                               | Notes                                                                        |
+|-------------------------------------------|---------------------------------------|------------------------------------------------------------------------------|
+| `MOODLE_DOCKER_DB`                        | pgsql, mariadb, mysql, mssql, oracle  | Database server to run agianst                                               |
+| `MOODLE_DOCKER_WWWROOT`                   | Path on your file system              | The path to the Moodle codebase you intend to test.                          |
+| `MOODLE_DOCKER_BROWSER`                   | firefox, chrome                       | The browser to run Behat against                                             |
+| `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | Empty, or set                         | If set, dependencies for memcached, redis, solr, and openldap are added      |
+| `MOODLE_DOCKER_WEB_PORT`                  | Empty, or set to an integer           | Used as the port number for web. If set to 0, no port is used (default 8000) |
+| `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | Empty, or set to an integer           | If set, the selenium node will expose a vnc session on the port specified  |
 
 ## Branching Model
 
@@ -78,26 +99,13 @@ As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle
 this repo is just a series of docker-compose configurations and light wrapper which make use of companion docker images. Each part
 is designed to be reusable and you are encouraged to use the docker[-compose] commands as needed.
 
-### Companion docker images
+## Companion docker images
 
 The following Moodle customised docker images are close companions of this project:
 
 * [moodle-php-apache](https://github.com/moodlehq/moodle-php-apache): Apache/PHP Environment preconfigured for all Moodle environments
 * [moodle-db-mssql](https://github.com/moodlehq/moodle-db-mssql): Microsoft SQL Server for Linux configured for Moodle
 * [moodle-db-oracle](https://github.com/moodlehq/moodle-db-oracle): Oracle XE configured for Moodle
-
-## Environment variables
-
-You can change the configuration of the docker images by setting various environment variables before calling `bin/moodle-docker-compose up`.
-
-| Environment Variable                      | Options                               | Notes                                                                        |
-|-------------------------------------------|---------------------------------------|------------------------------------------------------------------------------|
-| `MOODLE_DOCKER_DB`                        | pgsql, mariadb, mysql, mssql, oracle  | Database server to run agianst                                               |
-| `MOODLE_DOCKER_WWWROOT`                   | Path on your file system              | The path to the Moodle codebase you intend to test.                          |
-| `MOODLE_DOCKER_BROWSER`                   | firefox, chrome                       | The browser to run Behat against                                             |
-| `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | Empty, or set                         | If set, dependencies for memcached, redis, solr, and openldap are added      |
-| `MOODLE_DOCKER_WEB_PORT`                  | Empty, or set to an integer           | Used as the port number for web. If set to 0, no port is used (default 8000) |
-
 
 ## Contributions
 

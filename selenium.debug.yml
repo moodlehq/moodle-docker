@@ -1,0 +1,5 @@
+version: "2"
+services:
+  selenium:
+    ports:
+      - "${MOODLE_DOCKER_SELENIUM_VNC_PORT}:5900"
