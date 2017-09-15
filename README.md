@@ -14,25 +14,37 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 
 ## Prerequisites
 * [Docker](https://docs.docker.com) and [Docker Compose](https://docs.docker.com/compose/) installed
-* 3.25GB of RAM (to [run Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup#prerequisites))
+* 3.25GB of RAM (if you choose [Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup#prerequisites) as db server)
 
-## Example usage
+## Quick start
 
 ```bash
-# Set up path to code and choose a db server (pgsql/mssql/oracle/mysql)
+# Set up path to Moodle code
 export MOODLE_DOCKER_WWWROOT=/path/to/moodle/code
-export MOODLE_DOCKER_DB=mssql
+# Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
+export MOODLE_DOCKER_DB=pgsql
 
-# Ensure config.php is in place
+# Ensure customized config.php for the Docker containers is in place
 cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 
 # Start up containers
 bin/moodle-docker-compose up -d
 
-# Run behat tests..
+# Work with the containers (see below)
+# [..]
+
+# Shut down and destroy containers
+bin/moodle-docker-compose down
+```
+
+## Use containers for running behat tests
+
+```bash
+# Initialize behat environment
 bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 # [..]
 
+# Run behat tests
 bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
 Running single behat site:
 Moodle 3.3rc1 (Build: 20170505), 381db2fe8df5c381f633fa2a92e61c6f0d7308cb
@@ -44,20 +56,21 @@ Started at 25-05-2017, 19:04
 2 scenarios (2 passed)
 15 steps (15 passed)
 1m35.32s (41.60Mb)
-
-# Install for manual testing (optional)
-bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminpass="test" --adminemail="admin@example.com"
-# Access http://localhost:8000/ on your browser
-
-# Shut down containers
-bin/moodle-docker-compose down
 ```
 
-Note that the behat faildump directory is exposed at http://localhost:8000/_/faildumps/.
+Notes:
+* The behat faildump directory is exposed at http://localhost:8000/_/faildumps/.
 
-## Manual testing
+## Use containers for manual testing
 
-Moodle is configured to listen on `http://localhost:8000/` and mailhog is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
+```bash
+# Initialize Moodle database for manual testing
+bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminpass="test" --adminemail="admin@example.com"
+```
+
+Notes:
+* Moodle is configured to listen on `http://localhost:8000/`.
+* Mailhog is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
 
 ## Using VNC to view behat tests
 
@@ -72,19 +85,18 @@ For example, if you set `MOODLE_DOCKER_SELENIUM_VNC_PORT` to 5900..
 
 You can change the configuration of the docker images by setting various environment variables before calling `bin/moodle-docker-compose up`.
 
-| Environment Variable                      | Options                               | Notes                                                                        |
-|-------------------------------------------|---------------------------------------|------------------------------------------------------------------------------|
-| `MOODLE_DOCKER_DB`                        | pgsql, mariadb, mysql, mssql, oracle  | Database server to run agianst                                               |
-| `MOODLE_DOCKER_WWWROOT`                   | Path on your file system              | The path to the Moodle codebase you intend to test.                          |
-| `MOODLE_DOCKER_BROWSER`                   | firefox, chrome                       | The browser to run Behat against                                             |
-| `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | Empty, or set                         | If set, dependencies for memcached, redis, solr, and openldap are added      |
-| `MOODLE_DOCKER_WEB_PORT`                  | Empty, or set to an integer           | Used as the port number for web. If set to 0, no port is used (default 8000) |
-| `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | Empty, or set to an integer           | If set, the selenium node will expose a vnc session on the port specified  |
+| Environment Variable                      | Mandatory | Allowed values                        | Default value | Notes                                                                        |
+|-------------------------------------------|-----------|---------------------------------------|---------------|------------------------------------------------------------------------------|
+| `MOODLE_DOCKER_DB`                        | yes       | pgsql, mariadb, mysql, mssql, oracle  | none          | The database server to run against                                           |
+| `MOODLE_DOCKER_WWWROOT`                   | yes       | path on your file system              | none          | The path to the Moodle codebase you intend to test                           |
+| `MOODLE_DOCKER_BROWSER`                   | no        | firefox, chrome                       | firefox       | The browser to run Behat against                                             |
+| `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | no        | any value                             | not set       | If set, dependencies for memcached, redis, solr, and openldap are added      |
+| `MOODLE_DOCKER_WEB_PORT`                  | no        | any integer value                     | 8000          | The port number for web. If set to 0, no port is used                        |
+| `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value                     | not set       | If set, the selenium node will expose a vnc session on the port specified    |
 
 ## Branching Model
 
 This repo uses branches to accomodate different php versions as well as some of the higher/lower versions of PostgreSQL/MySQL:
-
 
 | Branch Name  | PHP Version | Build Status | Notes |
 |--------------|-------------|--------------|-------|
