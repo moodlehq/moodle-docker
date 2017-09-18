@@ -27,30 +27,27 @@ export ASSETDIR="${basedir}/assets"
 
 dockercompose="docker-compose -f ${basedir}/base.yml"
 dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
+
+# PHP Version.
+export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-7.1}
+
+# Database flavour
 if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
 then
     dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
+
 fi
 
+# Support PHP version overrides for DB..
+filename="${basedir}/db.${MOODLE_DOCKER_DB}.${MOODLE_DOCKER_PHP_VERSION}.yml"
+if [ -f $filename ]; then
+    dockercompose="${dockercompose} -f ${filename}"
+fi
+
+# Selenium browser
 if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" != "firefox" ]];
 then
     dockercompose="${dockercompose} -f ${basedir}/selenium.${MOODLE_DOCKER_BROWSER}.yml"
-fi
-
-if [[ ! -z "$MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES" ]];
-then
-    dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
-fi
-
-export MOODLE_DOCKER_WEB_PORT=${MOODLE_DOCKER_WEB_PORT:-8000}
-if [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
-then
-    dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
-fi
-
-if [[ "$(uname)" == "Darwin" ]]; then
-    # Support https://docs.docker.com/docker-for-mac/osxfs-caching/
-    dockercompose="${dockercompose} -f ${basedir}/volumes-cached.yml"
 fi
 
 if [[ -z "$MOODLE_DOCKER_SELENIUM_VNC_PORT" ]]
@@ -60,5 +57,26 @@ else
     export MOODLE_DOCKER_SELENIUM_SUFFIX="-debug"
     dockercompose="${dockercompose} -f ${basedir}/selenium.debug.yml"
 fi
+
+# External services
+if [[ ! -z "$MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
+fi
+
+# Webserver port
+export MOODLE_DOCKER_WEB_PORT=${MOODLE_DOCKER_WEB_PORT:-8000}
+if [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
+then
+    dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
+fi
+
+
+# Mac OS Compatbility
+if [[ "$(uname)" == "Darwin" ]]; then
+    # Support https://docs.docker.com/docker-for-mac/osxfs-caching/
+    dockercompose="${dockercompose} -f ${basedir}/volumes-cached.yml"
+fi
+
 
 $dockercompose $@

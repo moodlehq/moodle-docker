@@ -2,24 +2,28 @@ language: bash
 services: docker
 fast_finish: true
 env:
-    - "DB=pgsql SUITE=phpunit"
-    - "DB=pgsql SUITE=behat BROWSER=firefox"
-    - "DB=pgsql SUITE=behat BROWSER=chrome"
-    - "DB=pgsql SUITE=phpunit-full"
-    - "DB=oracle SUITE=phpunit"
-    - "DB=oracle SUITE=behat BROWSER=firefox"
-    - "DB=mssql SUITE=phpunit"
-    - "DB=mssql SUITE=behat BROWSER=firefox"
-    - "DB=mysql SUITE=phpunit"
-    - "DB=mysql SUITE=behat BROWSER=firefox"
-    - "DB=mariadb SUITE=phpunit"
-    - "DB=mariadb SUITE=behat BROWSER=firefox"
+    - "PHP=7.1 DB=pgsql SUITE=phpunit-full"
+    - "PHP=7.0 DB=pgsql SUITE=phpunit"
+    - "PHP=5.6 DB=pgsql SUITE=phpunit"
+    - "PHP=7.1 DB=oracle SUITE=phpunit"
+    - "PHP=5.6 DB=oracle SUITE=phpunit"
+    - "PHP=7.1 DB=mssql SUITE=phpunit"
+    - "PHP=5.6 DB=mssql SUITE=phpunit"
+    - "PHP=7.1 DB=mysql SUITE=phpunit"
+    - "PHP=5.6 DB=mariadb SUITE=phpunit"
+    - "PHP=7.0 DB=pgsql SUITE=behat BROWSER=firefox"
+    - "PHP=7.0 DB=pgsql SUITE=behat BROWSER=chrome"
+    - "PHP=7.0 DB=oracle SUITE=behat BROWSER=firefox"
+    - "PHP=7.0 DB=mssql SUITE=behat BROWSER=firefox"
+    - "PHP=7.0 DB=mysql SUITE=behat BROWSER=firefox"
+    - "PHP=7.0 DB=mariadb SUITE=behat BROWSER=firefox"
 install:
     - git clone --branch v3.3.0 --depth 1 git://github.com/moodle/moodle $HOME/moodle
     - cp config.docker-template.php $HOME/moodle/config.php
     - export MOODLE_DOCKER_DB=$DB
     - export MOODLE_DOCKER_BROWSER=$BROWSER
     - export MOODLE_DOCKER_WWWROOT="$HOME/moodle"
+    - export MOODLE_DOCKER_PHP_VERSION=$PHP
 before_script:
     - tests/setup.sh
 script:

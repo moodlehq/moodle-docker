@@ -101,21 +101,11 @@ You can change the configuration of the docker images by setting various environ
 |-------------------------------------------|-----------|---------------------------------------|---------------|------------------------------------------------------------------------------|
 | `MOODLE_DOCKER_DB`                        | yes       | pgsql, mariadb, mysql, mssql, oracle  | none          | The database server to run against                                           |
 | `MOODLE_DOCKER_WWWROOT`                   | yes       | path on your file system              | none          | The path to the Moodle codebase you intend to test                           |
+| `MOODLE_DOCKER_PHP_VERSION`               | no        | 7.1, 7.0, 5.6                         | 7.1           | The php version to use                                                       |
 | `MOODLE_DOCKER_BROWSER`                   | no        | firefox, chrome                       | firefox       | The browser to run Behat against                                             |
 | `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | no        | any value                             | not set       | If set, dependencies for memcached, redis, solr, and openldap are added      |
 | `MOODLE_DOCKER_WEB_PORT`                  | no        | any integer value                     | 8000          | The port number for web. If set to 0, no port is used                        |
 | `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value                     | not set       | If set, the selenium node will expose a vnc session on the port specified    |
-
-## Branching Model
-
-This repo uses branches to accomodate different php versions as well as some of the higher/lower versions of PostgreSQL/MySQL:
-
-| Branch Name  | PHP Version | Build Status | Notes |
-|--------------|-------------|--------------|-------|
-| master | 7.1.x | [![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=master)](https://travis-ci.org/moodlehq/moodle-docker) | Same as branch php71 |
-| php71 | 7.1.x | [![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=php71)](https://travis-ci.org/moodlehq/moodle-docker) | |
-| php70 | 7.0.x | [![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=php70)](https://travis-ci.org/moodlehq/moodle-docker) | |
-| php56 | 5.6.x | [![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=php56)](https://travis-ci.org/moodlehq/moodle-docker) | |
 
 ## Advanced usage
 

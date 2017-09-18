@@ -1,0 +1,5 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_DBTYPE: mssql

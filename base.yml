@@ -1,7 +1,7 @@
 version: "2"
 services:
   webserver:
-    image: moodlehq/moodle-php-apache:7.1
+    image: "moodlehq/moodle-php-apache:${MOODLE_DOCKER_PHP_VERSION}"
     depends_on:
       - db
     volumes:
