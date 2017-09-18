@@ -81,6 +81,18 @@ For example, if you set `MOODLE_DOCKER_SELENIUM_VNC_PORT` to 5900..
 2. With the containers running, enter 0.0.0.0:5900 as the port in VNC Viewer. You will be prompted for a password. The password is 'secret'.
 3. You should be able to see an empty Desktop. When you run any Behat tests a browser will popup and you will see the tests execute.
 
+## Stop and restart containers
+
+`bin/moodle-docker-compose down` which was used above after using the containers stops and destroys the containers. If you want to use your containers continuously for manual testing or development without starting them up from scratch everytime you use them, you can also just stop without destroying them. With this approach, you can restart your containers sometime later, they will keep their data and won't be destroyed completely until you run `bin/moodle-docker-compose down`.
+
+```bash
+# Stop containers
+moodle-docker-compose stop
+
+# Restart containers
+moodle-docker-compose start
+```
+
 ## Environment variables
 
 You can change the configuration of the docker images by setting various environment variables before calling `bin/moodle-docker-compose up`.
