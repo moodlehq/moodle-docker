@@ -83,7 +83,7 @@ For example, if you set `MOODLE_DOCKER_SELENIUM_VNC_PORT` to 5900..
 
 ## Stop and restart containers
 
-`bin/moodle-docker-compose down` which was used above after using the containers stops and destroys the containers. If you want to use your containers continuously for manual testing or development without starting them up from scratch everytime you use them, you can also just stop without destroying them. With this approach, you can restart your containers sometime later, they will keep their data and won't be destroyd completely until you run `bin/moodle-docker-compose down`.
+`bin/moodle-docker-compose down` which was used above after using the containers stops and destroys the containers. If you want to use your containers continuously for manual testing or development without starting them up from scratch everytime you use them, you can also just stop without destroying them. With this approach, you can restart your containers sometime later, they will keep their data and won't be destroyed completely until you run `bin/moodle-docker-compose down`.
 
 ```bash
 # Stop containers
