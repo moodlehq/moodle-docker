@@ -13,7 +13,11 @@ $CFG->dbpass    = getenv('MOODLE_DOCKER_DBPASS');
 $CFG->prefix    = 'm_';
 $CFG->dboptions = ['dbcollation' => getenv('MOODLE_DOCKER_DBCOLLATION')];
 
-$CFG->wwwroot   = 'http://localhost';
+$host = 'localhost';
+if (!empty(getenv('MOODLE_DOCKER_WEB_HOST'))) {
+    $host = getenv('MOODLE_DOCKER_WEB_HOST');
+}
+$CFG->wwwroot   = "http://{$host}";
 $port = getenv('MOODLE_DOCKER_WEB_PORT');
 if (!empty($port)) {
     $CFG->wwwroot .= ":{$port}";
