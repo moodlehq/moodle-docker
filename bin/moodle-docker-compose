@@ -104,9 +104,29 @@ then
 fi
 
 # Selenium browser
-if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" != "firefox" ]];
+browserparts=(${MOODLE_DOCKER_BROWSER//:/ })
+export MOODLE_DOCKER_BROWSER_NAME=${browserparts[0]}
+export MOODLE_DOCKER_BROWSER_TAG=${browserparts[1]}
+
+if [[ -z "$MOODLE_DOCKER_BROWSER_NAME" ]];
 then
-    dockercompose="${dockercompose} -f ${basedir}/selenium.${MOODLE_DOCKER_BROWSER}.yml"
+    MOODLE_DOCKER_BROWSER_NAME=firefox
+fi
+
+if [[ -z "$MOODLE_DOCKER_BROWSER_TAG" ]];
+then
+    if [[ "$MOODLE_DOCKER_BROWSER_NAME" = "firefox" ]];
+    then
+        MOODLE_DOCKER_BROWSER_TAG=2.53.1
+    elif [[ "$MOODLE_DOCKER_BROWSER_NAME" = "chrome" ]];
+    then
+        MOODLE_DOCKER_BROWSER_TAG=3.5.2
+    fi
+fi
+
+if [[ "$MOODLE_DOCKER_BROWSER_NAME" != "firefox" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/selenium.${MOODLE_DOCKER_BROWSER_NAME}.yml"
 fi
 
 # Selenium VNC port

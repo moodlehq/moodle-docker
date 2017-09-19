@@ -55,8 +55,27 @@ IF "%MOODLE_DOCKER_BROWSER%"=="chrome" (
 )
 
 IF NOT "%MOODLE_DOCKER_BROWSER%"=="" (
-    IF NOT "%MOODLE_DOCKER_BROWSER%"=="firefox" (
-        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\selenium.%MOODLE_DOCKER_BROWSER%.yml"
+    REM Split MOODLE_DOCKER_BROWSER by : to get selenium tag if sepecified
+    FOR /f "tokens=1,2 delims=:" %%i in ("%MOODLE_DOCKER_BROWSER%") do (
+        SET MOODLE_DOCKER_BROWSER_NAME=%%i
+        SET MOODLE_DOCKER_BROWER_TAG=%%j
+    )
+
+    IF "%MOODLE_DOCKER_BROWER_NAME%"=="" (
+        SET MOODLE_DOCKER_BROWER_NAME="firefox"
+    )
+
+    IF "%MOODLE_DOCKER_BROWER_TAG%"=="" (
+        IF "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
+            SET MOODLE_DOCKER_BROWER_TAG="2.53.1"
+        )
+        IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
+            SET MOODLE_DOCKER_BROWER_TAG="3.5.2"
+        )
+    )
+
+    IF NOT "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
+        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\selenium.%MOODLE_DOCKER_BROWSER_NAME%.yml"
     )
 )
 
