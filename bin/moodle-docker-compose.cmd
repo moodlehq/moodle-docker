@@ -58,25 +58,25 @@ IF NOT "%MOODLE_DOCKER_BROWSER%"=="" (
     REM Split MOODLE_DOCKER_BROWSER by : to get selenium tag if sepecified
     FOR /f "tokens=1,2 delims=:" %%i in ("%MOODLE_DOCKER_BROWSER%") do (
         SET MOODLE_DOCKER_BROWSER_NAME=%%i
-        SET MOODLE_DOCKER_BROWER_TAG=%%j
+        SET MOODLE_DOCKER_BROWSER_TAG=%%j
     )
+)
 
-    IF "%MOODLE_DOCKER_BROWER_NAME%"=="" (
-        SET MOODLE_DOCKER_BROWER_NAME="firefox"
-    )
+IF "%MOODLE_DOCKER_BROWSER_NAME%"=="" (
+       SET MOODLE_DOCKER_BROWSER_NAME=firefox
+)
 
-    IF "%MOODLE_DOCKER_BROWER_TAG%"=="" (
-        IF "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
-            SET MOODLE_DOCKER_BROWER_TAG="2.53.1"
-        )
-        IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
-            SET MOODLE_DOCKER_BROWER_TAG="3.5.2"
-        )
-    )
+IF "%MOODLE_DOCKER_BROWSER_TAG%"=="" (
+       IF "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
+               SET MOODLE_DOCKER_BROWSER_TAG=3.141.59
+       )
+       IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
+               SET MOODLE_DOCKER_BROWSER_TAG=3
+       )
+)
 
-    IF NOT "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
-        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\selenium.%MOODLE_DOCKER_BROWSER_NAME%.yml"
-    )
+IF NOT "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
+       SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\selenium.%MOODLE_DOCKER_BROWSER_NAME%.yml"
 )
 
 IF NOT "%MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES%"=="" (
@@ -117,5 +117,7 @@ IF "%MOODLE_DOCKER_SELENIUM_VNC_PORT%"=="" (
         )
     )
 )
+
+echo %MOODLE_DOCKER_SELENIUM_SUFFIX% %MOODLE_DOCKER_BROWSER_TAG%
 
 %DOCKERCOMPOSE% %*
