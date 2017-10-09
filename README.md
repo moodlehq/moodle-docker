@@ -47,8 +47,8 @@ bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 # Run behat tests
 bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
 Running single behat site:
-Moodle 3.3rc1 (Build: 20170505), 381db2fe8df5c381f633fa2a92e61c6f0d7308cb
-Php: 7.1.5, sqlsrv: 14.00.0500, OS: Linux 4.9.13-moby x86_64
+Moodle 3.4dev (Build: 20171006), 33a3ec7c9378e64c6f15c688a3c68a39114aa29d
+Php: 7.1.9, pgsql: 9.6.5, OS: Linux 4.9.49-moby x86_64
 Server OS "Linux", Browser: "firefox"
 Started at 25-05-2017, 19:04
 ...............
@@ -60,6 +60,26 @@ Started at 25-05-2017, 19:04
 
 Notes:
 * The behat faildump directory is exposed at http://localhost:8000/_/faildumps/.
+
+## Use containers for running phpunit tests
+
+```bash
+# Initialize phpunit environment
+bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
+# [..]
+
+# Run phpunit tests
+bin/moodle-docker-compose exec webserver vendor/bin/phpunit auth_manual_testcase auth/manual/tests/manual_test.php
+Moodle 3.4dev (Build: 20171006), 33a3ec7c9378e64c6f15c688a3c68a39114aa29d
+Php: 7.1.9, pgsql: 9.6.5, OS: Linux 4.9.49-moby x86_64
+PHPUnit 5.5.7 by Sebastian Bergmann and contributors.
+
+..                                                                  2 / 2 (100%)
+
+Time: 4.45 seconds, Memory: 38.00MB
+
+OK (2 tests, 7 assertions)
+```
 
 ## Use containers for manual testing
 
