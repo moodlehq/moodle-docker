@@ -107,10 +107,10 @@ For example, if you set `MOODLE_DOCKER_SELENIUM_VNC_PORT` to 5900..
 
 ```bash
 # Stop containers
-moodle-docker-compose stop
+bin/moodle-docker-compose stop
 
 # Restart containers
-moodle-docker-compose start
+bin/moodle-docker-compose start
 ```
 
 ## Environment variables
