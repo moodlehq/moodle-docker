@@ -30,6 +30,9 @@ cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 # Start up containers
 bin/moodle-docker-compose up -d
 
+# Wait for DB to come up (important for oracle/mssql)
+bin/moodle-docker-wait-for-db
+
 # Work with the containers (see below)
 # [..]
 
