@@ -74,6 +74,8 @@ then
     dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
 fi
 
+# Alternative config.php
+export MOODLE_DOCKER_CONFIGFILE=${MOODLE_DOCKER_CONFIGFILE:-${MOODLE_DOCKER_WWWROOT}/config.php}
 
 # Mac OS Compatbility
 if [[ "$(uname)" == "Darwin" ]]; then

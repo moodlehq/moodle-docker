@@ -21,11 +21,16 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 ```bash
 # Set up path to Moodle code
 export MOODLE_DOCKER_WWWROOT=/path/to/moodle/code
+
 # Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
 export MOODLE_DOCKER_DB=pgsql
 
-# Ensure customized config.php for the Docker containers is in place
-cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+# Ensure customized config.php for the Docker containers is in place. For
+# simple test run it should be OK using config.docker-template.php without
+# modifications by providing its location in MOODLE_DOCKER_CONFIGFILE env
+# variable. If MOODLE_DOCKER_CONFIGFILE is not defined,
+# $MOODLE_DOCKER_WWWROOT/config.php is used instead.
+export MOODLE_DOCKER_CONFIGFILE=$(pwd)/config.docker-template.php
 
 # Start up containers
 bin/moodle-docker-compose up -d
@@ -125,7 +130,8 @@ You can change the configuration of the docker images by setting various environ
 |-------------------------------------------|-----------|---------------------------------------|---------------|------------------------------------------------------------------------------|
 | `MOODLE_DOCKER_DB`                        | yes       | pgsql, mariadb, mysql, mssql, oracle  | none          | The database server to run against                                           |
 | `MOODLE_DOCKER_WWWROOT`                   | yes       | path on your file system              | none          | The path to the Moodle codebase you intend to test                           |
-| `MOODLE_DOCKER_PHP_VERSION`               | no        | 7.3, 7.2, 7.1, 7.0, 5.6                         | 7.1           | The php version to use                                                       |
+| `MOODLE_DOCKER_CONFIGFILE`                | no        | path on your file system              | config.php    | Alternative location for config.php to use                                   |
+| `MOODLE_DOCKER_PHP_VERSION`               | no        | 7.3, 7.2, 7.1, 7.0, 5.6               | 7.1           | The php version to use                                                       |
 | `MOODLE_DOCKER_BROWSER`                   | no        | firefox, chrome                       | firefox       | The browser to run Behat against                                             |
 | `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | no        | any value                             | not set       | If set, dependencies for memcached, redis, solr, and openldap are added      |
 | `MOODLE_DOCKER_WEB_HOST`                  | no        | any valid hostname                    | localhost     | The hostname for web                                |
