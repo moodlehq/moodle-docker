@@ -53,7 +53,7 @@ $CFG->behat_faildump_path = '/var/www/behatfaildumps';
 
 define('PHPUNIT_LONGTEST', true);
 
-if (getenv('MOODLE_DOCKER_PHPUNIT_EXTRAS')) {
+if (getenv('MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES')) {
     define('TEST_SEARCH_SOLR_HOSTNAME', 'solr');
     define('TEST_SEARCH_SOLR_INDEXNAME', 'test');
     define('TEST_SEARCH_SOLR_PORT', 8983);
