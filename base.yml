@@ -15,7 +15,7 @@ services:
       MOODLE_DOCKER_BROWSER: firefox
       MOODLE_DOCKER_WEB_HOST: "${MOODLE_DOCKER_WEB_HOST}"
   db:
-    image: postgres:9
+    image: postgres:9.6.7
     environment:
       POSTGRES_USER: moodle
       POSTGRES_PASSWORD: "m@0dl3ing"
