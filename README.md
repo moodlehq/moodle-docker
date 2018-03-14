@@ -39,6 +39,27 @@ bin/moodle-docker-wait-for-db
 # Shut down and destroy containers
 bin/moodle-docker-compose down
 ```
+## Run several Moodle instances
+
+By default, the script will load a single instance. If you want to run two
+or more different versions of Moodle at the same time, you have to add this
+environment variable prior running any of the steps at `Quick start`:
+
+```bash
+# Define a project name; it will appear as a prefix on container names.
+export COMPOSE_PROJECT_NAME=moodle34
+
+# Use a different public web port from those already taken
+export MOODLE_DOCKER_WEB_PORT=1234
+
+# [..] run all "Quick steps" now
+```
+
+Having set up several Moodle instances, you need to have set up
+the environment variable `COMPOSE_PROJECT_NAME` to just refer
+to the instance you expect to. See
+[envvars](https://docs.docker.com/compose/reference/envvars/)
+to see more about `docker-compose` environment variables.
 
 ## Use containers for running behat tests
 
