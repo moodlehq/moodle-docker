@@ -18,7 +18,7 @@ env:
     - "PHP=7.0 DB=mysql SUITE=behat BROWSER=firefox"
     - "PHP=7.0 DB=mariadb SUITE=behat BROWSER=firefox"
 install:
-    - git clone --branch v3.3.0 --depth 1 git://github.com/moodle/moodle $HOME/moodle
+    - git clone --branch v3.3.5 --depth 1 git://github.com/moodle/moodle $HOME/moodle
     - cp config.docker-template.php $HOME/moodle/config.php
     - export MOODLE_DOCKER_DB=$DB
     - export MOODLE_DOCKER_BROWSER=$BROWSER
