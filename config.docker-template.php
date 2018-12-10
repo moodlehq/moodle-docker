@@ -82,4 +82,6 @@ if (getenv('MOODLE_DOCKER_PHPUNIT_EXTRAS')) {
     define('TEST_ENROL_LDAP_DOMAIN', 'ou=Users,dc=openstack,dc=org');
 }
 
+$CFG->pathtopython = '/usr/bin/python';
+
 require_once(__DIR__ . '/lib/setup.php');
