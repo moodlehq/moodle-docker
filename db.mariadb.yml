@@ -5,7 +5,7 @@ services:
       MOODLE_DOCKER_DBTYPE: mariadb
       MOODLE_DOCKER_DBCOLLATION: utf8mb4_bin
   db:
-    image: mariadb:10.2.6
+    image: mariadb:10
     command: >
               --character-set-server=utf8mb4
               --collation-server=utf8mb4_bin
