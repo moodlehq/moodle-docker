@@ -58,7 +58,11 @@ if (getenv('MOODLE_DOCKER_PHPUNIT_EXTRAS')) {
     define('TEST_SEARCH_SOLR_INDEXNAME', 'test');
     define('TEST_SEARCH_SOLR_PORT', 8983);
 
-    define('TEST_SESSION_REDIS_HOST', 'redis');
+    // We need to keep Redis session tests disabled for PHP 7.2 and up. See MDL-60978.
+    if (version_compare(PHP_VERSION, '7.2.0', '<')) {
+        define('TEST_SESSION_REDIS_HOST', 'redis');
+    }
+
     define('TEST_CACHESTORE_REDIS_TESTSERVERS', 'redis');
 
     define('TEST_CACHESTORE_MONGODB_TESTSERVER', 'mongodb://mongo:27017');
