@@ -2,23 +2,27 @@ language: bash
 services: docker
 fast_finish: true
 env:
-    - "PHP=7.1 DB=pgsql SUITE=phpunit-full"
-    - "PHP=7.0 DB=pgsql SUITE=phpunit"
-    - "PHP=5.6 DB=pgsql SUITE=phpunit"
-    - "PHP=7.1 DB=oracle SUITE=phpunit"
-    - "PHP=5.6 DB=oracle SUITE=phpunit"
-    - "PHP=7.1 DB=mssql SUITE=phpunit"
-    - "PHP=5.6 DB=mssql SUITE=phpunit"
-    - "PHP=7.1 DB=mysql SUITE=phpunit"
-    - "PHP=5.6 DB=mariadb SUITE=phpunit"
-    - "PHP=7.0 DB=pgsql SUITE=behat BROWSER=firefox"
-    - "PHP=7.0 DB=pgsql SUITE=behat BROWSER=chrome"
-    - "PHP=7.0 DB=oracle SUITE=behat BROWSER=firefox"
-    - "PHP=7.0 DB=mssql SUITE=behat BROWSER=firefox"
-    - "PHP=7.0 DB=mysql SUITE=behat BROWSER=firefox"
-    - "PHP=7.0 DB=mariadb SUITE=behat BROWSER=firefox"
+    # Oracle jobs have been removed because there aren't public images anymore.
+    - "PHP=7.3 DB=pgsql   GIT=v3.7.0 SUITE=phpunit-full"
+    - "PHP=7.2 DB=pgsql   GIT=v3.7.0 SUITE=phpunit"
+    - "PHP=7.1 DB=pgsql   GIT=v3.7.0 SUITE=phpunit"
+    - "PHP=7.0 DB=pgsql   GIT=v3.3.5 SUITE=phpunit"
+    - "PHP=5.6 DB=pgsql   GIT=v3.3.5 SUITE=phpunit"
+    - "PHP=7.3 DB=mssql   GIT=v3.7.0 SUITE=phpunit"
+    - "PHP=5.6 DB=mssql   GIT=v3.3.5 SUITE=phpunit"
+    - "PHP=7.3 DB=mysql   GIT=v3.7.0 SUITE=phpunit"
+    - "PHP=5.6 DB=mariadb GIT=v3.3.5 SUITE=phpunit"
+    - "PHP=7.3 DB=pgsql   GIT=v3.7.0 SUITE=behat BROWSER=chrome"
+    - "PHP=7.2 DB=pgsql   GIT=v3.7.0 SUITE=behat BROWSER=firefox"
+    - "PHP=7.1 DB=pgsql   GIT=v3.7.0 SUITE=behat BROWSER=chrome"
+    - "PHP=7.0 DB=pgsql   GIT=v3.3.5 SUITE=behat BROWSER=firefox"
+    - "PHP=5.6 DB=pgsql   GIT=v3.3.5 SUITE=behat BROWSER=chrome"
+    - "PHP=7.3 DB=mssql   GIT=v3.7.0 SUITE=behat BROWSER=firefox"
+    - "PHP=7.0 DB=mssql   GIT=v3.3.5 SUITE=behat BROWSER=chrome"
+    - "PHP=7.3 DB=mysql   GIT=v3.7.0 SUITE=behat BROWSER=firefox"
+    - "PHP=7.0 DB=mariadb GIT=v3.3.5 SUITE=behat BROWSER=chrome"
 install:
-    - git clone --branch v3.3.5 --depth 1 git://github.com/moodle/moodle $HOME/moodle
+    - git clone --branch $GIT --depth 1 git://github.com/moodle/moodle $HOME/moodle
     - cp config.docker-template.php $HOME/moodle/config.php
     - export MOODLE_DOCKER_DB=$DB
     - export MOODLE_DOCKER_BROWSER=$BROWSER
