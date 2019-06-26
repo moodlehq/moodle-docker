@@ -1,0 +1,56 @@
+#!/bin/sh
+
+set -e
+
+MOODLE_DOCKER_BINDIR=$(dirname $0)
+MOODLE_DOCKER_DIR=$(realpath $(dirname $MOODLE_DOCKER_BINDIR))
+
+# Check that the config.docker-template.php exists in the directory
+if [ ! -r "$MOODLE_DOCKER_DIR/config.docker-template.php" ]; then
+    >&2 echo 'Error: $MOODLE_DOCKER_DIR could not be determined to be an existing directory'
+    exit 1
+fi
+
+export MOODLE_DOCKER_WWWROOT=`pwd`
+
+if [ ! -r "$MOODLE_DOCKER_WWWROOT/config-dist.php" ]; then
+    >&2 echo 'Error: ./config-dist.php is not present; are you running this from a Moodle directory?'
+    exit 1
+fi
+
+# Personal settings.
+if [ -r "$HOME/.moodle-compose.env" ]; then
+    . $HOME/.moodle-compose.env
+fi
+
+# Moodle instance settings
+if [ -r "$MOODLE_DOCKER_WWWROOT/.moodle-compose.env" ]; then
+    . $MOODLE_DOCKER_WWWROOT/.moodle-compose.env
+fi
+
+if [ -z "${MOODLE_CODENAME}" ]; then
+    >&2 echo 'Error: $MOODLE_CODENAME not specified; make sure to either set the environment, or use .moodle-compose.env'
+    exit 1
+fi
+
+export MOODLE_CODENAME=${MOODLE_CODENAME}
+
+# Related to Moodle
+export MOODLE_DOCKER_DB=${MOODLE_DOCKER_DB:-pgsql}
+export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-7.2}
+
+# Related to one's local setup
+export MOODLE_DOCKER_NETWORK=${MOODLE_DOCKER_NETWORK:-docker.test}
+export MOODLE_DOCKER_WEB_HOST=${MOODLE_DOCKER_WEB_HOST:-${MOODLE_CODENAME}.${MOODLE_DOCKER_NETWORK}}
+export MOODLE_DOCKER_TRAEFIK=${MOODLE_DOCKER_NO_TRAEFIK:-enable}
+export MOODLE_DOCKER_TRAEFIK_HTTPS=${MOODLE_DOCKER_TRAEFIK_HTTP_ONLY:-true}
+
+export COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-${MOODLE_CODENAME}}
+
+# Force-copy the most recent config.php
+if ! [ -r ./config.php ] || ! diff -q $MOODLE_DOCKER_DIR/config.docker-template.php ./config.php; then
+    rm -f ./config.php
+    cp $MOODLE_DOCKER_DIR/config.docker-template.php ./config.php
+fi
+
+$MOODLE_DOCKER_DIR/bin/moodle-docker-compose $@
