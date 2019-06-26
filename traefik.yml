@@ -3,6 +3,7 @@ services:
   webserver:
     environment:
       MOODLE_DOCKER_TRAEFIK: "${MOODLE_DOCKER_TRAEFIK}"
+      MOODLE_DOCKER_TRAEFIK_HTTPS: "${MOODLE_DOCKER_TRAEFIK_HTTPS}"
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${MOODLE_DOCKER_WEB_HOST}"
