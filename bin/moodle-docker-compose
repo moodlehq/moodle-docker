@@ -31,6 +31,12 @@ dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 # PHP Version.
 export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-7.1}
 
+# Enable Traefik
+if [ -n "$MOODLE_DOCKER_TRAEFIK" ];
+then
+    dockercompose="${dockercompose} -f ${basedir}/traefik.yml"
+fi
+
 # Database flavour
 if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
 then
@@ -69,7 +75,7 @@ export MOODLE_DOCKER_WEB_HOST=${MOODLE_DOCKER_WEB_HOST:-localhost}
 
 # Webserver port
 export MOODLE_DOCKER_WEB_PORT=${MOODLE_DOCKER_WEB_PORT:-8000}
-if [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
+if [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]] && [ -z "$MOODLE_DOCKER_TRAEFIK" ]
 then
     dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
 fi

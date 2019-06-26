@@ -19,7 +19,7 @@ if (!empty(getenv('MOODLE_DOCKER_WEB_HOST'))) {
 }
 $CFG->wwwroot   = "http://{$host}";
 $port = getenv('MOODLE_DOCKER_WEB_PORT');
-if (!empty($port)) {
+if (!empty($port) && empty(getenv('MOODLE_DOCKER_TRAEFIK'))) {
     $CFG->wwwroot .= ":{$port}";
 }
 $CFG->dataroot  = '/var/www/moodledata';

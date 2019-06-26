@@ -1,0 +1,26 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_TRAEFIK: "${MOODLE_DOCKER_TRAEFIK}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:${MOODLE_DOCKER_WEB_HOST}"
+      - 'traefik.docker.network=traefik_default'
+    networks:
+      - default
+      - traefik
+  exttests:
+    networks:
+      - default
+      - traefik
+  selenium:
+    networks:
+      - default
+      - traefik
+
+networks:
+  default:
+  traefik:
+    external:
+      name: traefik_default
