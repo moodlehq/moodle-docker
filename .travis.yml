@@ -3,7 +3,10 @@ services: docker
 fast_finish: true
 env:
     # Oracle jobs have been removed because there aren't public images anymore.
-    - "PHP=7.3 DB=pgsql   GIT=v3.7.0 SUITE=phpunit-full"
+    # We have set the "phpunit-full" to run against master because it's the
+    # weekly (3.8dev) where redis was fixed (MDL-60978). Once we have any working release
+    # including that fix, we'll be able to move back to tagged versions.
+    - "PHP=7.3 DB=pgsql   GIT=master SUITE=phpunit-full"
     - "PHP=7.2 DB=pgsql   GIT=v3.7.0 SUITE=phpunit"
     - "PHP=7.1 DB=pgsql   GIT=v3.7.0 SUITE=phpunit"
     - "PHP=7.0 DB=pgsql   GIT=v3.3.5 SUITE=phpunit"
