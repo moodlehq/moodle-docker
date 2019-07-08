@@ -53,4 +53,18 @@ if ! [ -r ./config.php ] || ! diff -q $MOODLE_DOCKER_DIR/config.docker-template.
     cp $MOODLE_DOCKER_DIR/config.docker-template.php ./config.php
 fi
 
-$MOODLE_DOCKER_DIR/bin/moodle-docker-compose $@
+ARGS=$@
+
+if [ -n "$1" -a "$1" = "install" ]; then
+    # Standard local installation
+    ARGS="exec webserver php admin/cli/install_database.php"
+    ARGS="$ARGS --agree-license"
+    ARGS="$ARGS --fullname=${MOODLE_CODENAME}"
+    ARGS="$ARGS --shortname=${MOODLE_CODENAME}"
+    ARGS="$ARGS --adminemail=admin@${MOODLE_DOCKER_WEB_HOST}"
+    ARGS="$ARGS --adminuser=admin"
+    ARGS="$ARGS --adminpass=adminadmin"
+fi
+
+
+$MOODLE_DOCKER_DIR/bin/moodle-docker-compose $ARGS
