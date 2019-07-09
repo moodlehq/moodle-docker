@@ -55,15 +55,26 @@ fi
 
 ARGS=$@
 
-if [ -n "$1" -a "$1" = "install" ]; then
-    # Standard local installation
-    ARGS="exec webserver php admin/cli/install_database.php"
-    ARGS="$ARGS --agree-license"
-    ARGS="$ARGS --fullname=${MOODLE_CODENAME}"
-    ARGS="$ARGS --shortname=${MOODLE_CODENAME}"
-    ARGS="$ARGS --adminemail=admin@${MOODLE_DOCKER_WEB_HOST}"
-    ARGS="$ARGS --adminuser=admin"
-    ARGS="$ARGS --adminpass=adminadmin"
+if [ -n "$1" ]; then
+    case $1 in
+    install|i)
+        # Standard local installation
+        ARGS="exec webserver php admin/cli/install_database.php"
+        ARGS="$ARGS --agree-license"
+        ARGS="$ARGS --fullname=${MOODLE_CODENAME}"
+        ARGS="$ARGS --shortname=${MOODLE_CODENAME}"
+        ARGS="$ARGS --adminemail=admin@${MOODLE_DOCKER_WEB_HOST}"
+        ARGS="$ARGS --adminuser=admin"
+        ARGS="$ARGS --adminpass=adminadmin"
+        ;;
+    upgrade|u)
+        ARGS="exec webserver php admin/cli/upgrade.php"
+        ARGS="$ARGS --non-interactive"
+        ;;
+    purge_caches|pc)
+        ARGS="exec webserver php admin/cli/purge_caches.php"
+        ;;
+    esac
 fi
 
 
