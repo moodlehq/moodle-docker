@@ -87,4 +87,10 @@ if (getenv('MOODLE_DOCKER_PHPUNIT_EXTRAS')) {
     define('TEST_ENROL_LDAP_DOMAIN', 'ou=Users,dc=openstack,dc=org');
 }
 
+if (file_exists(__DIR__ . '/config-local.php')) {
+   require_once(__DIR__ . '/config-local.php');
+}
+if (file_exists(__DIR__ . '/config-dev.php')) {
+   require_once(__DIR__ . '/config-dev.php');
+}
 require_once(__DIR__ . '/lib/setup.php');
