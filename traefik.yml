@@ -10,18 +10,18 @@ services:
       - 'traefik.docker.network=traefik_default'
     networks:
       - default
-      - traefik
+      - pontsun
   exttests:
     networks:
       - default
-      - traefik
+      - pontsun
   selenium:
     networks:
       - default
-      - traefik
+      - pontsun
 
 networks:
   default:
-  traefik:
+  pontsun:
     external:
-      name: traefik_default
+      name: ${MOODLE_DOCKER_TRAEFIK_NETWORK}

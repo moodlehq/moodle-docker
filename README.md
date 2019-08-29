@@ -16,13 +16,24 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 * [Docker](https://docs.docker.com) and [Docker Compose](https://docs.docker.com/compose/) installed
 * 3.25GB of RAM (if you choose [Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup#prerequisites) as db server)
 
+
+## Set environement variables in `.env`
+```bash
+export MOODLE_DOCKER_WWWROOT=$(pwd)/../mdl35-wks/
+
+# Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
+export MOODLE_DOCKER_DB=pgsql
+
+export MOODLE_DOCKER_TRAEFIK=true
+
+export MOODLE_DOCKER_WEB_HOST=wks.docker.test
+```
+
 ## Quick start
 
 ```bash
-# Set up path to Moodle code
-export MOODLE_DOCKER_WWWROOT=/path/to/moodle/code
-# Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
-export MOODLE_DOCKER_DB=pgsql
+# Load env
+source .env
 
 # Ensure customized config.php for the Docker containers is in place
 cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
@@ -124,14 +135,15 @@ You can change the configuration of the docker images by setting various environ
 |-------------------------------------------|-----------|---------------------------------------|---------------|------------------------------------------------------------------------------|
 | `MOODLE_DOCKER_DB`                        | yes       | pgsql, mariadb, mysql, mssql, oracle  | none          | The database server to run against                                           |
 | `MOODLE_DOCKER_WWWROOT`                   | yes       | path on your file system              | none          | The path to the Moodle codebase you intend to test                           |
-| `MOODLE_DOCKER_PHP_VERSION`               | no        | 7.3, 7.2, 7.1, 7.0, 5.6                         | 7.1           | The php version to use                                                       |
+| `MOODLE_DOCKER_PHP_VERSION`               | no        | 7.3, 7.2, 7.1, 7.0, 5.6               | 7.1           | The php version to use                                                       |
 | `MOODLE_DOCKER_BROWSER`                   | no        | firefox, chrome                       | firefox       | The browser to run Behat against                                             |
 | `MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES` | no        | any value                             | not set       | If set, dependencies for memcached, redis, solr, and openldap are added      |
-| `MOODLE_DOCKER_WEB_HOST`                  | no        | any valid hostname                    | localhost     | The hostname for web                                |
+| `MOODLE_DOCKER_WEB_HOST`                  | no        | any valid hostname                    | localhost     | The hostname for web and traefik                                             |
 | `MOODLE_DOCKER_WEB_PORT`                  | no        | any integer value                     | 8000          | The port number for web. If set to 0, no port is used                        |
 | `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value                     | not set       | If set, the selenium node will expose a vnc session on the port specified    |
 | `MOODLE_DOCKER_TRAEFIK`                   | no        | any value                             | not set       | If set, integrate the docker containers in traefik                           |
 | `MOODLE_DOCKER_TRAEFIK_HTTPS`             | no        | any value                             | not set       | If set, use an https url in traefik                                          |
+| `MOODLE_DOCKER_TRAEFIK_NETWORK`           | no        | any value                             | pontsun       | traefik network name                                                         |
 
 ## Advanced usage
 

@@ -25,6 +25,8 @@ basedir="$( cd -P "$( dirname "$SOURCE" )/../" && pwd )"
 export ASSETDIR="${basedir}/assets"
 
 
+export MOODLE_DOCKER_TRAEFIK_NETWORK=${PONTSUN_NETWORK:-pontsun}
+
 dockercompose="docker-compose -f ${basedir}/base.yml"
 dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 
