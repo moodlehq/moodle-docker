@@ -3,27 +3,37 @@ services: docker
 fast_finish: true
 env:
     # Oracle jobs have been removed because there aren't public images anymore.
-    # We have set the "phpunit-full" to run against master because it's the
-    # weekly (3.8dev) where redis was fixed (MDL-60978). Once we have any working release
-    # including that fix, we'll be able to move back to tagged versions.
-    - "PHP=7.3 DB=pgsql   GIT=master SUITE=phpunit-full"
-    - "PHP=7.2 DB=pgsql   GIT=v3.7.0 SUITE=phpunit"
-    - "PHP=7.1 DB=pgsql   GIT=v3.7.0 SUITE=phpunit"
-    - "PHP=7.0 DB=pgsql   GIT=v3.3.5 SUITE=phpunit"
-    - "PHP=5.6 DB=pgsql   GIT=v3.3.5 SUITE=phpunit"
-    - "PHP=7.3 DB=mssql   GIT=v3.7.0 SUITE=phpunit"
-    - "PHP=5.6 DB=mssql   GIT=v3.3.5 SUITE=phpunit"
-    - "PHP=7.3 DB=mysql   GIT=v3.7.0 SUITE=phpunit"
-    - "PHP=5.6 DB=mariadb GIT=v3.3.5 SUITE=phpunit"
-    - "PHP=7.3 DB=pgsql   GIT=v3.7.0 SUITE=behat BROWSER=chrome"
-    - "PHP=7.2 DB=pgsql   GIT=v3.7.0 SUITE=behat BROWSER=firefox"
-    - "PHP=7.1 DB=pgsql   GIT=v3.7.0 SUITE=behat BROWSER=chrome"
-    - "PHP=7.0 DB=pgsql   GIT=v3.3.5 SUITE=behat BROWSER=firefox"
-    - "PHP=5.6 DB=pgsql   GIT=v3.3.5 SUITE=behat BROWSER=chrome"
-    - "PHP=7.3 DB=mssql   GIT=v3.7.0 SUITE=behat BROWSER=firefox"
-    - "PHP=7.0 DB=mssql   GIT=v3.3.5 SUITE=behat BROWSER=chrome"
-    - "PHP=7.3 DB=mysql   GIT=v3.7.0 SUITE=behat BROWSER=firefox"
-    - "PHP=7.0 DB=mariadb GIT=v3.3.5 SUITE=behat BROWSER=chrome"
+    # We have set the "phpunit-full" to run against master.
+    - "PHP=7.3 DB=pgsql   GIT=master SUITE=phpunit-full" # PostgreSQL highest, lowest php supported
+    - "PHP=7.1 DB=pgsql   GIT=master SUITE=phpunit-full"
+    - "PHP=7.3 DB=pgsql   GIT=v3.7.2 SUITE=phpunit"
+    - "PHP=7.1 DB=pgsql   GIT=v3.7.2 SUITE=phpunit"
+    - "PHP=7.2 DB=pgsql   GIT=v3.5.8 SUITE=phpunit"
+    - "PHP=7.0 DB=pgsql   GIT=v3.5.8 SUITE=phpunit"
+    - "PHP=7.3 DB=mssql   GIT=v3.7.2 SUITE=phpunit" # Other databases, only highest php supported
+    - "PHP=7.2 DB=mssql   GIT=v3.5.8 SUITE=phpunit"
+    - "PHP=7.3 DB=mysql   GIT=v3.7.2 SUITE=phpunit"
+    - "PHP=7.2 DB=mysql   GIT=v3.5.8 SUITE=phpunit"
+    - "PHP=7.1 DB=mariadb GIT=v3.7.2 SUITE=phpunit" # MariaDB, only lowest php supported
+    - "PHP=7.0 DB=mariadb GIT=v3.5.8 SUITE=phpunit"
+    - "PHP=7.3 DB=pgsql   GIT=master SUITE=behat BROWSER=chrome" # PostgreSQL highest, lowest (2 browsers)
+    - "PHP=7.3 DB=pgsql   GIT=master SUITE=behat BROWSER=firefox"
+    - "PHP=7.1 DB=pgsql   GIT=master SUITE=behat BROWSER=chrome"
+    - "PHP=7.1 DB=pgsql   GIT=master SUITE=behat BROWSER=firefox"
+    - "PHP=7.3 DB=pgsql   GIT=v3.7.2 SUITE=behat BROWSER=chrome"
+    - "PHP=7.3 DB=pgsql   GIT=v3.7.2 SUITE=behat BROWSER=firefox"
+    - "PHP=7.1 DB=pgsql   GIT=v3.7.2 SUITE=behat BROWSER=chrome"
+    - "PHP=7.1 DB=pgsql   GIT=v3.7.2 SUITE=behat BROWSER=firefox"
+    - "PHP=7.2 DB=pgsql   GIT=v3.5.8 SUITE=behat BROWSER=chrome"
+    - "PHP=7.2 DB=pgsql   GIT=v3.5.8 SUITE=behat BROWSER=firefox"
+    - "PHP=7.0 DB=pgsql   GIT=v3.5.8 SUITE=behat BROWSER=chrome"
+    - "PHP=7.0 DB=pgsql   GIT=v3.5.8 SUITE=behat BROWSER=firefox"
+    - "PHP=7.3 DB=mssql   GIT=v3.7.2 SUITE=behat BROWSER=chrome" # Other databases, only highest php supported (2 browsers)
+    - "PHP=7.2 DB=mssql   GIT=v3.5.8 SUITE=behat BROWSER=firefox"
+    - "PHP=7.3 DB=mysql   GIT=v3.7.2 SUITE=behat BROWSER=chrome"
+    - "PHP=7.2 DB=mysql   GIT=v3.5.8 SUITE=behat BROWSER=firefox"
+    - "PHP=7.1 DB=mariadb GIT=v3.7.2 SUITE=behat BROWSER=chrome" # MariaDB, only lowest php supported (2 browsers)
+    - "PHP=7.0 DB=mariadb GIT=v3.5.8 SUITE=behat BROWSER=firefox"
 install:
     - git clone --branch $GIT --depth 1 git://github.com/moodle/moodle $HOME/moodle
     - cp config.docker-template.php $HOME/moodle/config.php
