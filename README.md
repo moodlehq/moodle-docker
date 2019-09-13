@@ -94,6 +94,7 @@ bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --ag
 Notes:
 * Moodle is configured to listen on `http://localhost:8000/`.
 * Mailhog is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
+* The admin `username` you need to use for logging in is `admin` by default. You can customize it by passing `--adminuser='myusername'`
 
 ## Using VNC to view behat tests
 
