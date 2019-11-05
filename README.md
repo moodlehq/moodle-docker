@@ -84,6 +84,9 @@ Time: 4.45 seconds, Memory: 38.00MB
 OK (2 tests, 7 assertions)
 ```
 
+Notes:
+* If you want to run test with coverage report, use command: `bin/moodle-docker-compose exec webserver phpdbg -qrr vendor/bin/phpunit --coverage-text auth_manual_testcase auth/manual/tests/manual_test.php`
+
 ## Use containers for manual testing
 
 ```bash
