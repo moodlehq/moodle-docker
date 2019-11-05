@@ -48,7 +48,7 @@ bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 # [..]
 
 # Run behat tests
-bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
+bin/moodle-docker-compose exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
 Running single behat site:
 Moodle 3.4dev (Build: 20171006), 33a3ec7c9378e64c6f15c688a3c68a39114aa29d
 Php: 7.1.9, pgsql: 9.6.5, OS: Linux 4.9.49-moby x86_64
