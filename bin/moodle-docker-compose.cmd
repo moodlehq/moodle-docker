@@ -185,6 +185,9 @@ IF "%MOODLE_DOCKER_SELENIUM_VNC_PORT%"=="" (
     )
 )
 
+IF "%MOODLE_DOCKER_TIMEOUT_FACTOR%"=="" (
+    SET MOODLE_DOCKER_TIMEOUT_FACTOR=1
+)
 
 REM Apply local customisations if a local.yml is found.
 REM Note: This must be the final modification before the docker-compose command is called.
