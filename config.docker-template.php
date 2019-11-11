@@ -57,6 +57,7 @@ $CFG->behat_profiles = array(
     ),
 );
 $CFG->behat_faildump_path = '/var/www/behatfaildumps';
+$CFG->behat_increasetimeout = getenv('MOODLE_DOCKER_TIMEOUT_FACTOR');
 
 define('PHPUNIT_LONGTEST', true);
 

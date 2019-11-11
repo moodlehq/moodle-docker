@@ -180,6 +180,7 @@ You can change the configuration of the docker images by setting various environ
 | `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value (or bind_ip:integer)| not set       | If set, the selenium node will expose a vnc session on the port specified. Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1 |
 | `MOODLE_DOCKER_APP_PATH`                  | no        | path on your file system              | not set       | If set and the chrome browser is selected, it will start an instance of the Moodle app from your local codebase |
 | `MOODLE_DOCKER_APP_VERSION`               | no        | next, latest, or an app version number| not set       | If set will start an instance of the Moodle app if the chrome browser is selected |
+| `MOODLE_DOCKER_TIMEOUT_FACTOR`            | no        | any integer value                     | 1             | If set the timeouts in behat will be multiplied by the factor                |
 
 ## Using XDebug for live debugging
 
