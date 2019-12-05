@@ -80,6 +80,11 @@ if (getenv('MOODLE_DOCKER_PHPUNIT_EXTRAS')) {
     define('TEST_ENROL_LDAP_BIND_DN', 'cn=admin,dc=openstack,dc=org');
     define('TEST_ENROL_LDAP_BIND_PW', 'password');
     define('TEST_ENROL_LDAP_DOMAIN', 'ou=Users,dc=openstack,dc=org');
+
+    define('TEST_MLBACKEND_PYTHON_HOST', 'mlbackendpython');
+    define('TEST_MLBACKEND_PYTHON_PORT', 5000);
+    define('TEST_MLBACKEND_PYTHON_USERNAME', 'default');
+    define('TEST_MLBACKEND_PYTHON_PASSWORD', 'sshhhh');
 }
 
 require_once(__DIR__ . '/lib/setup.php');

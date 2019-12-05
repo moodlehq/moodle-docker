@@ -19,3 +19,5 @@ services:
       - test
   ldap:
     image: larrycai/openldap
+  mlbackendpython:
+    image: "moodlehq/moodle-mlbackend-python:2.3.0-python3.7.5"
