@@ -19,7 +19,12 @@ if (!empty(getenv('MOODLE_DOCKER_WEB_HOST'))) {
 }
 $CFG->wwwroot   = "http://{$host}";
 $port = getenv('MOODLE_DOCKER_WEB_PORT');
-if (!empty($port)) {
+if (!empty(getenv('MOODLE_DOCKER_TRAEFIK'))) {
+    if (!empty(getenv('MOODLE_DOCKER_TRAEFIK_HTTPS'))) {
+        $CFG->sslproxy = true;
+        $CFG->wwwroot = "https://{$host}";
+    }
+} else if (!empty($port)) {
     $CFG->wwwroot .= ":{$port}";
 }
 $CFG->dataroot  = '/var/www/moodledata';

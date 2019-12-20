@@ -131,6 +131,8 @@ You can change the configuration of the docker images by setting various environ
 | `MOODLE_DOCKER_WEB_HOST`                  | no        | any valid hostname                    | localhost     | The hostname for web                                |
 | `MOODLE_DOCKER_WEB_PORT`                  | no        | any integer value                     | 8000          | The port number for web. If set to 0, no port is used                        |
 | `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value                     | not set       | If set, the selenium node will expose a vnc session on the port specified    |
+| `MOODLE_DOCKER_TRAEFIK`                   | no        | any value                             | not set       | If set, integrate the docker containers in traefik                           |
+| `MOODLE_DOCKER_TRAEFIK_HTTPS`             | no        | any value                             | not set       | If set, use an https url in traefik                                          |
 
 ## Advanced usage
 
