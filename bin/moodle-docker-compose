@@ -50,11 +50,16 @@ then
     dockercompose="${dockercompose} -f ${basedir}/selenium.${MOODLE_DOCKER_BROWSER}.yml"
 fi
 
-if [[ -z "$MOODLE_DOCKER_SELENIUM_VNC_PORT" ]]
+# Selenium VNC port
+export MOODLE_DOCKER_SELENIUM_SUFFIX=""
+if [[ $MOODLE_DOCKER_SELENIUM_VNC_PORT == *":"* ]] || [[ $MOODLE_DOCKER_SELENIUM_VNC_PORT -gt 0 ]]
 then
-    export MOODLE_DOCKER_SELENIUM_SUFFIX=""
-else
     export MOODLE_DOCKER_SELENIUM_SUFFIX="-debug"
+    # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
+    if [[ ! $MOODLE_DOCKER_SELENIUM_VNC_PORT == *":"* ]]
+    then
+        MOODLE_DOCKER_SELENIUM_VNC_PORT=127.0.0.1:$MOODLE_DOCKER_SELENIUM_VNC_PORT
+    fi
     dockercompose="${dockercompose} -f ${basedir}/selenium.debug.yml"
 fi
 
