@@ -20,7 +20,12 @@ if (!empty(getenv('MOODLE_DOCKER_WEB_HOST'))) {
 $CFG->wwwroot   = "http://{$host}";
 $port = getenv('MOODLE_DOCKER_WEB_PORT');
 if (!empty($port)) {
-    $CFG->wwwroot .= ":{$port}";
+    // Extract port in case the format is bind_ip:port.
+    $parts = explode(':', $port);
+    $port = end($parts);
+    if ((string)(int)$port === (string)$port) { // Only if it's int value.
+        $CFG->wwwroot .= ":{$port}";
+    }
 }
 $CFG->dataroot  = '/var/www/moodledata';
 $CFG->admin     = 'admin';
