@@ -1,4 +1,4 @@
-#Set-PSDebug -Trace 1
+Set-PSDebug -Trace 1
 
 IF (!$ENV:MOODLE_DOCKER_WWWROOT) {
     echo Error: MOODLE_DOCKER_WWWROOT is not set or not an existing directory
