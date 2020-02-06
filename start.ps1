@@ -1,17 +1,17 @@
 #ref https://github.com/moodlehq/moodle-docker
 
-$DO_MANUAL_SETUP=0
+$DO_MANUAL_SETUP=1
 
 $ENV:MOODLE_DOCKER_WEB_PORT=8001
 $ENV:MOODLE_DOCKER_BROWSER='chrome'
 
-# Set up path to Moodle code
+# Set up path to your Moodle code
 $ENV:MOODLE_DOCKER_WWWROOT="$pwd/../moodle"
 
 # Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
 $ENV:MOODLE_DOCKER_DB='pgsql'
 
-# Uncomment and Selenium will expose a VNC session on 127.0.0.1:5900 so behat tests can be viewed in progress.  Password=secret.
+# If set, the selenium node will expose a vnc session on the port specified (e.g. 5900). Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1.  Any integer value (or bind_ip:integer).  Password=secret.
 #$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT=5900
 
 $ENV:MOODLE_DOCKER_PHP_VERSION=7.2
@@ -26,13 +26,9 @@ cp config.docker-template.php $ENV:MOODLE_DOCKER_WWWROOT/config.php
 # Wait for DB to come up (important for oracle/mssql)
 ./bin/moodle-docker-wait-for-db.ps1
 
-./bin/moodle-docker-compose.ps1 exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminuser=admin --adminpass="test" --adminemail="admin@example.com"
-docker cp moosh-setup.sh moodle-docker_webserver_1:/var/www/html/;
-docker exec -it moodle-docker_webserver_1 bash /var/www/html/moosh-setup.sh
-<#
 if($DO_MANUAL_SETUP) {
 	# Initialize Moodle database for manual testing
-	 ./bin/moodle-docker-compose.ps1 exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminuser=admin --adminpass="test" --adminemail="admin@example.com"
+	./bin/moodle-docker-compose.ps1 exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminuser=admin --adminpass="test" --adminemail="admin@example.com"
 
 	# Install moosh, setup MooshCourse1, add mooshteacher and mooshstudent, and enrol them.
 	docker cp moosh-setup.sh moodle-docker_webserver_1:/var/www/html/;
@@ -45,8 +41,6 @@ if($DO_MANUAL_SETUP) {
 	#	moosh -n course-config-set course 2 enablecompletion 1
 	#	moosh -n activity-add -n 'moosh test quiz' -o="--intro=\"polite orders.\"" quiz 2
 }
-#>
-
 
 # Initialize behat environment
 #./bin/moodle-docker-compose.ps1 exec webserver php admin/tool/behat/cli/init.php
