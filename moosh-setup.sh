@@ -11,7 +11,7 @@ sed -i 's#$CFG->directorypermissions = 0777;#&\nini_set("error_log", $CFG->datar
 mkdir /var/www/moodledata/log; chmod 777 /var/www/moodledata/log;
 
 curl https://moodle.org/plugins/download.php/20823/moosh_moodle.zip --output moosh.zip; unzip -o -q moosh.zip; rm -f moosh.zip;
-cd moosh; php ../composer.phar install; ln -f -s $PWD/moosh.php /usr/local/bin/moosh; cd ..;
+cd moosh; php ../composer.phar install; ln -f -s $PWD/moosh.php /usr/local/bin/moosh; cd ..; rm -rf ./moosh/tests/
 sed -i 's#\$blockinstance\->configdata = .*;#&\n        $blockinstance->timecreated = $blockinstance->timemodified = time();#' /var/www/html/moosh/Moosh/Command/Moodle23/Block/BlockAdd.php;
 
 mooshteacher=$(moosh -n user-create --password test --email mooshteacher1@example.com --firstname MooshTeacher --lastname Mooshuser mooshteacher);
