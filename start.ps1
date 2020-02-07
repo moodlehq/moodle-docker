@@ -2,7 +2,7 @@
 
 $MANUAL_NOT_BEHAT=0
 
-$ENV:MOODLE_DOCKER_WEB_PORT=8001
+#$ENV:MOODLE_DOCKER_WEB_PORT='127.0.0.1:8001'
 $ENV:MOODLE_DOCKER_BROWSER='chrome'
 
 # Set up path to your Moodle code
@@ -12,7 +12,7 @@ $ENV:MOODLE_DOCKER_WWWROOT="$pwd/../moodle"
 $ENV:MOODLE_DOCKER_DB='pgsql'
 
 # If set, the selenium node will expose a vnc session on the port specified (e.g. 5900). Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1.  Any integer value (or bind_ip:integer).  Password=secret.
-$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT=5900
+#$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT=5900
 
 $ENV:MOODLE_DOCKER_PHP_VERSION=7.2
 $ENV:MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES="false"
@@ -45,13 +45,11 @@ if($MANUAL_NOT_BEHAT) {
 	./bin/moodle-docker-compose.ps1 exec webserver php admin/tool/behat/cli/init.php
 
 	# Run behat tests
-	#./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
-	#./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@block_integrityadvocate
-
+	./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
+	# Stop w/o destroying the container
+	./bin/moodle-docker-compose.ps1 stop #OR# docker stop $(docker ps --quiet --filter='name=moodle-')
+	
 	# Stop and destroy the container
 	#./bin/moodle-docker-compose.ps1 down #OR# the below line
-	docker stop $(docker ps --quiet --filter='name=moodle-'); docker rm $(docker ps --all --quiet --filter='name=moodle-')
+	#docker stop $(docker ps --quiet --filter='name=moodle-'); docker rm $(docker ps --all --quiet --filter='name=moodle-')
 }
-# Stop w/o destroying the container
-#./bin/moodle-docker-compose.ps1 stop #OR# docker stop $(docker ps --quiet --filter='name=moodle-')
-
