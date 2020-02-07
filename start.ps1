@@ -1,6 +1,6 @@
 #ref https://github.com/moodlehq/moodle-docker
 
-$DO_MANUAL_SETUP=1
+$MANUAL_NOT_BEHAT=0
 
 $ENV:MOODLE_DOCKER_WEB_PORT=8001
 $ENV:MOODLE_DOCKER_BROWSER='chrome'
@@ -12,7 +12,7 @@ $ENV:MOODLE_DOCKER_WWWROOT="$pwd/../moodle"
 $ENV:MOODLE_DOCKER_DB='pgsql'
 
 # If set, the selenium node will expose a vnc session on the port specified (e.g. 5900). Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1.  Any integer value (or bind_ip:integer).  Password=secret.
-#$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT=5900
+$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT=5900
 
 $ENV:MOODLE_DOCKER_PHP_VERSION=7.2
 $ENV:MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES="false"
@@ -26,7 +26,7 @@ cp config.docker-template.php $ENV:MOODLE_DOCKER_WWWROOT/config.php
 # Wait for DB to come up (important for oracle/mssql)
 ./bin/moodle-docker-wait-for-db.ps1
 
-if($DO_MANUAL_SETUP) {
+if($MANUAL_NOT_BEHAT) {
 	# Initialize Moodle database for manual testing
 	./bin/moodle-docker-compose.ps1 exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminuser=admin --adminpass="test" --adminemail="admin@example.com"
 
@@ -40,17 +40,18 @@ if($DO_MANUAL_SETUP) {
 	#	moosh -n block-add course 2 integrityadvocate course-view-* side-post 0
 	#	moosh -n course-config-set course 2 enablecompletion 1
 	#	moosh -n activity-add -n 'moosh test quiz' -o="--intro=\"polite orders.\"" quiz 2
+} else {
+	# Initialize behat environment
+	./bin/moodle-docker-compose.ps1 exec webserver php admin/tool/behat/cli/init.php
+
+	# Run behat tests
+	#./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
+	#./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@block_integrityadvocate
+
+	# Stop and destroy the container
+	#./bin/moodle-docker-compose.ps1 down #OR# the below line
+	docker stop $(docker ps --quiet --filter='name=moodle-'); docker rm $(docker ps --all --quiet --filter='name=moodle-')
 }
-
-# Initialize behat environment
-#./bin/moodle-docker-compose.ps1 exec webserver php admin/tool/behat/cli/init.php
-
-# Run behat tests
-#./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
-#./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@block_integrityadvocate
-
 # Stop w/o destroying the container
-#./bin/moodle-docker-compose.ps1 stop #OR# docker stop $(docker ps -a -q)
+#./bin/moodle-docker-compose.ps1 stop #OR# docker stop $(docker ps --quiet --filter='name=moodle-')
 
-# Stop and destroy the container
-#./bin/moodle-docker-compose.ps1 down #OR# docker stop $(docker ps -a -q); docker rm $(docker ps -a -q)
