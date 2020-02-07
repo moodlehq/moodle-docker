@@ -41,12 +41,21 @@ if ($ENV:MOODLE_DOCKER_BROWSER -ne "") {
     }
 }
 
-if ($ENV:MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES -ne "") {
-    $DOCKERCOMPOSE="$DOCKERCOMPOSE -f $BASEDIR\phpunit-external-services.yml"
+# Selenium VNC port
+$ENV:MOODLE_DOCKER_SELENIUM_SUFFIX=""
+$has_ip = $ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT -match '^.*:\d*$'
+if ($has_ip -Or ([Int32]::TryParse($ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT,[ref]"") -And $ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT -gt 0)) {
+	# If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
+    if(!$has_ip) {
+		$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT = '127.0.0.1:'+$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT
+	}
+
+    $ENV:MOODLE_DOCKER_SELENIUM_SUFFIX='-debug'
+    $DOCKERCOMPOSE="$DOCKERCOMPOSE -f $BASEDIR\selenium.debug.yml"
 }
 
 # External services
-IF ($ENV:MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES -ne "") {
+if ($ENV:MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES -ne "") {
     $DOCKERCOMPOSE="$DOCKERCOMPOSE -f $BASEDIR\phpunit-external-services.yml"
 }
 
@@ -61,7 +70,7 @@ if (!$ENV:MOODLE_DOCKER_WEB_PORT) {
 }
 
 $has_ip = $ENV:MOODLE_DOCKER_WEB_PORT -match '^.*:\d*$'
-if ($has_ip -Or ([Int32]::TryParse($ENV:MOODLE_DOCKER_WEB_PORT,[ref]"") -And $ENV:MOODLE_DOCKER_WEB_PORT -gt 0) {
+if ($has_ip -Or ([Int32]::TryParse($ENV:MOODLE_DOCKER_WEB_PORT,[ref]"") -And $ENV:MOODLE_DOCKER_WEB_PORT -gt 0)) {
     # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
 	if(!$has_ip) {
 		$ENV:MOODLE_DOCKER_WEB_PORT = '127.0.0.1:'+$ENV:MOODLE_DOCKER_WEB_PORT
@@ -70,20 +79,7 @@ if ($has_ip -Or ([Int32]::TryParse($ENV:MOODLE_DOCKER_WEB_PORT,[ref]"") -And $EN
     $DOCKERCOMPOSE="$DOCKERCOMPOSE -f $BASEDIR\webserver.port.yml"
 }
 
-# Selenium VNC port
-$ENV:MOODLE_DOCKER_SELENIUM_SUFFIX=""
-$has_ip = $ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT -match '^.*:\d*$'
-if ($has_ip -Or ([Int32]::TryParse($ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT,[ref]"") -And $ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT -gt 0) {
-	$ENV:MOODLE_DOCKER_SELENIUM_SUFFIX=''
 
-	# If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
-    if(!$has_ip) {
-		$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT = '127.0.0.1:'+$ENV:MOODLE_DOCKER_SELENIUM_VNC_PORT
-	}
-} else {
-    $ENV:MOODLE_DOCKER_SELENIUM_SUFFIX='-debug'
-    $DOCKERCOMPOSE="$DOCKERCOMPOSE -f $BASEDIR\selenium.debug.yml"
-}
 
 $joinedargs=$args -Join ' '
 
