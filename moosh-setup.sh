@@ -5,15 +5,17 @@ dirroot='/var/www/html';
 
 apt-get update; apt-get install -y nano less;
 
-#Show faildumps under the moodle dir
+# Show faildumps under the moodle dir for convenience
 ln -s "$dirroot/../behatfaildumps" "$dirroot/faildumps"
+echo 'Options +Indexes' > "$dirroot/faildumps/.htaccess"
+
+# Make a handy place for logs
+mkdir /var/www/moodledata/log; chown www-data:www-data /var/www/moodledata/log; chmod 777 /var/www/moodledata/log;
 
 #Improve the default config
 sed -i 's#\$CFG->debugdisplay = 1;#\$CFG->debugdisplay = 0;#g' config.php;
 sed -i 's#$CFG = new stdClass();#&\n$CFG->noreplyaddress="noreply@localhost.com";#' config.php;
 sed -i 's#$CFG->directorypermissions = 0777;#&\nini_set("error_log", $CFG->dataroot."/log/error.log");ini_set("log_errors", 1);#' config.php;
-
-mkdir /var/www/moodledata/log; chmod 777 /var/www/moodledata/log;
 
 if [ ! -d "$dirroot/moosh" ] || [ -z "$(ls -A $dirroot)" ]; then
   cd "$dirroot"
@@ -35,7 +37,7 @@ sed -i 's#\$blockinstance\->configdata = .*;#&\n        $blockinstance->timecrea
 mooshteacher=$(moosh -n user-create --password test --email mooshteacher1@example.com --firstname MooshTeacher --lastname Mooshuser mooshteacher);
 mooshstudent1=$(moosh -n user-create --password test --email mooshstudent1@example.com --firstname MooshStudent1 --lastname Mooshuser1 mooshstudent1);
 mooshstudent2=$(moosh -n user-create --password test --email mooshstudent2@example.com --firstname MooshStudent2 --lastname Mooshuser2 mooshstudent2);
-courseid=$(moosh -n course-create --category 1 --fullname "MooshCourse1" --description "Moosh Course 1" --idnumber "Moosh1" --visible=y shortname);
+courseid=$(moosh -n course-create --category 1 --fullname "MooshCourse1" --description "Moosh Course 1" --idnumber "Moosh1" --visible=y mooshcourse1);
 moosh -n course-enrol -r editingteacher "$courseid" mooshteacher;
 moosh -n course-enrol "$courseid" mooshstudent1 mooshstudent2;
 
