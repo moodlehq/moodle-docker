@@ -1,6 +1,10 @@
 #ref https://github.com/moodlehq/moodle-docker
 
-$MANUAL_NOT_BEHAT=0
+# Fix clock time drift sync issue ref https://github.com/docker/for-win/issues/5593
+Disable-VMIntegrationService -VMName DockerDesktopVM -Name "Time Synchronization"
+Enable-VMIntegrationService -VMName DockerDesktopVM -Name "Time Synchronization"
+
+$MANUAL_NOT_BEHAT=1
 
 #$ENV:MOODLE_DOCKER_WEB_PORT='127.0.0.1:8001'
 $ENV:MOODLE_DOCKER_BROWSER='chrome'
@@ -37,17 +41,21 @@ if($MANUAL_NOT_BEHAT) {
 	# Get a shell in the webserver container
 	#docker exec -it moodle-docker_webserver_1 bash
 	# Example of using Moosh from within the container
-	#	moosh -n block-add course 2 integrityadvocate course-view-* side-post 0
-	#	moosh -n course-config-set course 2 enablecompletion 1
-	#	moosh -n activity-add -n 'moosh test quiz' -o="--intro=\"polite orders.\"" quiz 2
+	<#
+		moosh -n block-add course 2 integrityadvocate course-view-* side-post 0;
+		moosh -n course-config-set course 2 enablecompletion 1;
+		moosh -n activity-add -n 'moosh test quiz' -o="--intro=\"polite orders.\"" quiz 2
+	#>
 } else {
 	# Initialize behat environment
 	./bin/moodle-docker-compose.ps1 exec webserver php admin/tool/behat/cli/init.php
 
 	# Run behat tests
-	./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
+	#./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
+	./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@block_integrityadvocate
+
 	# Stop w/o destroying the container
-	./bin/moodle-docker-compose.ps1 stop #OR# docker stop $(docker ps --quiet --filter='name=moodle-')
+	#./bin/moodle-docker-compose.ps1 stop #OR# docker stop $(docker ps --quiet --filter='name=moodle-')
 	
 	# Stop and destroy the container
 	#./bin/moodle-docker-compose.ps1 down #OR# the below line
