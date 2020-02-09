@@ -5,9 +5,13 @@ dirroot='/var/www/html';
 
 apt-get update; apt-get install -y nano less;
 
+#Show faildumps under the moodle dir
+ln -s "$dirroot/../behatfaildumps" "$dirroot/faildumps"
+
+#Improve the default config
 sed -i 's#\$CFG->debugdisplay = 1;#\$CFG->debugdisplay = 0;#g' config.php;
 sed -i 's#$CFG = new stdClass();#&\n$CFG->noreplyaddress="noreply@localhost.com";#' config.php;
-sed -i 's#$CFG->directorypermissions = 0777;#&\nini_set("error_log", $CFG->dataroot."/log/error.log");#' config.php;
+sed -i 's#$CFG->directorypermissions = 0777;#&\nini_set("error_log", $CFG->dataroot."/log/error.log");ini_set("log_errors", 1);#' config.php;
 
 mkdir /var/www/moodledata/log; chmod 777 /var/www/moodledata/log;
 
