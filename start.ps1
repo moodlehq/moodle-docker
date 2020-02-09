@@ -55,6 +55,9 @@ if($MANUAL_NOT_BEHAT) {
 	# Run behat tests
 	#./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
 	./bin/moodle-docker-compose.ps1 exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@block_integrityadvocate
+	
+	# Run Moodle installer
+	#php admin/cli/install.php --non-interactive --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --adminuser=admin --adminpass="test" --adminemail="admin@example.com"
 }
 
 IF($DO_STOP) {
