@@ -1,0 +1,7 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_MOBILE: "true"
+  mobileapp:
+    image: "moodlehq/moodlemobile2:${MOODLE_MOBILE_VERSION}"

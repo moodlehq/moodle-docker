@@ -44,6 +44,12 @@ if [ -f $filename ]; then
     dockercompose="${dockercompose} -f ${filename}"
 fi
 
+# Mobile app
+if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && [[ ! -z "$MOODLE_MOBILE_VERSION" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/moodle-app.yml"
+fi
+
 # Selenium browser
 if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" != "firefox" ]];
 then
