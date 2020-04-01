@@ -26,5 +26,7 @@ echo "Starting up container"
 $basedir/bin/moodle-docker-compose up -d
 echo "Waiting for DB to come up"
 $basedir/bin/moodle-docker-wait-for-db
+echo "Waiting for Moodle app to come up"
+$basedir/bin/moodle-docker-wait-for-app
 echo "Running: $initcmd"
 $basedir/$initcmd
