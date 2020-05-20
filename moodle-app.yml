@@ -4,4 +4,4 @@ services:
     environment:
       MOODLE_DOCKER_MOBILE: "true"
   mobileapp:
-    image: "moodlehq/moodlemobile2:${MOODLE_MOBILE_VERSION}"
+    image: "moodlehq/moodleapp:${MOODLE_MOBILE_VERSION}"
