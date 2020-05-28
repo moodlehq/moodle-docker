@@ -65,7 +65,7 @@ install:
     - export MOODLE_DOCKER_BROWSER=$BROWSER
     - export MOODLE_DOCKER_WWWROOT="$HOME/moodle"
     - export MOODLE_DOCKER_PHP_VERSION=$PHP
-    - export MOODLE_MOBILE_VERSION=$MOBILE
+    - export MOODLE_APP_VERSION=$MOBILE
 before_script:
     - tests/setup.sh
 script:

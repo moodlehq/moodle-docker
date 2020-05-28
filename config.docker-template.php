@@ -58,7 +58,7 @@ $CFG->behat_faildump_path = '/var/www/behatfaildumps';
 
 define('PHPUNIT_LONGTEST', true);
 
-if (getenv('MOODLE_DOCKER_MOBILE')) {
+if (getenv('MOODLE_DOCKER_APP')) {
     $CFG->behat_ionic_wwwroot = 'http://mobileapp:8100';
 }
 
