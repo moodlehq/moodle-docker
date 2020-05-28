@@ -12,6 +12,9 @@ elif [ "$SUITE" = "phpunit-full" ];
 then
     export MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES=true
     initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/phpunit/cli/init.php"
+elif [ "$SUITE" = "app" ];
+then
+    initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/init.php"
 else
     echo "Error, unknown suite '$SUITE'"
     exit 1
@@ -23,5 +26,7 @@ echo "Starting up container"
 $basedir/bin/moodle-docker-compose up -d
 echo "Waiting for DB to come up"
 $basedir/bin/moodle-docker-wait-for-db
+echo "Waiting for Moodle app to come up"
+$basedir/bin/moodle-docker-wait-for-app
 echo "Running: $initcmd"
 $basedir/$initcmd

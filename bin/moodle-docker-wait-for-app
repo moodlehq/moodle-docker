@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+
+if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && [[ ! -z "$MOODLE_APP_VERSION" ]];
+then
+    until $basedir/bin/moodle-docker-compose logs moodleapp | grep -q 'dev server running: ';
+    do
+        echo 'Waiting for Moodle app to come up...'
+        sleep 15
+    done
+fi

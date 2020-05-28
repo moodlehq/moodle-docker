@@ -58,6 +58,10 @@ $CFG->behat_faildump_path = '/var/www/behatfaildumps';
 
 define('PHPUNIT_LONGTEST', true);
 
+if (getenv('MOODLE_DOCKER_APP')) {
+    $CFG->behat_ionic_wwwroot = 'http://moodleapp:8100';
+}
+
 if (getenv('MOODLE_DOCKER_PHPUNIT_EXTRAS')) {
     define('TEST_SEARCH_SOLR_HOSTNAME', 'solr');
     define('TEST_SEARCH_SOLR_INDEXNAME', 'test');
