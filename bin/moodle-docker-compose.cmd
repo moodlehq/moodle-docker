@@ -35,7 +35,9 @@ if exist %filename% (
 )
 
 IF "%MOODLE_DOCKER_BROWSER%"=="chrome" (
-    IF NOT "%MOODLE_APP_VERSION%"=="" (
+    IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
+        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev.yml"
+    ) ELSE IF NOT "%MOODLE_APP_VERSION%"=="" (
         SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app.yml"
     )
 )
