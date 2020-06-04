@@ -12,8 +12,10 @@ elif [ "$SUITE" = "phpunit-full" ];
 then
     export MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES=true
     initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/phpunit/cli/init.php"
-elif [ "$SUITE" = "app" ];
+elif [ "$SUITE" = "behat-app" ];
 then
+    git clone --branch "v$APP_VERSION" --depth 1 git://github.com/moodlehq/moodle-local_moodlemobileapp $HOME/moodle/local/moodlemobileapp
+
     initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/init.php"
 else
     echo "Error, unknown suite '$SUITE'"

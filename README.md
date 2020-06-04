@@ -134,7 +134,7 @@ You can change the configuration of the docker images by setting various environ
 | `MOODLE_DOCKER_WEB_HOST`                  | no        | any valid hostname                    | localhost     | The hostname for web                                |
 | `MOODLE_DOCKER_WEB_PORT`                  | no        | any integer value (or bind_ip:integer)| 127.0.0.1:8000| The port number for web. If set to 0, no port is used.<br/>If you want to bind to any host IP different from the default 127.0.0.1, you can specify it with the bind_ip:port format (0.0.0.0 means bind to all) |
 | `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value (or bind_ip:integer)| not set       | If set, the selenium node will expose a vnc session on the port specified. Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1 |
-| `MOODLE_APP_VERSION`                      | no        | next, latest, or an app version number| not set       | If set will start an instance of the Mmodle app if the chrome browser is selected |
+| `MOODLE_APP_VERSION`                      | no        | next, latest, or an app version number| not set       | If set will start an instance of the Moodle app if the chrome browser is selected |
 
 ## Using XDebug for live debugging
 

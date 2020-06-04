@@ -12,9 +12,9 @@ then
 elif [ "$SUITE" = "phpunit-full" ];
 then
     testcmd="bin/moodle-docker-compose exec -T webserver vendor/bin/phpunit --verbose"
-elif [ "$SUITE" = "app" ];
+elif [ "$SUITE" = "behat-app" ];
 then
-    testcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/run.php --tags=@app"
+    testcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/run.php --tags='@app&&@mod_login'"
 else
     echo "Error, unknown suite '$SUITE'"
     exit 1
