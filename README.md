@@ -136,6 +136,49 @@ You can change the configuration of the docker images by setting various environ
 | `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value (or bind_ip:integer)| not set       | If set, the selenium node will expose a vnc session on the port specified. Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1 |
 | `MOODLE_APP_VERSION`                      | no        | next, latest, or an app version number| not set       | If set will start an instance of the Mmodle app if the chrome browser is selected |
 
+## Using XDebug for live debugging
+
+The XDebug PHP Extension is not included in this setup and there are reasons not to include it by default.
+
+However, if you want to work with XDebug, especially for live debugging, you can add XDebug to a running webserver container easily:
+
+```
+# Install XDebug extension with PECL
+moodle-docker-compose exec webserver pecl install xdebug
+
+# Set some wise setting for live debugging - change this as needed
+read -r -d '' conf <<'EOF'
+; Settings for Xdebug Docker configuration
+xdebug.coverage_enable = 0
+xdebug.default_enable = 0
+xdebug.cli_color = 2
+xdebug.file_link_format = phpstorm://open?%f:%l
+xdebug.idekey = PHPSTORM
+xdebug.remote_enable = 1
+xdebug.remote_autostart = 1
+xdebug.remote_host = host.docker.internal
+EOF
+moodle-docker-compose exec webserver bash -c "echo '$conf' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
+
+# Enable XDebug extension in Apache
+moodle-docker-compose exec webserver docker-php-ext-enable xdebug
+```
+
+While setting these XDebug settings depending on your local need, please take special care of the value of `xdebug.remote_host` which is needed to connect from the container to the host. The given value `host.docker.internal` is a special DNS name for this purpose within Docker for Windows and Docker for Mac. If you are running on another Docker environment, you might want to try the value `localhost` instead or even set the hostname/IP of the host directly.
+
+After these commands, XDebug ist enabled and ready to be used in the webserver container.
+If you want to disable and re-enable XDebug during the lifetime of the webserver container, you can achieve this with these additional commands:
+
+```
+# Disable XDebug extension in Apache and restart the webserver container
+moodle-docker-compose exec webserver sed -i 's/^zend_extension=/; zend_extension=/' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+moodle-docker-compose restart webserver
+
+# Enable XDebug extension in Apache and restart the webserver container
+moodle-docker-compose exec webserver sed -i 's/^; zend_extension=/zend_extension=/' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+moodle-docker-compose restart webserver
+```
+
 ## Advanced usage
 
 As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle-docker/blob/master/bin/moodle-docker-compose),
