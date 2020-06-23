@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+bin/moodle-docker-compose up -d
+bin/moodle-docker-wait-for-db
