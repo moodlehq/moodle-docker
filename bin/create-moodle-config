@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-source .env
+if [ -f .env ]; 
+then
+    source .env
+else
+    echo 'Error: No .env file in current directory.'
+    exit 1
+fi
 
 cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 
