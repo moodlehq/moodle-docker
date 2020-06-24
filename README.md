@@ -23,11 +23,16 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 3. Specify Moodle directory and db driver in `.env`
 4. Run `bin/create-moodle-config`. This copies the `config.php` into Moodle.
 You only have to call this command onces.
-4. Run `bin/moodle-run` inside `moodle-docker` folder to create the container.
+4. Run `bin/moodle-docker-compose up -d` inside `moodle-docker` folder to create the container.
+5. You may have to call also `bin/moodle-docker-wait-for-db` if you use `oracle/mssql`.
 
 You can now access Moodle under `localhost:8000`.
 
 If you want to destroy the container, run `bin/moodle-docker-compose down`.
+
+
+Everytime you reboot your PC or destroyed the container, you just have to start the container with `bin/moodle-docker-compose up -d`
+(and with `bin/moodle-docker-wait-for-db` if you use `oracle/mssql`).
 
 
 ## Use containers for running behat tests
