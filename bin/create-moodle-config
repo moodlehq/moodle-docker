@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+source .env
+
+cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+
+

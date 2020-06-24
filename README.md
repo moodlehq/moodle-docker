@@ -21,7 +21,9 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 1. Download or clone this repository
 2. Rename `.env.example` to `.env`
 3. Specify Moodle directory and db driver in `.env`
-4. Run `bin/moodle-run` inside `moodle-docker` folder
+4. Run `bin/create-moodle-config`. This copies the `config.php` into Moodle.
+You only have to call this command onces.
+4. Run `bin/moodle-run` inside `moodle-docker` folder to create the container.
 
 You can now access Moodle under `localhost:8000`.
 
