@@ -56,8 +56,8 @@ env:
     - "PHP=7.1 DB=mariadb GIT=v3.7.2 SUITE=behat BROWSER=chrome"
     - "PHP=7.0 DB=mariadb GIT=v3.5.8 SUITE=behat BROWSER=firefox"
     # Mobile app
-    - "PHP=7.3 DB=pgsql GIT=master SUITE=app BROWSER=chrome MOBILE=next"
-    - "PHP=7.3 DB=pgsql GIT=master SUITE=app BROWSER=chrome MOBILE=latest"
+    - "PHP=7.3 DB=pgsql GIT=master SUITE=behat-app-development BROWSER=chrome APP_VERSION=3.9.0 APP_PATH=$HOME/app"
+    - "PHP=7.3 DB=pgsql GIT=master SUITE=behat-app BROWSER=chrome APP_VERSION=3.9.0"
 install:
     - git clone --branch $GIT --depth 1 git://github.com/moodle/moodle $HOME/moodle
     - cp config.docker-template.php $HOME/moodle/config.php
@@ -65,7 +65,8 @@ install:
     - export MOODLE_DOCKER_BROWSER=$BROWSER
     - export MOODLE_DOCKER_WWWROOT="$HOME/moodle"
     - export MOODLE_DOCKER_PHP_VERSION=$PHP
-    - export MOODLE_APP_VERSION=$MOBILE
+    - export MOODLE_DOCKER_APP_PATH=$APP_PATH
+    - export MOODLE_APP_VERSION=$APP_VERSION
 before_script:
     - tests/setup.sh
 script:
