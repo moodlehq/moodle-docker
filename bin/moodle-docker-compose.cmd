@@ -34,10 +34,18 @@ if exist %filename% (
     SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%filename%"
 )
 
+IF NOT "%MOODLE_APP_VERSION%"=="" (
+    ECHO Warning: MOODLE_APP_VERSION is deprecated, use MOODLE_DOCKER_APP_VERSION instead
+
+    IF "%MOODLE_DOCKER_APP_VERSION%"=="" (
+        SET MOODLE_DOCKER_APP_VERSION="%MOODLE_APP_VERSION%"
+    )
+)
+
 IF "%MOODLE_DOCKER_BROWSER%"=="chrome" (
     IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
         SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev.yml"
-    ) ELSE IF NOT "%MOODLE_APP_VERSION%"=="" (
+    ) ELSE IF NOT "%MOODLE_DOCKER_APP_VERSION%"=="" (
         SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app.yml"
     )
 )

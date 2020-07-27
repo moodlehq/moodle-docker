@@ -105,7 +105,7 @@ In order to run Behat tests for the mobile app, you need to install the [local_m
 
 The Behat tests will be run against a container serving the mobile application, you have two options here:
 
-1. Use a docker image that includes the application code. You need to specify the `MOODLE_APP_VERSION` env variable and the [moodlehq/moodleapp](https://hub.docker.com/r/moodlehq/moodleapp) image will be downloaded from docker hub.
+1. Use a docker image that includes the application code. You need to specify the `MOODLE_DOCKER_APP_VERSION` env variable and the [moodlehq/moodleapp](https://hub.docker.com/r/moodlehq/moodleapp) image will be downloaded from docker hub.
 
 2. Use a local copy of the application code and serve it through docker, similar to how the Moodle site is being served. Set the `MOODLE_DOCKER_APP_PATH` env variable to the codebase in you file system. This will assume that you've already initialized the app calling `npm install` and `npm run setup` locally.
 
@@ -179,7 +179,7 @@ You can change the configuration of the docker images by setting various environ
 | `MOODLE_DOCKER_WEB_PORT`                  | no        | any integer value (or bind_ip:integer)| 127.0.0.1:8000| The port number for web. If set to 0, no port is used.<br/>If you want to bind to any host IP different from the default 127.0.0.1, you can specify it with the bind_ip:port format (0.0.0.0 means bind to all) |
 | `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value (or bind_ip:integer)| not set       | If set, the selenium node will expose a vnc session on the port specified. Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1 |
 | `MOODLE_DOCKER_APP_PATH`                  | no        | path on your file system              | not set       | If set and the chrome browser is selected, it will start an instance of the Moodle app from your local codebase |
-| `MOODLE_APP_VERSION`                      | no        | next, latest, or an app version number| not set       | If set will start an instance of the Moodle app if the chrome browser is selected |
+| `MOODLE_DOCKER_APP_VERSION`               | no        | next, latest, or an app version number| not set       | If set will start an instance of the Moodle app if the chrome browser is selected |
 
 ## Using XDebug for live debugging
 
