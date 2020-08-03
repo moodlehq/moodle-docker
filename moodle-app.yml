@@ -4,4 +4,4 @@ services:
     environment:
       MOODLE_DOCKER_APP: "true"
   moodleapp:
-    image: "moodlehq/moodleapp:${MOODLE_APP_VERSION}"
+    image: "moodlehq/moodleapp:${MOODLE_DOCKER_APP_VERSION}"
