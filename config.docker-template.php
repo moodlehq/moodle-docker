@@ -40,6 +40,8 @@ $CFG->perfdebug = 15;
 $CFG->debugpageinfo = 1;
 $CFG->allowthemechangeonurl = 1;
 $CFG->passwordpolicy = 0;
+$CFG->cronclionly = 0;
+$CFG->pathtophp = '/usr/local/bin/php';
 
 $CFG->phpunit_dataroot  = '/var/www/phpunitdata';
 $CFG->phpunit_prefix = 't_';
