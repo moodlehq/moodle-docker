@@ -1,5 +1,5 @@
 # moodle-docker: Docker Containers for Moodle Developers
-[![Build Status](https://travis-ci.org/moodlehq/moodle-docker.svg?branch=master)](https://travis-ci.org/moodlehq/moodle-docker/branches)
+[![Build Status](https://travis-ci.com/moodlehq/moodle-docker.svg?branch=master)](https://travis-ci.com/moodlehq/moodle-docker/branches)
 
 This repository contains Docker configuration aimed at Moodle developers and testers to easily deploy a testing environment for Moodle.
 
@@ -10,7 +10,7 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 * All PHP Extensions enabled configured for external services (e.g. solr, ldap)
 * All supported PHP versions
 * Zero-configuration approach
-* Backed by [automated tests](https://travis-ci.org/moodlehq/moodle-docker/branches)
+* Backed by [automated tests](https://travis-ci.com/moodlehq/moodle-docker/branches)
 
 ## Prerequisites
 * [Docker](https://docs.docker.com) and [Docker Compose](https://docs.docker.com/compose/) installed
