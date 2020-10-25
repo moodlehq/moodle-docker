@@ -10,6 +10,7 @@ services:
               --character-set-server=utf8mb4
               --collation-server=utf8mb4_bin
               --innodb_file_per_table=On
+              --wait-timeout=28800
     environment:
       MYSQL_ROOT_PASSWORD: "m@0dl3ing"
       MYSQL_USER: moodle
