@@ -17,8 +17,8 @@ then
     git clone --branch "v$APP_VERSION" --depth 1 git://github.com/moodlehq/moodleapp $HOME/app
     git clone --branch "v$APP_VERSION" --depth 1 git://github.com/moodlehq/moodle-local_moodlemobileapp $HOME/moodle/local/moodlemobileapp
 
-    docker run --volume $HOME/app:/app --workdir /app node:11 npm install
     docker run --volume $HOME/app:/app --workdir /app node:11 npm run setup
+    docker run --volume $HOME/app:/app --workdir /app node:11 npm ci
 
     initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/init.php"
 elif [ "$SUITE" = "behat-app" ];
