@@ -2,7 +2,6 @@ language: bash
 services: docker
 fast_finish: true
 env:
-    # Oracle jobs have been removed because there aren't public images anymore.
     # phpunit
     # PostgreSQL highest, lowest php supported
     # We have set the "phpunit-full" to run against master
@@ -29,6 +28,10 @@ env:
     - "PHP=7.4 DB=mysql   GIT=v3.9.1 SUITE=phpunit"
     - "PHP=7.4 DB=mysql   GIT=v3.8.4 SUITE=phpunit"
     - "PHP=7.2 DB=mysql   GIT=v3.5.8 SUITE=phpunit"
+    - "PHP=7.4 DB=oracle  GIT=v3.10.0 SUITE=phpunit"
+    - "PHP=7.4 DB=oracle  GIT=v3.9.1 SUITE=phpunit"
+    - "PHP=7.4 DB=oracle  GIT=v3.8.4 SUITE=phpunit"
+    - "PHP=7.2 DB=oracle  GIT=v3.5.8 SUITE=phpunit"
     # MariaDB, only lowest php supported
     - "PHP=7.2 DB=mariadb GIT=v3.10.0 SUITE=phpunit"
     - "PHP=7.2 DB=mariadb GIT=v3.9.1 SUITE=phpunit"
@@ -69,6 +72,10 @@ env:
     - "PHP=7.4 DB=mysql   GIT=v3.9.1 SUITE=behat BROWSER=chrome"
     - "PHP=7.4 DB=mysql   GIT=v3.8.4 SUITE=behat BROWSER=firefox"
     - "PHP=7.2 DB=mysql   GIT=v3.5.8 SUITE=behat BROWSER=chrome"
+    - "PHP=7.4 DB=oracle  GIT=v3.10.0 SUITE=behat BROWSER=firefox"
+    - "PHP=7.4 DB=oracle  GIT=v3.9.1 SUITE=behat BROWSER=chrome"
+    - "PHP=7.4 DB=oracle  GIT=v3.8.4 SUITE=behat BROWSER=firefox"
+    - "PHP=7.2 DB=oracle  GIT=v3.5.8 SUITE=behat BROWSER=chrome"
     # MariaDB, only lowest php supported (1 browsers)
     - "PHP=7.2 DB=mariadb GIT=v3.10.0 SUITE=behat BROWSER=chrome"
     - "PHP=7.2 DB=mariadb GIT=v3.9.1 SUITE=behat BROWSER=firefox"
