@@ -6,10 +6,10 @@ env:
     # PostgreSQL highest, lowest php supported
     # We have set the "phpunit-full" to run against master
     - "PHP=7.4 DB=pgsql   GIT=master SUITE=phpunit-full"
-    - "PHP=7.2 DB=pgsql   GIT=master SUITE=phpunit-full"
+    - "PHP=7.3 DB=pgsql   GIT=master SUITE=phpunit-full"
     # Other dev branches, also "phpunit-full"
     - "PHP=7.4 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=phpunit-full"
-    - "PHP=7.2 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=phpunit-full"
+    - "PHP=7.3 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=phpunit-full"
     # Simpler "phpunit" for stables
     - "PHP=7.4 DB=pgsql   GIT=v3.10.0 SUITE=phpunit"
     - "PHP=7.2 DB=pgsql   GIT=v3.10.0 SUITE=phpunit"
@@ -41,12 +41,12 @@ env:
     # PostgreSQL highest, lowest (2 browsers)
     - "PHP=7.4 DB=pgsql   GIT=master SUITE=behat BROWSER=chrome"
     - "PHP=7.4 DB=pgsql   GIT=master SUITE=behat BROWSER=firefox"
-    - "PHP=7.2 DB=pgsql   GIT=master SUITE=behat BROWSER=chrome"
-    - "PHP=7.2 DB=pgsql   GIT=master SUITE=behat BROWSER=firefox"
+    - "PHP=7.3 DB=pgsql   GIT=master SUITE=behat BROWSER=chrome"
+    - "PHP=7.3 DB=pgsql   GIT=master SUITE=behat BROWSER=firefox"
     - "PHP=7.4 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=behat BROWSER=chrome"
     - "PHP=7.4 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=behat BROWSER=firefox"
-    - "PHP=7.2 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=behat BROWSER=chrome"
-    - "PHP=7.2 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=behat BROWSER=firefox"
+    - "PHP=7.3 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=behat BROWSER=chrome"
+    - "PHP=7.3 DB=pgsql   GIT=MOODLE_311_STABLE SUITE=behat BROWSER=firefox"
     - "PHP=7.4 DB=pgsql   GIT=v3.10.0 SUITE=behat BROWSER=chrome"
     - "PHP=7.4 DB=pgsql   GIT=v3.10.0 SUITE=behat BROWSER=firefox"
     - "PHP=7.2 DB=pgsql   GIT=v3.10.0 SUITE=behat BROWSER=chrome"
