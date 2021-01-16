@@ -2,6 +2,14 @@
 set -e
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 
+# Log in dockerhub if possible (to avoid pull limits for unauthenticated uses).
+if [ -n "$DOCKER_USER" ] && [ -n "$DOCKER_TOKEN" ]; then
+    echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+    echo "Using authenticated connection (no pull limits)"
+else
+    echo "Using unauthenticated docker (pull limits may apply). Setup DOCKER_USER and DOCKER_TOKEN if needed."
+fi
+
 if [ "$SUITE" = "phpunit" ];
 then
     initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/phpunit/cli/init.php"
