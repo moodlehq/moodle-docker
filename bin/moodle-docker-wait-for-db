@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+if [ -f .env ]; 
+then
+    source .env
+fi
+
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 
 if [ -z "$MOODLE_DOCKER_DB" ];

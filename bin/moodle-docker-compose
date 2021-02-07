@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+if [ -f .env ]; 
+then
+    source .env
+fi
+
 if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
 then
     echo 'Error: $MOODLE_DOCKER_WWWROOT is not set or not an existing directory'

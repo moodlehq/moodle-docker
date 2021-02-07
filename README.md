@@ -18,27 +18,22 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 
 ## Quick start
 
-```bash
-# Set up path to Moodle code
-export MOODLE_DOCKER_WWWROOT=/path/to/moodle/code
-# Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
-export MOODLE_DOCKER_DB=pgsql
+1. Download or clone this repository
+2. Rename `.env.example` to `.env`
+3. Specify Moodle directory and db driver in `.env`
+4. Run `bin/create-moodle-config`. This copies the `config.php` into Moodle.
+You only have to call this command onces.
+4. Run `bin/moodle-docker-compose up -d` inside `moodle-docker` folder to create the container.
+5. You may have to call also `bin/moodle-docker-wait-for-db` if you use `oracle/mssql`.
 
-# Ensure customized config.php for the Docker containers is in place
-cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+You can now access Moodle under `localhost:8000`.
 
-# Start up containers
-bin/moodle-docker-compose up -d
+If you want to destroy the container, run `bin/moodle-docker-compose down`.
 
-# Wait for DB to come up (important for oracle/mssql)
-bin/moodle-docker-wait-for-db
 
-# Work with the containers (see below)
-# [..]
+Everytime you reboot your PC or destroyed the container, you just have to start the container with `bin/moodle-docker-compose up -d`
+(and with `bin/moodle-docker-wait-for-db` if you use `oracle/mssql`).
 
-# Shut down and destroy containers
-bin/moodle-docker-compose down
-```
 
 ## Use containers for running behat tests
 

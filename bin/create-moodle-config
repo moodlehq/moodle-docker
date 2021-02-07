@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [ -f .env ]; 
+then
+    source .env
+fi
+
+cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+
+
