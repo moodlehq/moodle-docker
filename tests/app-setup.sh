@@ -8,16 +8,33 @@ export MOODLE_DOCKER_BROWSER="chrome"
 if [ "$SUITE" = "app-development" ];
 then
     export MOODLE_DOCKER_APP_PATH="${basedir}/app"
-    git clone --branch "v$MOODLE_DOCKER_APP_VERSION" --depth 1 git://github.com/moodlehq/moodleapp $basedir/app
-    git clone --branch "v$MOODLE_DOCKER_APP_VERSION" --depth 1 git://github.com/moodlehq/moodle-local_moodlemobileapp $basedir/moodle/local/moodlemobileapp
 
-    docker run --volume $basedir/app:/app --workdir /app node:11 npm run setup
-    docker run --volume $basedir/app:/app --workdir /app node:11 npm ci
+    if [[ $RUNTIME = ionic5 ]];
+    then
+        git clone --branch "ionic5" --depth 1 git://github.com/moodlehq/moodleapp $basedir/app
+        git clone --branch "ionic5" --depth 1 git://github.com/moodlehq/moodle-local_moodlemobileapp $basedir/moodle/local/moodlemobileapp
+    else
+        git clone --branch "v$MOODLE_DOCKER_APP_VERSION" --depth 1 git://github.com/moodlehq/moodleapp $basedir/app
+        git clone --branch "v$MOODLE_DOCKER_APP_VERSION" --depth 1 git://github.com/moodlehq/moodle-local_moodlemobileapp $basedir/moodle/local/moodlemobileapp
+    fi
+
+    if [[ $RUNTIME = ionic5 ]];
+    then
+        docker run --volume $basedir/app:/app --workdir /app node:14 npm ci
+    else
+        docker run --volume $basedir/app:/app --workdir /app node:11 npm run setup
+        docker run --volume $basedir/app:/app --workdir /app node:11 npm ci
+    fi
 
     initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/init.php"
 elif [ "$SUITE" = "app" ];
 then
-    git clone --branch "v$MOODLE_DOCKER_APP_VERSION" --depth 1 git://github.com/moodlehq/moodle-local_moodlemobileapp $basedir/moodle/local/moodlemobileapp
+    if [[ $RUNTIME = ionic5 ]];
+    then
+        git clone --branch "ionic5" --depth 1 git://github.com/moodlehq/moodle-local_moodlemobileapp $basedir/moodle/local/moodlemobileapp
+    else
+        git clone --branch "v$MOODLE_DOCKER_APP_VERSION" --depth 1 git://github.com/moodlehq/moodle-local_moodlemobileapp $basedir/moodle/local/moodlemobileapp
+    fi
 
     initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/init.php"
 else

@@ -144,10 +144,15 @@ jobs:
       matrix:
         include:
           # PostgreSQL (highest, lowest php supported)
-          - { branch: master, php: "8.0", database: pgsql, suite: app-development, app-version: "3.9.0"}
-          - { branch: master, php: "7.3", database: pgsql, suite: app-development, app-version: "3.9.0"}
-          - { branch: master, php: "8.0", database: pgsql, suite: app, app-version: "3.9.0"}
-          - { branch: master, php: "7.3", database: pgsql, suite: app, app-version: "3.9.0"}
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic3, suite: app-development, app-version: "3.9.0"}
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic3, suite: app-development, app-version: "3.9.0"}
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic3, suite: app, app-version: "3.9.0"}
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic3, suite: app, app-version: "3.9.0"}
+
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "ionic5"}
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app-development, app-version: "ionic5"}
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "ionic5-test"}
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app, app-version: "ionic5-test"}
 
     steps:
       - name: Checking out moodle-docker
@@ -166,6 +171,7 @@ jobs:
           export MOODLE_DOCKER_DB="${{ matrix.database }}"
           export MOODLE_DOCKER_PHP_VERSION="${{ matrix.php }}"
           export SUITE="${{ matrix.suite }}"
+          export RUNTIME="${{ matrix.runtime }}"
           export MOODLE_DOCKER_APP_VERSION="${{ matrix.app-version }}"
           tests/app-setup.sh
 
