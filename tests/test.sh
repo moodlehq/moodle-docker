@@ -5,7 +5,7 @@ basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 
 if [ "$SUITE" = "phpunit" ];
 then
-    testcmd="bin/moodle-docker-compose exec -T webserver vendor/bin/phpunit core_dml_testcase lib/dml/tests/dml_test.php"
+    testcmd="bin/moodle-docker-compose exec -T webserver vendor/bin/phpunit --filter core_dml_testcase"
 elif [ "$SUITE" = "behat" ];
 then
     testcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/run.php --tags=@auth_manual"
