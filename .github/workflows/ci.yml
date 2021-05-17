@@ -1,0 +1,183 @@
+name: moodle-docker CI
+
+on: [push, pull_request]
+
+jobs:
+  PHPUnit:
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # PostgreSQL (highest, lowest php supported)
+          - { branch: master,            php: "8.0", database: pgsql, suite: phpunit-full } # Full run only for mater.
+          - { branch: master,            php: "7.3", database: pgsql, suite: phpunit-full }
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, suite: phpunit } # Other branches, quicker run.
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, suite: phpunit }
+          - { branch: MOODLE_310_STABLE, php: "7.4", database: pgsql, suite: phpunit }
+          - { branch: MOODLE_310_STABLE, php: "7.2", database: pgsql, suite: phpunit }
+          - { branch: MOODLE_39_STABLE,  php: "7.4", database: pgsql, suite: phpunit }
+          - { branch: MOODLE_39_STABLE,  php: "7.2", database: pgsql, suite: phpunit }
+          # MariaDB (lowest php supported)
+          - { branch: master,            php: "7.3", database: mariadb, suite: phpunit }
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: mariadb, suite: phpunit }
+          - { branch: MOODLE_310_STABLE, php: "7.2", database: mariadb, suite: phpunit }
+          - { branch: MOODLE_39_STABLE,  php: "7.2", database: mariadb, suite: phpunit }
+          # Other databases (highest php supported)
+          - { branch: master,            php: "8.0", database: mssql,  suite: phpunit }
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: mssql,  suite: phpunit }
+          - { branch: MOODLE_310_STABLE, php: "7.4", database: mssql,  suite: phpunit }
+          - { branch: MOODLE_39_STABLE,  php: "7.4", database: mssql,  suite: phpunit }
+          - { branch: master,            php: "8.0", database: mysql,  suite: phpunit }
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: mysql,  suite: phpunit }
+          - { branch: MOODLE_310_STABLE, php: "7.4", database: mysql,  suite: phpunit }
+          - { branch: MOODLE_39_STABLE,  php: "7.4", database: mysql,  suite: phpunit }
+          - { branch: master,            php: "8.0", database: oracle, suite: phpunit }
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: oracle, suite: phpunit }
+          - { branch: MOODLE_310_STABLE, php: "7.4", database: oracle, suite: phpunit }
+          - { branch: MOODLE_39_STABLE,  php: "7.4", database: oracle, suite: phpunit }
+
+    steps:
+      - name: Checking out moodle-docker
+        uses: actions/checkout@v2
+
+      - name: Checking out moodle
+        uses: actions/checkout@v2
+        with:
+          repository: moodle/moodle
+          path: moodle
+          ref: ${{ matrix.branch }}
+
+      - name: Prepare moodle-docker environment
+        run: |
+          cp config.docker-template.php moodle/config.php
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export MOODLE_DOCKER_PHP_VERSION="${{ matrix.php }}"
+          export SUITE="${{ matrix.suite }}"
+          tests/phpunit-setup.sh
+
+      - name: Run moodle-docker tests
+        run: |
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export SUITE="${{ matrix.suite }}"
+          tests/phpunit-test.sh
+
+      - name: Stop moodle-docker
+        run: |
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export SUITE="${{ matrix.suite }}"
+          tests/phpunit-teardown.sh
+
+  Behat:
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # PostgreSQL (highest, lowest php supported)
+          - { branch: master,            php: "8.0", database: pgsql, browser: chrome,  suite: behat }
+          - { branch: master,            php: "7.3", database: pgsql, browser: firefox, suite: behat }
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, browser: chrome,  suite: behat }
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, browser: firefox, suite: behat }
+          - { branch: MOODLE_310_STABLE, php: "7.4", database: pgsql, browser: chrome,  suite: behat }
+          - { branch: MOODLE_310_STABLE, php: "7.2", database: pgsql, browser: firefox, suite: behat }
+          - { branch: MOODLE_39_STABLE,  php: "7.4", database: pgsql, browser: chrome,  suite: behat }
+          - { branch: MOODLE_39_STABLE,  php: "7.2", database: pgsql, browser: firefox, suite: behat }
+          # MariaDB (lowest php supported)
+          - { branch: master,            php: "7.3", database: mariadb, browser: chrome,  suite: behat }
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: mariadb, browser: firefox, suite: behat }
+          - { branch: MOODLE_310_STABLE, php: "7.2", database: mariadb, browser: chrome,  suite: behat }
+          - { branch: MOODLE_39_STABLE,  php: "7.2", database: mariadb, browser: firefox, suite: behat }
+          # Other databases (highest php supported")
+          - { branch: master,            php: "8.0", database: mssql,  browser: chrome,  suite: behat }
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: mssql,  browser: firefox, suite: behat }
+          - { branch: MOODLE_310_STABLE, php: "7.4", database: mssql,  browser: chrome,  suite: behat }
+          - { branch: MOODLE_39_STABLE,  php: "7.4", database: mssql,  browser: firefox, suite: behat }
+          - { branch: master,            php: "8.0", database: mysql,  browser: chrome,  suite: behat }
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: mysql,  browser: firefox, suite: behat }
+          - { branch: MOODLE_310_STABLE, php: "7.4", database: mysql,  browser: chrome,  suite: behat }
+          - { branch: MOODLE_39_STABLE,  php: "7.4", database: mysql,  browser: firefox, suite: behat }
+          - { branch: master,            php: "8.0", database: oracle, browser: chrome,  suite: behat }
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: oracle, browser: firefox, suite: behat }
+          - { branch: MOODLE_310_STABLE, php: "7.4", database: oracle, browser: chrome,  suite: behat }
+          - { branch: MOODLE_39_STABLE,  php: "7.4", database: oracle, browser: firefox, suite: behat }
+
+    steps:
+      - name: Checking out moodle-docker
+        uses: actions/checkout@v2
+
+      - name: Checking out moodle
+        uses: actions/checkout@v2
+        with:
+          repository: moodle/moodle
+          path: moodle
+          ref: ${{ matrix.branch }}
+
+      - name: Prepare moodle-docker environment
+        run: |
+          cp config.docker-template.php moodle/config.php
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export MOODLE_DOCKER_PHP_VERSION="${{ matrix.php }}"
+          export SUITE="${{ matrix.suite }}"
+          export MOODLE_DOCKER_BROWSER="${{ matrix.browser }}"
+          tests/behat-setup.sh
+
+      - name: Run moodle-docker tests
+        run: |
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export SUITE="${{ matrix.suite }}"
+          tests/behat-test.sh
+
+      - name: Stop moodle-docker
+        run: |
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export SUITE="${{ matrix.suite }}"
+          tests/behat-teardown.sh
+
+  App:
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # PostgreSQL (highest, lowest php supported)
+          - { branch: master, php: "8.0", database: pgsql, suite: app-development, app-version: "3.9.0"}
+          - { branch: master, php: "7.3", database: pgsql, suite: app-development, app-version: "3.9.0"}
+          - { branch: master, php: "8.0", database: pgsql, suite: app, app-version: "3.9.0"}
+          - { branch: master, php: "7.3", database: pgsql, suite: app, app-version: "3.9.0"}
+
+    steps:
+      - name: Checking out moodle-docker
+        uses: actions/checkout@v2
+
+      - name: Checking out moodle
+        uses: actions/checkout@v2
+        with:
+          repository: moodle/moodle
+          path: moodle
+          ref: ${{ matrix.branch }}
+
+      - name: Prepare moodle-docker environment
+        run: |
+          cp config.docker-template.php moodle/config.php
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export MOODLE_DOCKER_PHP_VERSION="${{ matrix.php }}"
+          export SUITE="${{ matrix.suite }}"
+          export MOODLE_DOCKER_APP_VERSION="${{ matrix.app-version }}"
+          tests/app-setup.sh
+
+      - name: Run moodle-docker tests
+        run: |
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export SUITE="${{ matrix.suite }}"
+          tests/app-test.sh
+
+      - name: Stop moodle-docker
+        run: |
+          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export SUITE="${{ matrix.suite }}"
+          export MOODLE_DOCKER_APP_VERSION="${{ matrix.app-version }}"
+          tests/app-teardown.sh

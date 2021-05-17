@@ -20,5 +20,5 @@ then
         sleep 15
     done
 else
-    sleep 5
+    sleep 10
 fi
