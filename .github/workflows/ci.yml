@@ -11,7 +11,7 @@ jobs:
       matrix:
         include:
           # PostgreSQL (highest, lowest php supported)
-          - { branch: master,            php: "8.0", database: pgsql, suite: phpunit-full } # Full run only for mater.
+          - { branch: master,            php: "8.0", database: pgsql, suite: phpunit-full } # Full run only for master.
           - { branch: master,            php: "7.3", database: pgsql, suite: phpunit-full }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, suite: phpunit } # Other branches, quicker run.
           - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, suite: phpunit }
