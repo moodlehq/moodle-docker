@@ -1,0 +1,18 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_DBTYPE: mysqli
+      MOODLE_DOCKER_DBCOLLATION: utf8mb4_bin
+  db:
+    image: mysql:8
+    command: >
+                --character-set-server=utf8mb4
+                --collation-server=utf8mb4_bin
+                --innodb_file_per_table=On
+                --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: "m@0dl3ing"
+      MYSQL_USER: moodle
+      MYSQL_PASSWORD: "m@0dl3ing"
+      MYSQL_DATABASE: moodle
