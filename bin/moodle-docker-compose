@@ -60,7 +60,7 @@ if [ -z "$MOODLE_DOCKER_APP_RUNTIME" ];
 then
     if [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
     then
-        appversion="$(cat $MOODLE_DOCKER_APP_PATH/package.json | grep -oP '"version": "\K\d\.\d\.\d{1,2}(?=")')"
+        appversion="$(cat $MOODLE_DOCKER_APP_PATH/package.json | grep -oP '"version": "\K\d\.\d\.\d{1,2}(-\w+)?(?=")')"
     elif [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]];
     then
         appversion=$MOODLE_DOCKER_APP_VERSION
@@ -86,12 +86,6 @@ then
             else
                 export MOODLE_DOCKER_APP_RUNTIME="ionic5"
             fi
-        elif [[ $appversion = ionic5* ]];
-        then
-            export MOODLE_DOCKER_APP_RUNTIME="ionic5"
-        elif [[ $appversion = "latest" || $appversion = "next" ]];
-        then
-            export MOODLE_DOCKER_APP_RUNTIME="ionic3"
         else
             export MOODLE_DOCKER_APP_RUNTIME="ionic5"
         fi
