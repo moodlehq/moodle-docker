@@ -46,7 +46,7 @@ $CFG->pathtophp = '/usr/local/bin/php';
 
 $CFG->phpunit_dataroot  = '/var/www/phpunitdata';
 $CFG->phpunit_prefix = 't_';
-define('TEST_EXTERNAL_FILES_HTTP_URL', 'http://exttests');
+define('TEST_EXTERNAL_FILES_HTTP_URL', 'http://exttests:9000');
 
 $CFG->behat_wwwroot   = 'http://webserver';
 $CFG->behat_dataroot  = '/var/www/behatdata';
