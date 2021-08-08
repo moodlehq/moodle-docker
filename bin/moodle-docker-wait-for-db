@@ -5,16 +5,16 @@ basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 
 if [ -z "$MOODLE_DOCKER_DB" ];
 then
-    echo 'Error: $MOODLE_DOCKER_DB is not set'
+    echo 'Error: MOODLE_DOCKER_DB is not set'
     exit 1
 fi
 
 if [ "$MOODLE_DOCKER_DB" = "mssql" ];
 then
-    $basedir/bin/moodle-docker-compose exec -T db /wait-for-mssql-to-come-up.sh
+    "$basedir"/bin/moodle-docker-compose exec -T db /wait-for-mssql-to-come-up.sh
 elif [ "$MOODLE_DOCKER_DB" = "oracle" ];
 then
-    until $basedir/bin/moodle-docker-compose logs db | grep -q 'Database opened.';
+    until "$basedir"/bin/moodle-docker-compose logs db | grep -q 'Database opened.';
     do
         echo 'Waiting for oracle to come up...'
         sleep 15

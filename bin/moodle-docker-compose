@@ -3,13 +3,13 @@ set -e
 
 if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
 then
-    echo 'Error: $MOODLE_DOCKER_WWWROOT is not set or not an existing directory'
+    echo 'Error: MOODLE_DOCKER_WWWROOT is not set or not an existing directory'
     exit 1
 fi
 
 if [ -z "$MOODLE_DOCKER_DB" ];
 then
-    echo 'Error: $MOODLE_DOCKER_DB is not set'
+    echo 'Error: MOODLE_DOCKER_DB is not set'
     exit 1
 fi
 
@@ -25,8 +25,8 @@ basedir="$( cd -P "$( dirname "$SOURCE" )/../" && pwd )"
 export ASSETDIR="${basedir}/assets"
 
 
-dockercompose="docker-compose -f ${basedir}/base.yml"
-dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
+dockercompose_cmd=("docker-compose" "-f" "${basedir}/base.yml")
+dockercompose_cmd+=("-f" "${basedir}/service.mail.yml")
 
 # PHP Version.
 export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-7.3}
@@ -34,20 +34,19 @@ export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-7.3}
 # Database flavour
 if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
 then
-    dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
-
+    dockercompose_cmd+=("-f" "${basedir}/db.${MOODLE_DOCKER_DB}.yml")
 fi
 
 # Support PHP version overrides for DB..
 filename="${basedir}/db.${MOODLE_DOCKER_DB}.${MOODLE_DOCKER_PHP_VERSION}.yml"
-if [ -f $filename ]; then
-    dockercompose="${dockercompose} -f ${filename}"
+if [ -f "$filename" ]; then
+    dockercompose_cmd+=("-f" "${filename}")
 fi
 
 # Mobile app deprecated variables
-if [ ! -z "$MOODLE_APP_VERSION" ];
+if [ -n "$MOODLE_APP_VERSION" ];
 then
-    echo 'Warning: $MOODLE_APP_VERSION is deprecated, use $MOODLE_DOCKER_APP_VERSION instead'
+    echo 'Warning: MOODLE_APP_VERSION is deprecated, use MOODLE_DOCKER_APP_VERSION instead'
 
     if [ -z "$MOODLE_DOCKER_APP_VERSION" ];
     then
@@ -56,24 +55,26 @@ then
 fi
 
 # Mobile app for development
-if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
+if [[ -n "$MOODLE_DOCKER_BROWSER" && "$MOODLE_DOCKER_BROWSER" == "chrome" \
+          && -n "$MOODLE_DOCKER_APP_PATH" ]];
 then
-    dockercompose="${dockercompose} -f ${basedir}/moodle-app-dev.yml"
+    dockercompose_cmd+=("-f" "${basedir}/moodle-app-dev.yml")
 # Mobile app using a docker image
-elif [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]];
+elif [[ -n "$MOODLE_DOCKER_BROWSER" && "$MOODLE_DOCKER_BROWSER" == "chrome" \
+            && -n "$MOODLE_DOCKER_APP_VERSION" ]];
 then
-    dockercompose="${dockercompose} -f ${basedir}/moodle-app.yml"
+    dockercompose_cmd+=("-f" "${basedir}/moodle-app.yml")
 fi
 
 # Selenium browser
-if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" != "firefox" ]];
+if [[ -n "$MOODLE_DOCKER_BROWSER" && "$MOODLE_DOCKER_BROWSER" != "firefox" ]];
 then
-    dockercompose="${dockercompose} -f ${basedir}/selenium.${MOODLE_DOCKER_BROWSER}.yml"
+    dockercompose_cmd+=("-f" "${basedir}/selenium.${MOODLE_DOCKER_BROWSER}.yml")
 fi
 
 # Selenium VNC port
 export MOODLE_DOCKER_SELENIUM_SUFFIX=""
-if [[ $MOODLE_DOCKER_SELENIUM_VNC_PORT == *":"* ]] || [[ $MOODLE_DOCKER_SELENIUM_VNC_PORT -gt 0 ]]
+if [[ $MOODLE_DOCKER_SELENIUM_VNC_PORT == *":"* || $MOODLE_DOCKER_SELENIUM_VNC_PORT -gt 0 ]]
 then
     export MOODLE_DOCKER_SELENIUM_SUFFIX="-debug"
     # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
@@ -81,13 +82,13 @@ then
     then
         MOODLE_DOCKER_SELENIUM_VNC_PORT=127.0.0.1:$MOODLE_DOCKER_SELENIUM_VNC_PORT
     fi
-    dockercompose="${dockercompose} -f ${basedir}/selenium.debug.yml"
+    dockercompose_cmd+=("-f" "${basedir}/selenium.debug.yml")
 fi
 
 # External services
-if [[ ! -z "$MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES" ]];
+if [[ -n "$MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES" ]];
 then
-    dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
+    dockercompose_cmd+=("-f" "${basedir}/phpunit-external-services.yml")
 fi
 
 # Webserver host
@@ -95,22 +96,21 @@ export MOODLE_DOCKER_WEB_HOST=${MOODLE_DOCKER_WEB_HOST:-localhost}
 
 # Webserver port
 export MOODLE_DOCKER_WEB_PORT=${MOODLE_DOCKER_WEB_PORT:-8000}
-if [[ $MOODLE_DOCKER_WEB_PORT == *":"* ]] || [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
+if [[ $MOODLE_DOCKER_WEB_PORT == *":"* || $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
 then
     # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
-    if [[ ! $MOODLE_DOCKER_WEB_PORT == *":"* ]]
+    if [[ $MOODLE_DOCKER_WEB_PORT != *":"* ]]
     then
         MOODLE_DOCKER_WEB_PORT=127.0.0.1:$MOODLE_DOCKER_WEB_PORT
     fi
-    dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
+    dockercompose_cmd+=("-f" "${basedir}/webserver.port.yml")
 fi
 
 
 # Mac OS Compatbility
 if [[ "$(uname)" == "Darwin" ]]; then
     # Support https://docs.docker.com/docker-for-mac/osxfs-caching/
-    dockercompose="${dockercompose} -f ${basedir}/volumes-cached.yml"
+    dockercompose_cmd+=("-f" "${basedir}/volumes-cached.yml")
 fi
 
-
-$dockercompose "$@"
+"${dockercompose_cmd[@]}" "$@"
