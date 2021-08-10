@@ -83,7 +83,10 @@ Started at 25-05-2017, 19:04
 ```
 
 Notes:
+
 * The behat faildump directory is exposed at http://localhost:8000/_/faildumps/.
+* Use `MOODLE_DOCKER_BROWSER` to switch the browser you want to run the test against.
+  You need to recreate your containers using `bin/moodle-docker-compose` as described below, if you change it.
 
 ## Use containers for running phpunit tests
 
@@ -187,7 +190,8 @@ bin/moodle-docker-compose start
 
 ## Environment variables
 
-You can change the configuration of the docker images by setting various environment variables before calling `bin/moodle-docker-compose up`.
+You can change the configuration of the docker images by setting various environment variables **before** calling `bin/moodle-docker-compose up`.
+When you change them, use `bin/moodle-docker-compose down && bin/moodle-docker-compose up -d` to recreate your environment.
 
 | Environment Variable                      | Mandatory | Allowed values                        | Default value | Notes                                                                        |
 |-------------------------------------------|-----------|---------------------------------------|---------------|------------------------------------------------------------------------------|
