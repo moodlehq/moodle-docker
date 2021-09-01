@@ -27,6 +27,8 @@ export MOODLE_DOCKER_DB=pgsql
 # Ensure customized config.php for the Docker containers is in place
 cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 
+# [..] IMPORTANT: For Mac users see next point
+
 # Start up containers
 bin/moodle-docker-compose up -d
 
@@ -39,6 +41,21 @@ bin/moodle-docker-wait-for-db
 # Shut down and destroy containers
 bin/moodle-docker-compose down
 ```
+
+### Mac users
+Docker is known to be really slow for Mac users. Run the next commands to fix that using NFS.
+
+```bash
+# [..] Follow the "Quick start" step until the "IMPORTANT" note. Then continue with this commands
+# This script will set up a NFS link between your $MOODLE_DOCKER_WWWROOT and the containers
+# We change the permissions of the script to be able to execute it
+chmod +x bin/nfs-script.sh
+# Now we run the script
+./bin/nfs-script.sh
+
+# [..] Continue with the "Quick start" from after the "IMPORTANT" note
+```
+
 ## Run several Moodle instances
 
 By default, the script will load a single instance. If you want to run two

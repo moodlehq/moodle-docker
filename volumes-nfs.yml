@@ -1,0 +1,14 @@
+# Here we support https://vivait.co.uk/labs/docker-for-mac-performance-using-nfs
+# for improved performance on mac
+version: "2"
+services:
+  webserver:
+    volumes:
+        - "nfsmount:/var/www/html"
+volumes:
+  nfsmount:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
+      device: ":/System/Volumes/Data/${MOODLE_DOCKER_WWWROOT}"
