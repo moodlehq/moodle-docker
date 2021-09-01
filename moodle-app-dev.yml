@@ -1,4 +1,4 @@
-version: "2"
+version: "2.3"
 services:
   webserver:
     environment:
@@ -9,6 +9,11 @@ services:
     command: npm run ionic:serve
     volumes:
       - "${MOODLE_DOCKER_APP_PATH}:/app"
+    healthcheck:
+      test: "curl -f http://localhost:8100 || exit 1"
+      interval: 10s
+      timeout: 3s
+      start_period: 30s
     expose:
       - 8100
       - 35729
