@@ -120,15 +120,15 @@ Notes:
 * Mailhog is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
 * The admin `username` you need to use for logging in is `admin` by default. You can customize it by passing `--adminuser='myusername'`
 
-## Use containers for running behat tests for the mobile app
+## Use containers for running behat tests for the Moodle App
 
-In order to run Behat tests for the mobile app, you need to install the [local_moodlemobileapp](https://github.com/moodlehq/moodle-local_moodlemobileapp) plugin in your Moodle site. Everything else should be the same as running standard Behat tests for Moodle. Make sure to filter tests using the `@app` tag.
+In order to run Behat tests for the Moodle App, you need to install the [local_moodlemobileapp](https://github.com/moodlehq/moodle-local_moodlemobileapp) plugin in your Moodle site. Everything else should be the same as running standard Behat tests for Moodle. Make sure to filter tests using the `@app` tag.
 
 The Behat tests will be run against a container serving the mobile application, you have two options here:
 
-1. Use a docker image that includes the application code. You need to specify the `MOODLE_DOCKER_APP_VERSION` env variable and the [moodlehq/moodleapp](https://hub.docker.com/r/moodlehq/moodleapp) image will be downloaded from docker hub.
+1. Use a Docker image that includes the application code. You need to specify the `MOODLE_DOCKER_APP_VERSION` env variable and the [moodlehq/moodleapp](https://hub.docker.com/r/moodlehq/moodleapp) image will be downloaded from Docker Hub. You can read about the available images in [Moodle App Docker Images](https://docs.moodle.org/dev/Moodle_App_Docker_Images) (for Behat, you'll want to run the ones with the `-test` suffix).
 
-2. Use a local copy of the application code and serve it through docker, similar to how the Moodle site is being served. Set the `MOODLE_DOCKER_APP_PATH` env variable to the codebase in you file system. This will assume that you've already initialized the app calling `npm install` and `npm run setup` locally.
+2. Use a local copy of the application code and serve it through Docker, similar to how the Moodle site is being served. Set the `MOODLE_DOCKER_APP_PATH` env variable to the codebase in you file system. This will assume that you've already initialized the app calling `npm install` and `npm run setup` locally.
 
 For both options, you also need to set `MOODLE_DOCKER_BROWSER` to "chrome".
 
@@ -138,7 +138,7 @@ git clone git://github.com/moodlehq/moodle-local_moodlemobileapp "$MOODLE_DOCKER
 
 # Initialize behat environment
 bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
-# [..]
+# (you should see "Configured app tests for version X.X.X" here)
 
 # Run behat tests
 bin/moodle-docker-compose exec -u www-data webserver php admin/tool/behat/cli/run.php --tags="@app&&@mod_login"
@@ -155,14 +155,16 @@ Started at 13-07-2020, 18:34
 3m3.17s (55.02Mb)
 ```
 
-If you are going with the second option, this *can* be used for local development of the mobile app, given that the `moodleapp` container serves the app on the local 8100 port. However, this is intended to run Behat tests that require interacting with a local Moodle environment. Normal development should be easier calling `npm start` in the host system.
+If you are going with the second option, this *can* be used for local development of the Moodle App, given that the `moodleapp` container serves the app on the local 8100 port. However, this is intended to run Behat tests that require interacting with a local Moodle environment. Normal development should be easier calling `npm start` in the host system.
 
-By all means, if you don't want to have npm installed locally you can go full docker executing the following commands before starting the containers:
+By all means, if you don't want to have npm installed locally you can go full Docker executing the following commands before starting the containers:
 
 ```
-docker run --volume $MOODLE_DOCKER_APP_PATH:/app --workdir /app node:11 npm install
-docker run --volume $MOODLE_DOCKER_APP_PATH:/app --workdir /app node:11 npm run setup
+docker run --volume $MOODLE_DOCKER_APP_PATH:/app --workdir /app node:14 npm install
+docker run --volume $MOODLE_DOCKER_APP_PATH:/app --workdir /app node:14 npm run setup
 ```
+
+You can learn more about writing tests for the app in [Acceptance testing for the Moodle App](https://docs.moodle.org/dev/Acceptance_testing_for_the_Moodle_App).
 
 ## Using VNC to view behat tests
 
