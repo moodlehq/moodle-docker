@@ -26,6 +26,6 @@ services:
       - "${ASSETDIR}/exttests/apache2_ports.conf:/etc/apache2/ports.conf"
       - "${ASSETDIR}/exttests/apache2.conf:/etc/apache2/sites-enabled/000-default.conf"
   selenium:
-    image: "selenium/standalone-firefox${MOODLE_DOCKER_SELENIUM_SUFFIX}:2.53.1"
+    image: "selenium/standalone-firefox${MOODLE_DOCKER_SELENIUM_SUFFIX}:3.141.59"
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html:ro"
