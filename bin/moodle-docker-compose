@@ -117,7 +117,7 @@ if [[ -z "$MOODLE_DOCKER_BROWSER_TAG" ]];
 then
     if [[ "$MOODLE_DOCKER_BROWSER_NAME" = "firefox" ]];
     then
-        MOODLE_DOCKER_BROWSER_TAG=3.141.59
+        MOODLE_DOCKER_BROWSER_TAG=3
     elif [[ "$MOODLE_DOCKER_BROWSER_NAME" = "chrome" ]];
     then
         MOODLE_DOCKER_BROWSER_TAG=3
