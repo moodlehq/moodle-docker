@@ -148,8 +148,14 @@ then
     dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
 fi
 
+#  Faildump directory
 if [[ ! -z "$MOODLE_DOCKER_BEHAT_FAILDUMP" ]];
 then
+    if [ ! -d "$MOODLE_DOCKER_BEHAT_FAILDUMP" ];
+    then
+        echo 'Error: $MOODLE_DOCKER_BEHAT_FAILDUMP is not an existing directory'
+        exit 1
+    fi
     dockercompose="${dockercompose} -f ${basedir}/behat-faildump.yml"
 fi
 
