@@ -4,7 +4,7 @@ services:
     environment:
       MOODLE_DOCKER_APP: "true"
   moodleapp:
-    image: node:14
+    image: node:${MOODLE_DOCKER_APP_NODE_VERSION:-14}
     working_dir: /app
     command: npm start -- --host 0.0.0.0
     volumes:
