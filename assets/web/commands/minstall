@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+. "$DIR/mcommon"
+
+case "$1" in
+  moodle)
+    eval "php admin/cli/install_database.php --agree-license --fullname=\"Moodle\" --shortname=\"moodle\" --summary=\"Moodle site\" --adminpass=\"admin\" --adminemail=\"admin@example.com\" ${command}"
+    ;;
+  phpunit)
+    eval "php admin/tool/phpunit/cli/init.php ${command}"
+    ;;
+  behat)
+    eval "php admin/tool/behat/cli/init.php -a -o ${command}"
+    ;;
+  *)
+    SCRIPT_NAME=`basename "$0"`
+    echo "Usage: $SCRIPT_NAME {moodle|phpunit|behat} [arguments]"
+    exit 1
+esac
