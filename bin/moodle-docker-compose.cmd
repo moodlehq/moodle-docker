@@ -83,6 +83,14 @@ IF NOT "%MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES%"=="" (
     SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\phpunit-external-services.yml"
 )
 
+IF NOT "%MOODLE_DOCKER_BEHAT_FAILDUMP%"=="" (
+    IF NOT EXIST "%MOODLE_DOCKER_BEHAT_FAILDUMP%" (
+        ECHO Error: MOODLE_DOCKER_BEHAT_FAILDUMP is not an existing directory
+    EXIT /B 1
+    )
+    SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\behat-faildump.yml"
+)
+
 IF "%MOODLE_DOCKER_WEB_HOST%"=="" (
     SET MOODLE_DOCKER_WEB_HOST=localhost
 )

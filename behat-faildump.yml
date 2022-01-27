@@ -1,0 +1,7 @@
+version: "2"
+services:
+  webserver:
+    volumes:
+      - "${MOODLE_DOCKER_BEHAT_FAILDUMP}:/var/www/behatfaildumps"
+    environment:
+        MOODLE_DOCKER_BEHAT_FAILDUMP: "${MOODLE_DOCKER_BEHAT_FAILDUMP}"
