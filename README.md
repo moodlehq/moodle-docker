@@ -260,6 +260,17 @@ As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle
 this repo is just a series of Docker Compose configurations and light wrapper which make use of companion docker images. Each part
 is designed to be reusable and you are encouraged to use the docker [compose] commands as needed.
 
+## Podman support
+
+- [podman](https://github.com/containers/podman) >=3.4
+- [podman-compose](https://github.com/containers/podman-compose) >=1.0.2
+- [podman-dnsname](https://github.com/containers/dnsname)
+
+To be able to use `bin/moodle-docker-compose` you may want to symlink `podman-compose` named `docker-compose`.
+E.g.: `ln -s $(which podman-compose) ~/.local/bin/docker-compose`
+
+If you have a version of `podman` < 3.4 and `podman-compose` in version 0.1.x you can use commit 87c5affc56dc715e6d88e46d08e0e6b2fdb1a8e5 of this repository.
+
 ## Companion docker images
 
 The following Moodle customised docker images are close companions of this project:
