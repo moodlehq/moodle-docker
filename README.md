@@ -87,6 +87,7 @@ Notes:
 * The behat faildump directory is exposed at http://localhost:8000/_/faildumps/.
 * Use `MOODLE_DOCKER_BROWSER` to switch the browser you want to run the test against.
   You need to recreate your containers using `bin/moodle-docker-compose` as described below, if you change it.
+* Check the [Custom commands](#custom-commands) section for more options.
 
 ## Use containers for running phpunit tests
 
@@ -110,6 +111,7 @@ OK (2 tests, 7 assertions)
 
 Notes:
 * If you want to run test with coverage report, use command: `bin/moodle-docker-compose exec webserver phpdbg -qrr vendor/bin/phpunit --coverage-text auth_manual_testcase auth/manual/tests/manual_test.php`
+* Check the [Custom commands](#custom-commands) section for more options.
 
 ## Use containers for manual testing
 
@@ -122,6 +124,7 @@ Notes:
 * Moodle is configured to listen on `http://localhost:8000/`.
 * Mailhog is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
 * The admin `username` you need to use for logging in is `admin` by default. You can customize it by passing `--adminuser='myusername'`
+* Check the [Custom commands](#custom-commands) section for more options.
 
 ## Use containers for running behat tests for the Moodle App
 
@@ -158,6 +161,9 @@ Started at 13-07-2020, 18:34
 3m3.17s (55.02Mb)
 ```
 
+Notes:
+* Check the [Custom commands](#custom-commands) section for more options.
+
 If you are going with the second option, this *can* be used for local development of the Moodle App, given that the `moodleapp` container serves the app on the local 8100 port. However, this is intended to run Behat tests that require interacting with a local Moodle environment. Normal development should be easier calling `npm start` in the host system.
 
 By all means, if you don't want to have npm installed locally you can go full Docker executing the following commands before starting the containers:
@@ -188,6 +194,76 @@ bin/moodle-docker-compose stop
 
 # Restart containers
 bin/moodle-docker-compose start
+```
+
+## Custom commands
+
+### moodle-docker-bash
+This script was created to easily run any command inside any container. First parameter will be the container name and second one will be the command. Example:
+```bash
+~$ bin/moodle-docker-bash webserver php -v
+PHP 7.4.23 (cli) (built: Sep  3 2021 18:14:02) ( NTS )
+```
+```bash
+~$ bin/moodle-docker-bash db psql --version
+psql (PostgreSQL) 11.13 (Debian 11.13-1.pgdg90+1)
+```
+
+### mbash
+As most of the commands using the `moodle-docker-bash` script will be run on the `webserver` container, this is a shortcut of that script that runs the commands only in the `webserver` container. Example:
+```bash
+~$ bin/mbash php -v
+PHP 7.4.23 (cli) (built: Sep  3 2021 18:14:02) ( NTS )
+```
+
+### minstall
+This script was created to be automatically installed in the webserver container and to easily run any install command. First parameter will be the database to install (moodle, phpunit or behat) and the rest will be all the parameters that want to be used to override the default one. Note that this script needs to be run either withing the container shell or using `moodle-docker-bash`. Examples:
+```bash
+~$ bin/mbash minstall moodle --fullname="Moodle first instance" --adminpass="admin"
+-------------------------------------------------------------------------------
+== Setting up database ==
+-->System
+```
+```bash
+~$ bin/mbash minstall phpunit
+Initialising Moodle PHPUnit test environment...
+```
+```bash
+~$ bin/mbash minstall behat
+You are already using the latest available Composer version 2.1.8 (stable channel).
+Installing dependencies from lock file (including require-dev)
+```
+
+### mtest
+This script was created to be automatically installed in the webserver container and to easily run any test command. First parameter will be the tests to be run (phpunit or behat) and the rest will be all the parameters that want to be used to override the default ones. Note that this script needs to be run either withing the container shell or using `moodle-docker-bash`. Examples:
+```bash
+~$ bin/mbash mtest phpunit --filter auth_manual_testcase
+Moodle 3.11.3 (Build: 20210913), 8c02bd32af238dfc83727fb4260b9caf1b622fdb
+Php: 7.4.23, pgsql: 11.13 (Debian 11.13-1.pgdg90+1), OS: Linux 5.10.47-linuxkit x86_64
+```
+```bash
+~$ bin/mbash mtest behat --tags=@auth_manual
+Running single behat site:
+```
+
+### mutil
+This script was created to be automatically installed in the webserver container and to easily access the `util.php` files of phpunit and behat. First parameter will be the test environment (phpunit or behat) and the rest will be all the parameters that want to be used to override the default ones. Note that this script needs to be run either withing the container shell or using `moodle-docker-bash`. Examples:
+```bash
+~$ bin/mbash mutil phpunit --drop
+Purging dataroot:
+Dropping tables:
+```
+```bash
+~$ bin/mbash mutil behat --drop
+Dropping tables:
+```
+
+### mfixversion
+After increasing the version number in a branch, going back to the master branch might cause version problems. This script was created to easily solve that issue. Note that this script needs to be run either withing the container shell or using `moodle-docker-bash`. Example:
+```bash
+~$ bin/mbash mfixversion
+-------------------------------------------------------------------------------
+== Resetting all version numbers ==
 ```
 
 ## Environment variables

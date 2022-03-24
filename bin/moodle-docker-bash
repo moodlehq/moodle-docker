@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+DIR="${BASH_SOURCE%/*}"
+if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
+eval "$DIR/moodle-docker-compose exec $1 bash -c '${@:2}'"

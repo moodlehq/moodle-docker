@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+eval "cp ../scripts/fixversions.php fixversions.php"
+eval "php fixversions.php"
+eval "rm fixversions.php"

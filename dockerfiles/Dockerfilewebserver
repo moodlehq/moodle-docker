@@ -1,0 +1,15 @@
+ARG MOODLE_DOCKER_PHP_VERSION=7.4
+FROM moodlehq/moodle-php-apache:${MOODLE_DOCKER_PHP_VERSION}
+
+# Custom commands
+COPY assets/web/commands/mcommon /usr/local/bin/mcommon
+RUN chmod +x /usr/local/bin/mcommon
+COPY assets/web/commands/minstall /usr/local/bin/minstall
+RUN chmod +x /usr/local/bin/minstall
+COPY assets/web/commands/mutil /usr/local/bin/mutil
+RUN chmod +x /usr/local/bin/mutil
+COPY assets/web/commands/mtest /usr/local/bin/mtest
+RUN chmod +x /usr/local/bin/mtest
+COPY assets/web/commands/mfixversion /usr/local/bin/mfixversion
+RUN chmod +x /usr/local/bin/mfixversion
+COPY assets/web/scripts /var/www/scripts
