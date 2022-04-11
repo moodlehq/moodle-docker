@@ -137,7 +137,7 @@ For both options, you also need to set `MOODLE_DOCKER_BROWSER` to "chrome".
 
 ```bash
 # Install local_moodlemobileapp plugin
-git clone git://github.com/moodlehq/moodle-local_moodlemobileapp "$MOODLE_DOCKER_WWWROOT/local/moodlemobileapp"
+git clone https://github.com/moodlehq/moodle-local_moodlemobileapp.git "$MOODLE_DOCKER_WWWROOT/local/moodlemobileapp"
 
 # Initialize behat environment
 bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
