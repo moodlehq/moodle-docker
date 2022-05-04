@@ -109,7 +109,14 @@ OK (2 tests, 7 assertions)
 ```
 
 Notes:
-* If you want to run test with coverage report, use command: `bin/moodle-docker-compose exec webserver phpdbg -qrr vendor/bin/phpunit --coverage-text auth_manual_testcase auth/manual/tests/manual_test.php`
+* If you want to run tests with code coverage reports:
+```
+# Build component configuration
+bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/util.php --buildcomponentconfigs
+# Execute tests for component
+bin/moodle-docker-compose exec webserver php -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit --configuration reportbuilder --coverage-text
+```
+* See available [Command-Line Options](https://phpunit.readthedocs.io/en/9.5/textui.html#textui-clioptions) for further info
 
 ## Use containers for manual testing
 
