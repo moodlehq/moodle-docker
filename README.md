@@ -13,7 +13,7 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 * Backed by [automated tests](https://travis-ci.com/moodlehq/moodle-docker/branches)
 
 ## Prerequisites
-* [Docker](https://docs.docker.com) and [Docker Compose](https://docs.docker.com/compose/) installed
+* [Docker](https://docs.docker.com) and [Docker Compose](https://docs.docker.com/compose/cli-command/#installing-compose-v2) installed if your Docker CLI version does not support `docker compose` command.
 * 3.25GB of RAM (if you choose [Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-setup#prerequisites) as db server)
 
 ## Quick start
@@ -258,8 +258,8 @@ moodle-docker-compose restart webserver
 ## Advanced usage
 
 As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle-docker/blob/master/bin/moodle-docker-compose),
-this repo is just a series of docker-compose configurations and light wrapper which make use of companion docker images. Each part
-is designed to be reusable and you are encouraged to use the docker[-compose] commands as needed.
+this repo is just a series of Docker Compose configurations and light wrapper which make use of companion docker images. Each part
+is designed to be reusable and you are encouraged to use the docker [compose] commands as needed.
 
 ## Companion docker images
 
