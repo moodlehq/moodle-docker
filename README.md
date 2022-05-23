@@ -170,8 +170,7 @@ If you are going with the second option, this *can* be used for local developmen
 By all means, if you don't want to have npm installed locally you can go full Docker executing the following commands before starting the containers:
 
 ```
-docker run --volume $MOODLE_DOCKER_APP_PATH:/app --workdir /app node:14 npm install
-docker run --volume $MOODLE_DOCKER_APP_PATH:/app --workdir /app node:14 npm run setup
+docker run --volume $MOODLE_DOCKER_APP_PATH:/app --workdir /app bash -c "npm install npm@7 -g && npm ci"
 ```
 
 You can learn more about writing tests for the app in [Acceptance testing for the Moodle App](https://docs.moodle.org/dev/Acceptance_testing_for_the_Moodle_App).
