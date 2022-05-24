@@ -15,7 +15,7 @@ then
 
     if [[ $RUNTIME = ionic5 ]];
     then
-        docker run --volume $basedir/app:/app --workdir /app node:14 npm ci
+        docker run --volume $basedir/app:/app --workdir /app node:14 bash -c "npm install npm@7 -g && npm ci"
     else
         docker run --volume $basedir/app:/app --workdir /app node:11 npm run setup
         docker run --volume $basedir/app:/app --workdir /app node:11 npm ci
