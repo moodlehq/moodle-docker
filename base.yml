@@ -7,6 +7,7 @@ services:
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html"
       - "${ASSETDIR}/web/apache2_faildumps.conf:/etc/apache2/conf-enabled/apache2_faildumps.conf"
+      - "${MOODLE_DOCKER_MD_DATA_VOLUME}:/var/www/moodledata"
     environment:
       MOODLE_DOCKER_DBTYPE: pgsql
       MOODLE_DOCKER_DBNAME: moodle
@@ -20,6 +21,8 @@ services:
       POSTGRES_USER: moodle
       POSTGRES_PASSWORD: "m@0dl3ing"
       POSTGRES_DB: moodle
+    volumes:
+      - "${MOODLE_DOCKER_DB_VOLUME}:/var/lib/postgresql/data"
   exttests:
     image: moodlehq/moodle-exttests
     volumes:
