@@ -14,7 +14,7 @@ then
     $basedir/bin/moodle-docker-compose exec -T db /wait-for-mssql-to-come-up.sh
 elif [ "$MOODLE_DOCKER_DB" = "oracle" ];
 then
-    until $basedir/bin/moodle-docker-compose logs db | grep -q 'Database opened.';
+    until $basedir/bin/moodle-docker-compose logs db | grep -q 'DATABASE IS READY TO USE!';
     do
         echo 'Waiting for oracle to come up...'
         sleep 15
