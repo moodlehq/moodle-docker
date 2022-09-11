@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   PHPUnit:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     strategy:
       fail-fast: false
@@ -76,7 +76,7 @@ jobs:
           tests/phpunit-teardown.sh
 
   Behat:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     strategy:
       fail-fast: false
@@ -149,7 +149,7 @@ jobs:
           tests/behat-teardown.sh
 
   App:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     strategy:
       fail-fast: false
