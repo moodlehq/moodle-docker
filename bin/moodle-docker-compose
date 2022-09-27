@@ -38,18 +38,19 @@ dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 # PHP Version.
 export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-7.4}
 
-# Database flavour
-if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
+# Database flavour.
+dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
+
+# Add support for version specific database settings.
+if [ ! -z "$MOODLE_DOCKER_DB_VERSION" ];
 then
-    dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
-
+    filename="${basedir}/db.${MOODLE_DOCKER_DB}.${MOODLE_DOCKER_DB_VERSION}.yml"
+    if [ -f $filename ]; then
+        dockercompose="${dockercompose} -f ${filename}"
+    fi
 fi
 
-# Support PHP version overrides for DB..
-filename="${basedir}/db.${MOODLE_DOCKER_DB}.${MOODLE_DOCKER_PHP_VERSION}.yml"
-if [ -f $filename ]; then
-    dockercompose="${dockercompose} -f ${filename}"
-fi
+# Support PHP version overrides for DB not available any more.
 
 # Expose DB port if requested.
 if [[ $MOODLE_DOCKER_DB_PORT == *":"* ]] || [[ $MOODLE_DOCKER_DB_PORT -gt 0 ]]

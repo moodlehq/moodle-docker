@@ -1,0 +1,11 @@
+version: "2"
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_DBTYPE: pgsql
+  db:
+    image: "postgres:${MOODLE_DOCKER_DB_VERSION:-12}"
+    environment:
+      POSTGRES_USER: moodle
+      POSTGRES_PASSWORD: "m@0dl3ing"
+      POSTGRES_DB: moodle
