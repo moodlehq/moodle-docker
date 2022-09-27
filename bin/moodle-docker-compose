@@ -70,6 +70,21 @@ if [ -f $filename ]; then
     dockercompose="${dockercompose} -f ${filename}"
 fi
 
+# Expose DB port if requested.
+if [[ $MOODLE_DOCKER_DB_PORT == *":"* ]] || [[ $MOODLE_DOCKER_DB_PORT -gt 0 ]]
+then
+    # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
+    if [[ ! $MOODLE_DOCKER_DB_PORT == *":"* ]]
+    then
+        export MOODLE_DOCKER_DB_PORT=127.0.0.1:$MOODLE_DOCKER_DB_PORT
+    fi
+    filename="${basedir}/db.${MOODLE_DOCKER_DB}.port.yml"
+    if [ -f $filename ];
+    then
+        dockercompose="${dockercompose} -f ${filename}"
+    fi
+fi
+
 # Fix mobile app deprecated variables
 if [ ! -z "$MOODLE_APP_VERSION" ];
 then

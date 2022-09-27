@@ -53,6 +53,24 @@ if exist %filename% (
     SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%filename%"
 )
 
+IF "%MOODLE_DOCKER_DB_PORT%"=="" (
+    SET MOODLE_DOCKER_DB_PORT=
+) ELSE (
+    SET "TRUE="
+    IF NOT "%MOODLE_DOCKER_DB_PORT%"=="%MOODLE_DOCKER_DB_PORT::=%" SET TRUE=1
+    IF NOT "%MOODLE_DOCKER_DB_PORT%"=="0" SET TRUE=1
+    IF DEFINED TRUE (
+        REM If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
+        IF "%MOODLE_DOCKER_DB_PORT%"=="%MOODLE_DOCKER_DB_PORT::=%" (
+            SET MOODLE_DOCKER_DB_PORT=127.0.0.1:%MOODLE_DOCKER_DB_PORT%
+        )
+        SET filename=%BASEDIR%\db.%MOODLE_DOCKER_DB%.port.yml
+        if exist %filename% (
+            SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%filename%"
+        )
+    )
+)
+
 IF NOT "%MOODLE_APP_VERSION%"=="" (
     ECHO Warning: MOODLE_APP_VERSION is deprecated, use MOODLE_DOCKER_APP_VERSION instead
 
