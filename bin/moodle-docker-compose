@@ -32,6 +32,19 @@ else
   echo 'Compose v2 is not available in Docker CLI, falling back to use docker-compose script'
   dockercompose="docker-compose"
 fi
+
+# Find out the docker database version.
+if [ "$MOODLE_DOCKER_DB" == 'pgsql' ];
+then
+  export MOODLE_DOCKER_DB_VERSION=${MOODLE_DOCKER_DB_VERSION:-12}
+elif [ "$MOODLE_DOCKER_DB" == 'mysql' ];
+then
+  export MOODLE_DOCKER_DB_VERSION=${MOODLE_DOCKER_DB_VERSION:-5.7}
+elif [ "$MOODLE_DOCKER_DB" == 'mariadb' ];
+then
+  export MOODLE_DOCKER_DB_VERSION=${MOODLE_DOCKER_DB_VERSION:-10.7}
+fi
+
 dockercompose="${dockercompose} -f ${basedir}/base.yml"
 dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 
@@ -43,6 +56,12 @@ if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
 then
     dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
 
+fi
+
+# Add support for version specific database settings.
+filename="${basedir}/db.${MOODLE_DOCKER_DB}-${MOODLE_DOCKER_DB_VERSION}.yml"
+if [ -f $filename ]; then
+    dockercompose="${dockercompose} -f ${filename}"
 fi
 
 # Support PHP version overrides for DB..
