@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 set -e
 
+# If moodle-docker.env file found then use it as configuration values to match moodle-docker-compose script.
+filename="moodle-docker.env"
+if [ -f $filename ]; then
+    export $(grep -v '^#' moodle-docker.env | xargs)
+    if [ -z "$MOODLE_DOCKER_WWWROOT" ];
+    then
+      export MOODLE_DOCKER_WWWROOT="$( pwd )";
+    fi
+fi
+
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 
 if [ -z "$MOODLE_DOCKER_DB" ];

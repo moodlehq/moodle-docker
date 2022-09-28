@@ -1,0 +1,4 @@
+version: "2.4"
+services:
+  db:
+    platform: "${MOODLE_DOCKER_DB_PLATFORM}"

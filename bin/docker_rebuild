@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+
+$basedir/bin/moodle-docker-compose down
+$basedir/bin/moodle-docker-compose up -d
+$basedir/bin/moodle-docker-wait-for-db

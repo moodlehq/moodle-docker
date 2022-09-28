@@ -1,4 +1,4 @@
-version: "2"
+version: "2.4"
 services:
   webserver:
     image: "moodlehq/moodle-php-apache:${MOODLE_DOCKER_PHP_VERSION}"
@@ -7,19 +7,14 @@ services:
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html"
       - "${ASSETDIR}/web/apache2_faildumps.conf:/etc/apache2/conf-enabled/apache2_faildumps.conf"
+      - "${ASSETDIR}/web/volta_install.sh:/root/volta_install.sh"
+      - "${ASSETDIR}/web/npm_install.sh:/root/npm_install.sh"
     environment:
-      MOODLE_DOCKER_DBTYPE: pgsql
       MOODLE_DOCKER_DBNAME: moodle
       MOODLE_DOCKER_DBUSER: moodle
       MOODLE_DOCKER_DBPASS: "m@0dl3ing"
       MOODLE_DOCKER_BROWSER: firefox
       MOODLE_DOCKER_WEB_HOST: "${MOODLE_DOCKER_WEB_HOST}"
-  db:
-    image: "postgres:${MOODLE_DOCKER_DB_VERSION}"
-    environment:
-      POSTGRES_USER: moodle
-      POSTGRES_PASSWORD: "m@0dl3ing"
-      POSTGRES_DB: moodle
   exttests:
     image: moodlehq/moodle-exttests
     volumes:

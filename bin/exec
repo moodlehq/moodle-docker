@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+if [ -z "$1" ];
+then
+    echo 'bin/exec requires executable file as parameter'
+    exit 1
+fi
+
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+
+$basedir/bin/moodle-docker-compose exec webserver "$@"

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -e
+
+if [ -z "$1" ];
+then
+    version=16
+else
+    version="$1"
+fi
+
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+
+$basedir/bin/moodle-docker-compose exec webserver bash --login /root/volta_install.sh
+$basedir/bin/moodle-docker-compose exec webserver bash --login /root/npm_install.sh ${version}

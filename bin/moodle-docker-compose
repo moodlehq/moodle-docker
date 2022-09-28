@@ -1,6 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+
+# If moodle-docker.env file found then use it as configuration values,
+# this makes the moodle-docker compatible with other tooling
+# that does not understand this bespoke compose script.
+filename="moodle-docker.env"
+if [ -f $filename ]; then
+    export $(grep -v '^#' moodle-docker.env | xargs)
+    if [ -z "$MOODLE_DOCKER_WWWROOT" ];
+    then
+      export MOODLE_DOCKER_WWWROOT="$( pwd )";
+    fi
+fi
+
 if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
 then
     echo 'Error: $MOODLE_DOCKER_WWWROOT is not set or not an existing directory'
@@ -12,6 +26,16 @@ then
     echo 'Error: $MOODLE_DOCKER_DB is not set'
     exit 1
 fi
+
+# Create moodle config.php if necessary.
+filename="$MOODLE_DOCKER_WWWROOT/config-dist.php"
+if [ -f $filename ];
+then
+    filename="$MOODLE_DOCKER_WWWROOT/config.php"
+    if [ ! -f $filename ]; then
+        cp "${basedir}/templates/config.php" "$filename"
+    fi
+fi;
 
 # Nasty portable way to the directory of this script, following symlink,
 # because readlink -f not on OSX. Thanks stack overflow..
@@ -25,12 +49,13 @@ basedir="$( cd -P "$( dirname "$SOURCE" )/../" && pwd )"
 export ASSETDIR="${basedir}/assets"
 
 # Test if we have docker compose v2, and keep quiet if we don't.
+dockercompose=""
 ver=$(docker compose version > /dev/null 2>&1 && docker compose version --short) || true
 if [[ $ver =~ ^v?2 ]]; then
-  dockercompose="docker compose"
+  dockercomposecommand="docker compose"
 else
   echo 'Compose v2 is not available in Docker CLI, falling back to use docker-compose script'
-  dockercompose="docker-compose"
+  dockercomposecommand="docker-compose"
 fi
 
 # Find out the docker database version.
@@ -52,23 +77,16 @@ dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-7.4}
 
 # Database flavour
-if [ "$MOODLE_DOCKER_DB" != 'pgsql' ];
-then
-    dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
-
-fi
+dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
 
 # Add support for version specific database settings.
-filename="${basedir}/db.${MOODLE_DOCKER_DB}-${MOODLE_DOCKER_DB_VERSION}.yml"
+filename="${basedir}/db.${MOODLE_DOCKER_DB}.${MOODLE_DOCKER_DB_VERSION}.yml"
 if [ -f $filename ]; then
     dockercompose="${dockercompose} -f ${filename}"
 fi
 
-# Support PHP version overrides for DB..
-filename="${basedir}/db.${MOODLE_DOCKER_DB}.${MOODLE_DOCKER_PHP_VERSION}.yml"
-if [ -f $filename ]; then
-    dockercompose="${dockercompose} -f ${filename}"
-fi
+# Database overrides based on PHP versions are not supported any more,
+# use extra configuration file ./moodle-docker.yml instead in special cases.
 
 # Expose DB port if requested.
 if [[ $MOODLE_DOCKER_DB_PORT == *":"* ]] || [[ $MOODLE_DOCKER_DB_PORT -gt 0 ]]
@@ -83,6 +101,16 @@ then
     then
         dockercompose="${dockercompose} -f ${filename}"
     fi
+fi
+
+# Force platform if requested.
+if [ ! -z "$MOODLE_DOCKER_WEB_PLATFORM" ];
+then
+    dockercompose="${dockercompose} -f ${basedir}/webserver.platform.yml"
+fi
+if [ ! -z "$MOODLE_DOCKER_DB_PLATFORM" ];
+then
+    dockercompose="${dockercompose} -f ${basedir}/db.platform.yml"
 fi
 
 # Fix mobile app deprecated variables
@@ -222,5 +250,29 @@ if [[ "$(uname)" == "Darwin" ]]; then
     dockercompose="${dockercompose} -f ${basedir}/volumes-cached.yml"
 fi
 
+# Finally any other custom overrides
+filename="moodle-docker.yml"
+if [ -f $filename ];
+then
+    dockercompose="${dockercompose} -f ${filename}"
+fi
 
-$dockercompose "$@"
+# If new env file is used then let's flatten the settings into one docker
+# compose configuration file to make this compatible with every docker tool out there.
+filename="moodle-docker.env"
+if [ -f $filename ];
+then
+    ymlfilename="moodle-docker-final.yml"
+    if [ -f $ymlfilename ];
+    then
+        rm ${ymlfilename}
+    fi
+    # Use older version 2 format because PhpStorm cannot deal with newer version yet.
+    docker-compose $dockercompose config > ${ymlfilename}
+    if [ -f $ymlfilename ];
+    then
+        dockercompose=" -f ${ymlfilename}"
+    fi
+fi
+
+$dockercomposecommand $dockercompose "$@"

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+
+$basedir/bin/moodle-docker-compose exec webserver vendor/bin/behat --config /var/www/behatdata/behatrun/behat/behat.yml "$@"

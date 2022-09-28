@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# This file can be copied into your Moodle project, it emulates a php binary,
+# it uses the final configuration file for performance reasons,
+# we should not call moodle-docker-compose here.
+
+basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+docker compose -f ${basedir}/moodle-docker-final.yml exec webserver php $@
