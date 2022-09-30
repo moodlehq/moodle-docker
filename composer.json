@@ -1,0 +1,7 @@
+{
+  "name": "moodlehq/moodle-docker",
+  "license": "GPL-3.0-or-later",
+  "description": "Docker Containers for Moodle Developers",
+  "type": "project",
+  "homepage": "https://github.com/moodlehq/moodle-docker/"
+}
