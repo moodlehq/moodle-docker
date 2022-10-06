@@ -4,6 +4,6 @@ services:
     environment:
       MOODLE_DOCKER_BROWSER: chrome
   selenium:
-    image: "selenium/standalone-chrome${MOODLE_DOCKER_SELENIUM_SUFFIX}:${MOODLE_DOCKER_BROWSER_TAG}"
+    image: "selenium/standalone-chrome${MOODLE_DOCKER_SELENIUM_SUFFIX:-}:${MOODLE_DOCKER_BROWSER_TAG}"
     volumes:
         - /dev/shm:/dev/shm

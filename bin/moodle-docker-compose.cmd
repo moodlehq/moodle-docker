@@ -28,14 +28,11 @@ IF "%MOODLE_DOCKER_PHP_VERSION%"=="" (
 SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\db.%MOODLE_DOCKER_DB%.yml"
 
 SET filenamedbversion=%BASEDIR%\db.%MOODLE_DOCKER_DB%.%MOODLE_DOCKER_DB_VERSION%.yml
-if exist %filenamedbversion% (
+IF EXIST "%filenamedbversion%" (
     SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%filenamedbversion%"
 )
 
-SET filename=%BASEDIR%\db.%MOODLE_DOCKER_DB%.%MOODLE_DOCKER_PHP_VERSION%.yml
-if exist %filename% (
-    SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%filename%"
-)
+REM Support PHP version overrides for DB not available any more.
 
 IF "%MOODLE_DOCKER_DB_PORT%"=="" (
     SET MOODLE_DOCKER_DB_PORT=
@@ -49,7 +46,7 @@ IF "%MOODLE_DOCKER_DB_PORT%"=="" (
             SET MOODLE_DOCKER_DB_PORT=127.0.0.1:%MOODLE_DOCKER_DB_PORT%
         )
         SET filedbport=%BASEDIR%\db.%MOODLE_DOCKER_DB%.port.yml
-        IF EXIST %filedbport% (
+        IF EXIST "%filedbport%" (
             SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%filedbport%"
         )
     )
@@ -146,7 +143,5 @@ IF "%MOODLE_DOCKER_SELENIUM_VNC_PORT%"=="" (
         )
     )
 )
-
-echo %MOODLE_DOCKER_SELENIUM_SUFFIX% %MOODLE_DOCKER_BROWSER_TAG%
 
 %DOCKERCOMPOSE% %*
