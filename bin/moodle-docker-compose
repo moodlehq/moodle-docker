@@ -7,17 +7,8 @@ set -e
 thisfile=$( readlink "${BASH_SOURCE[0]}" ) || thisfile="${BASH_SOURCE[0]}"
 basedir="$( cd "$( dirname "$thisfile" )/../" && pwd -P )"
 
-if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
-then
-    echo 'Error: $MOODLE_DOCKER_WWWROOT is not set or not an existing directory'
-    exit 1
-fi
-
-if [ -z "$MOODLE_DOCKER_DB" ];
-then
-    echo 'Error: $MOODLE_DOCKER_DB is not set'
-    exit 1
-fi
+# Load all environment settings.
+source "${basedir}/bin/include/env.sh"
 
 export ASSETDIR="${basedir}/assets"
 

@@ -61,6 +61,36 @@ to the instance you expect to. See
 [envvars](https://docs.docker.com/compose/reference/envvars/)
 to see more about `docker-compose` environment variables.
 
+## Environment setting defaults via ./moodle-docker.env
+
+In Linux and macOS it is also possible to created `moodle-docker.env` file
+in directory where `bin/moodle-docker-compose` is executed, the file contents are
+then used as default environment values.
+
+If `moodle-docker.env` is in Moodle code root, then MOODLE_DOCKER_WWWROOT default
+is set to Moodle directory and COMPOSE_PROJECT_NAME defaults to Moodle directory name.
+
+Example:
+
+1. Create `/path/to/moodle/moodle-docker.env` file with the following content:
+```
+# file location /path/to/moodle/moodle-docker.env
+MOODLE_DOCKER_DB=pgsql
+```
+2. Copy config.docker-template.php file to `/path/to/moodle/config.php`
+3. Start containers:
+```bash
+cd /path/to/moodle
+/path/to/moodle-docker/bin/moodle-docker-compose up -d
+```
+4. Switch to MariaDB temporarily:
+```bash
+cd /path/to/moodle
+/path/to/moodle-docker/bin/moodle-docker-compose down
+export MOODLE_DOCKER_DB=mariadb
+/path/to/moodle-docker/bin/moodle-docker-compose up -d
+```
+
 ## Use containers for running behat tests
 
 ```bash
