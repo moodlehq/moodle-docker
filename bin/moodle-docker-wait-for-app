@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
+thisfile=$( readlink "${BASH_SOURCE[0]}" ) || thisfile="${BASH_SOURCE[0]}"
+basedir="$( cd "$( dirname "$thisfile" )/../" && pwd -P )"
 
 if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && ([[ ! -z "$MOODLE_DOCKER_APP_PATH" ]] || [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]] || [[ ! -z "$MOODLE_APP_VERSION" ]]);
 then
