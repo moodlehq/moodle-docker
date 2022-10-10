@@ -8,24 +8,17 @@ services:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html"
       - "${ASSETDIR}/web/apache2_faildumps.conf:/etc/apache2/conf-enabled/apache2_faildumps.conf"
     environment:
-      MOODLE_DOCKER_DBTYPE: pgsql
       MOODLE_DOCKER_DBNAME: moodle
       MOODLE_DOCKER_DBUSER: moodle
       MOODLE_DOCKER_DBPASS: "m@0dl3ing"
       MOODLE_DOCKER_BROWSER: firefox
       MOODLE_DOCKER_WEB_HOST: "${MOODLE_DOCKER_WEB_HOST}"
-  db:
-    image: postgres:12
-    environment:
-      POSTGRES_USER: moodle
-      POSTGRES_PASSWORD: "m@0dl3ing"
-      POSTGRES_DB: moodle
   exttests:
     image: moodlehq/moodle-exttests
     volumes:
       - "${ASSETDIR}/exttests/apache2_ports.conf:/etc/apache2/ports.conf"
       - "${ASSETDIR}/exttests/apache2.conf:/etc/apache2/sites-enabled/000-default.conf"
   selenium:
-    image: "selenium/standalone-firefox${MOODLE_DOCKER_SELENIUM_SUFFIX}:${MOODLE_DOCKER_BROWSER_TAG}"
+    image: "selenium/standalone-firefox${MOODLE_DOCKER_SELENIUM_SUFFIX:-}:${MOODLE_DOCKER_BROWSER_TAG}"
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html:ro"
