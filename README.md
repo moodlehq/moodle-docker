@@ -217,6 +217,8 @@ When you change them, use `bin/moodle-docker-compose down && bin/moodle-docker-c
 | `MOODLE_DOCKER_APP_PATH`                  | no        | path on your file system              | not set       | If set and the chrome browser is selected, it will start an instance of the Moodle app from your local codebase |
 | `MOODLE_DOCKER_APP_VERSION`               | no        | a valid [app docker image version](https://docs.moodle.org/dev/Moodle_App_Docker_images) | not set       | If set will start an instance of the Moodle app if the chrome browser is selected |
 | `MOODLE_DOCKER_APP_RUNTIME`               | no        | 'ionic3' or 'ionic5'                  | not set       | Set this to indicate the runtime being used in the Moodle app. In most cases, this can be ignored because the runtime is guessed automatically (except on Windows using the `.cmd` binary). In case you need to set it manually and you're not sure which one it is, versions 3.9.5 and later should be using Ionic 5. |
+| `MOODLE_DOCKER_DB_MANAGER`                | no        | 'adminer' or 'phpmyadmin'             | not set       | If set, it will start the specified database manager. Note that phpmysql is only compatible with MySQL/MariaDB. |
+| `MOODLE_DOCKER_DB_MANAGER_PORT`           | no        | any integer value (or bind_ip:integer)| 8900          | The port number for web-based db manager. Example: http://localhost:8900     |
 
 ## Using XDebug for live debugging
 

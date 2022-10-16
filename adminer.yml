@@ -1,0 +1,10 @@
+version: "2"
+
+services:
+  adminer:
+    image: adminer:4.8.1
+    restart: always
+    ports:
+      - "${MOODLE_DOCKER_DB_MANAGER_PORT}:8080"
+    depends_on:
+      - "db"

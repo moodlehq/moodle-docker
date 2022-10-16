@@ -35,6 +35,9 @@ dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 # PHP Version.
 export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-7.4}
 
+# Expose DB manager port if requested.
+export MOODLE_DOCKER_DB_MANAGER_PORT=${MOODLE_DOCKER_DB_MANAGER_PORT:-8900}
+
 # Database flavour.
 dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
 
@@ -166,6 +169,12 @@ fi
 if [[ ! -z "$MOODLE_DOCKER_PHPUNIT_EXTERNAL_SERVICES" ]];
 then
     dockercompose="${dockercompose} -f ${basedir}/phpunit-external-services.yml"
+fi
+
+# Database manager
+if [[ ! -z "$MOODLE_DOCKER_DB_MANAGER" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/${MOODLE_DOCKER_DB_MANAGER}.yml"
 fi
 
 #  Faildump directory

@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.0
+    restart: "always"
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    ports:
+      - "${MOODLE_DOCKER_DB_MANAGER_PORT}:80"
+    depends_on:
+      - "db"
