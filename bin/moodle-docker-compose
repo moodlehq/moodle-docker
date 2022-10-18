@@ -201,5 +201,13 @@ if [[ "$(uname)" == "Darwin" ]]; then
     dockercompose="${dockercompose} -f ${basedir}/volumes-cached.yml"
 fi
 
+# Apply local customisations if a local.yml is found.
+# Note: This must be the final modification before the docker-compose command is called.
+localfile="${basedir}/local.yml"
+if [ -f "${localfile}" ]
+then
+  echo "Including local options from ${localfile}"
+  dockercompose="${dockercompose} -f ${localfile}"
+fi
 
 $dockercompose "$@"

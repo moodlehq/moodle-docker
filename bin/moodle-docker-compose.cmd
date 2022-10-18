@@ -144,4 +144,13 @@ IF "%MOODLE_DOCKER_SELENIUM_VNC_PORT%"=="" (
     )
 )
 
+
+REM Apply local customisations if a local.yml is found.
+REM Note: This must be the final modification before the docker-compose command is called.
+SET LOCALFILE=%BASEDIR%\local.yml
+IF EXIST %LOCALFILE% (
+    ECHO Including local options from %localfile%
+    SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%LOCALFILE%"
+)
+
 %DOCKERCOMPOSE% %*
