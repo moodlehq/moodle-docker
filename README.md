@@ -96,14 +96,15 @@ bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
 # [..]
 
 # Run phpunit tests
-bin/moodle-docker-compose exec webserver vendor/bin/phpunit auth_manual_testcase auth/manual/tests/manual_test.php
-Moodle 3.4dev (Build: 20171006), 33a3ec7c9378e64c6f15c688a3c68a39114aa29d
-Php: 7.1.9, pgsql: 9.6.5, OS: Linux 4.9.49-moby x86_64
-PHPUnit 5.5.7 by Sebastian Bergmann and contributors.
+
+bin/moodle-docker-compose exec webserver vendor/bin/phpunit auth/manual/tests/manual_test.php
+Moodle 4.0.4 (Build: 20220912), ef7a51dcb8e805a6889974b04d3154ba8bd874f2
+Php: 7.3.33, pgsql: 11.15 (Debian 11.15-1.pgdg90+1), OS: Linux 5.10.0-11-amd64 x86_64
+PHPUnit 9.5.13 by Sebastian Bergmann and contributors.
 
 ..                                                                  2 / 2 (100%)
 
-Time: 4.45 seconds, Memory: 38.00MB
+Time: 00:00.304, Memory: 72.50 MB
 
 OK (2 tests, 7 assertions)
 ```
