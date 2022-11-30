@@ -13,7 +13,9 @@ jobs:
           # PostgreSQL (highest, lowest php supported)
           - { branch: master,            php: "8.0", database: pgsql, suite: phpunit-full } # Full run only for master.
           - { branch: master,            php: "7.4", database: pgsql, suite: phpunit-full }
-          - { branch: MOODLE_400_STABLE, php: "8.0", database: pgsql, suite: phpunit } # Other branches, quicker run.
+          - { branch: MOODLE_401_STABLE, php: "8.0", database: pgsql, suite: phpunit } # Other branches, quicker run.
+          - { branch: MOODLE_401_STABLE, php: "7.4", database: pgsql, suite: phpunit }
+          - { branch: MOODLE_400_STABLE, php: "8.0", database: pgsql, suite: phpunit }
           - { branch: MOODLE_400_STABLE, php: "7.3", database: pgsql, suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, suite: phpunit }
@@ -23,22 +25,26 @@ jobs:
           - { branch: MOODLE_39_STABLE,  php: "7.2", database: pgsql, suite: phpunit }
           # MariaDB (lowest php supported)
           - { branch: master,            php: "7.4", database: mariadb, suite: phpunit }
+          - { branch: MOODLE_401_STABLE, php: "7.4", database: mariadb, suite: phpunit }
           - { branch: MOODLE_400_STABLE, php: "7.3", database: mariadb, suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "7.3", database: mariadb, suite: phpunit }
           - { branch: MOODLE_310_STABLE, php: "7.2", database: mariadb, suite: phpunit }
           - { branch: MOODLE_39_STABLE,  php: "7.2", database: mariadb, suite: phpunit }
           # Other databases (highest php supported)
           - { branch: master,            php: "8.0", database: mssql,  suite: phpunit }
+          - { branch: MOODLE_401_STABLE, php: "8.0", database: mssql,  suite: phpunit }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: mssql,  suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: mssql,  suite: phpunit }
           - { branch: MOODLE_310_STABLE, php: "7.4", database: mssql,  suite: phpunit }
           - { branch: MOODLE_39_STABLE,  php: "7.4", database: mssql,  suite: phpunit }
           - { branch: master,            php: "8.0", database: mysql,  suite: phpunit }
+          - { branch: MOODLE_401_STABLE, php: "8.0", database: mysql,  suite: phpunit }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: mysql,  suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: mysql,  suite: phpunit }
           - { branch: MOODLE_310_STABLE, php: "7.4", database: mysql,  suite: phpunit }
           - { branch: MOODLE_39_STABLE,  php: "7.4", database: mysql,  suite: phpunit }
           - { branch: master,            php: "8.0", database: oracle, suite: phpunit }
+          - { branch: MOODLE_401_STABLE, php: "8.0", database: oracle, suite: phpunit }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: oracle, suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: oracle, suite: phpunit }
           - { branch: MOODLE_310_STABLE, php: "7.4", database: oracle, suite: phpunit }
