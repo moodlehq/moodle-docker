@@ -112,6 +112,16 @@ then
     fi
 fi
 
+# Guess mobile app node version
+if [[ -z "$MOODLE_DOCKER_APP_NODE_VERSION" ]] && [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]] && [[ "$MOODLE_DOCKER_APP_RUNTIME" == "ionic5" ]];
+then
+    if [ -f "$MOODLE_DOCKER_APP_PATH/.nvmrc" ]; then
+        appnodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | grep -oP '(\d+\.?)+' || true)"
+
+        export MOODLE_DOCKER_APP_NODE_VERSION="$appnodeversion"
+    fi
+fi
+
 # Mobile app for development
 if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
 then

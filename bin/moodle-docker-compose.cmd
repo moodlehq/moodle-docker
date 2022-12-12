@@ -64,6 +64,23 @@ IF "%MOODLE_DOCKER_APP_RUNTIME%"=="" (
     SET MOODLE_DOCKER_APP_RUNTIME=ionic5
 )
 
+REM Guess mobile app node version
+IF "%MOODLE_DOCKER_APP_NODE_VERSION%"=="" (
+    IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
+        IF "%MOODLE_DOCKER_APP_RUNTIME%"=="ionic5" (
+            SET filenvmrc=%MOODLE_DOCKER_APP_PATH%\.nvmrc
+            IF EXIST "%filenvmrc%" (
+                SET /p NODE_VERSION=< "%filenvmrc%"
+                SET NODE_VERSION=%NODE_VERSION:v=%
+                ECHO %NODE_VERSION% | FINDSTR /r "[0-9.]*" >nul 2>&1
+                IF ERRORLEVEL 0 (
+                    SET MOODLE_DOCKER_APP_NODE_VERSION=%NODE_VERSION%
+                )
+            )
+        )
+    )
+)
+
 IF "%MOODLE_DOCKER_BROWSER%"=="chrome" (
     IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
         SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev-%MOODLE_DOCKER_APP_RUNTIME%.yml"
