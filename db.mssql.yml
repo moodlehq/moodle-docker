@@ -5,7 +5,7 @@ services:
       MOODLE_DOCKER_DBTYPE: sqlsrv
       MOODLE_DOCKER_DBUSER: sa
   db:
-    image: moodlehq/moodle-db-mssql:${MOODLE_DOCKER_DB_VERSION:-2017-latest}
+    image: moodlehq/moodle-db-mssql:${MOODLE_DOCKER_DB_VERSION:-latest}
     environment:
         ACCEPT_EULA: "y"
         SA_PASSWORD: "m@0dl3ing"
