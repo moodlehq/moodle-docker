@@ -5,13 +5,10 @@ services:
       MOODLE_DOCKER_DBTYPE: mysqli
       MOODLE_DOCKER_DBCOLLATION: utf8mb4_bin
   db:
-    image: mysql:${MOODLE_DOCKER_DB_VERSION:-5.7}
+    image: mysql:${MOODLE_DOCKER_DB_VERSION:-8.0}
     command: >
                 --character-set-server=utf8mb4
                 --collation-server=utf8mb4_bin
-                --innodb_file_format=barracuda
-                --innodb_file_per_table=On
-                --innodb_large_prefix=On
     environment:
       MYSQL_ROOT_PASSWORD: "m@0dl3ing"
       MYSQL_USER: moodle
