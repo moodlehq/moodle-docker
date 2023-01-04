@@ -9,6 +9,7 @@ services:
     command: >
                 --character-set-server=utf8mb4
                 --collation-server=utf8mb4_bin
+                --skip-log-bin
     environment:
       MYSQL_ROOT_PASSWORD: "m@0dl3ing"
       MYSQL_USER: moodle
