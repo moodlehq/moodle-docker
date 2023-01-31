@@ -110,6 +110,11 @@ IF "%MOODLE_DOCKER_BROWSER_TAG%"=="" (
        )
 )
 
+IF "%MOODLE_DOCKER_SELENIUM_REPOSITORY%"=="" (
+    REM Default to official selenium images by default.
+    SET MOODLE_DOCKER_SELENIUM_REPOSITORY=selenium
+)
+
 IF NOT "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\selenium.%MOODLE_DOCKER_BROWSER_NAME%.yml"
 )
