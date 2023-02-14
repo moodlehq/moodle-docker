@@ -220,6 +220,41 @@ When you change them, use `bin/moodle-docker-compose down && bin/moodle-docker-c
 | `MOODLE_DOCKER_APP_RUNTIME`               | no        | 'ionic3' or 'ionic5'                  | not set       | Set this to indicate the runtime being used in the Moodle app. In most cases, this can be ignored because the runtime is guessed automatically (except on Windows using the `.cmd` binary). In case you need to set it manually and you're not sure which one it is, versions 3.9.5 and later should be using Ionic 5. |
 | `MOODLE_DOCKER_APP_NODE_VERSION`          | no        | [node](https://hub.docker.com/_/node) image version tag                | not set       | Node version to run the app. In most cases, this can be ignored because the version is parsed from the project's `.nvmrc` file. This will only be used when the runtime is `ionic5` and the app is running from the local filesystem. |
 
+## SSL certificates
+
+If you wish, you can generate a self-signed certificate repository and create your own certificates for your containers.
+
+Certificates should be placed into the `assets/certs/certs` directory, with the certificate authority placed into `assets/certs/ca`.
+
+If moodle-docker-compose detects the certificate for a local certificate authority at `asserts/certs/ca/ca.pem` then an additional SSL configuration will be included.
+
+To make this easier, a helper has been created for Linux and MacOS which will:
+
+- generate a new certificate authority if required
+- generate certificates
+- offer to install your new Certificate Authority
+
+
+The helper can be used as follows:
+
+```
+./assets/certs/createcerts.sh hostname [alternative-hostname]
+```
+
+You will need to run a separate command for each host you wish to generate a certificate for, for example:
+
+```
+./asserts/certs/createcerts.sh webserver webserver.container.docker.internal
+./asserts/certs/createcerts.sh exttests exttests.container.docker.internal
+```
+
+### Local hostnames
+
+If you wish to access your containers using their certificates, you will need to add either:
+
+- entries to your `/etc/hosts` or `%WinDir%\System32\Drivers\Etc\Hosts` file; or
+- relevant DNS entries to your local DNS resolver (for example dnsmasqd).
+
 ## Local customisations
 
 In some situations you may wish to add local customisations, such as including additional containers, or changing existing containers.

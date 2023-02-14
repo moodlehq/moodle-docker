@@ -32,6 +32,11 @@ fi
 dockercompose="${dockercompose} -f ${basedir}/base.yml"
 dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 
+if [ -f assets/certs/ca/ca.pem ]
+then
+  dockercompose="${dockercompose} -f ${basedir}/ssl.yml"
+fi
+
 # PHP Version.
 export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-8.0}
 

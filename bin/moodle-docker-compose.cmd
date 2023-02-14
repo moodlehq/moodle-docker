@@ -21,6 +21,11 @@ SET COMPOSE_CONVERT_WINDOWS_PATHS=true
 SET DOCKERCOMPOSE=docker-compose -f "%BASEDIR%\base.yml"
 SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\service.mail.yml"
 
+IF EXIST "%ASSETDIR%\certs\ca\ca.pem" (
+    REM A Certificate Authority certificate exists. Add the ssl configuration.
+    SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\ssl.yml"
+)
+
 IF "%MOODLE_DOCKER_PHP_VERSION%"=="" (
     SET MOODLE_DOCKER_PHP_VERSION=8.0
 )
