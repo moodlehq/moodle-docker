@@ -22,3 +22,9 @@ services:
     image: "selenium/standalone-firefox${MOODLE_DOCKER_SELENIUM_SUFFIX:-}:${MOODLE_DOCKER_BROWSER_TAG}"
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html:ro"
+  node:
+    build:
+      context: ./
+      dockerfile: node.dockerfile
+    volumes:
+      - "${MOODLE_DOCKER_WWWROOT}:/var/www/html

@@ -7,6 +7,7 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 * All supported database servers (PostgreSQL, MySQL, Micosoft SQL Server, Oracle XE)
 * Behat/Selenium configuration for Firefox and Chrome
 * Catch-all smtp server and web interface to messages using [MailHog](https://github.com/mailhog/MailHog/)
+* Node container for Javascript compilation
 * All PHP Extensions enabled configured for external services (e.g. solr, ldap)
 * All supported PHP versions
 * Zero-configuration approach
