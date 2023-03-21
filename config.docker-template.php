@@ -13,6 +13,14 @@ $CFG->dbpass    = getenv('MOODLE_DOCKER_DBPASS');
 $CFG->prefix    = 'm_';
 $CFG->dboptions = ['dbcollation' => getenv('MOODLE_DOCKER_DBCOLLATION')];
 
+if (getenv('MOODLE_DOCKER_DBTYPE') === 'sqlsrv') {
+    $CFG->dboptions['extrainfo'] = [
+        // Disable Encryption for now on sqlsrv.
+        // It is on by default from msodbcsql18.
+        'Encrypt' => false,
+    ];
+}
+
 $host = 'localhost';
 if (!empty(getenv('MOODLE_DOCKER_WEB_HOST'))) {
     $host = getenv('MOODLE_DOCKER_WEB_HOST');
