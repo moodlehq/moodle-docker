@@ -6,4 +6,4 @@ services:
     depends_on:
       - mailhog
   mailhog:
-    image: mailhog/mailhog
+    image: anatomicjc/mailhog
