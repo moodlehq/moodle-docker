@@ -105,13 +105,18 @@ if (getenv('MOODLE_DOCKER_PHPUNIT_EXTRAS')) {
     define('TEST_ENROL_LDAP_DOMAIN', 'ou=Users,dc=openstack,dc=org');
 }
 
+if (property_exists($CFG, 'behat_wwwroot')) {
+    $mockhash = sha1($CFG->behat_wwwroot);
+} else {
+    $mockhash = sha1($CFG->wwwroot);
+}
+
 if (getenv('MOODLE_DOCKER_BBB_MOCK')) {
-    if (property_exists($CFG, 'behat_wwwroot')) {
-        $mockhash = sha1($CFG->behat_wwwroot);
-    } else {
-        $mockhash = sha1($CFG->wwwroot);
-    }
     define('TEST_MOD_BIGBLUEBUTTONBN_MOCK_SERVER', "http://bbbmock/{$mockhash}");
+}
+
+if (getenv('MOODLE_DOCKER_MATRIX_MOCK')) {
+    define('TEST_COMMUNICATION_MATRIX_MOCK_SERVER', "http://matrixmock/{$mockhash}");
 }
 
 require_once(__DIR__ . '/lib/setup.php');
