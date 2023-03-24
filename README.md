@@ -6,7 +6,7 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 ## Features:
 * All supported database servers (PostgreSQL, MySQL, Micosoft SQL Server, Oracle XE)
 * Behat/Selenium configuration for Firefox and Chrome
-* Catch-all smtp server and web interface to messages using [MailHog](https://github.com/mailhog/MailHog/)
+* Catch-all smtp server and web interface to messages using [Mailpit](https://github.com/axllent/mailpit)
 * All PHP Extensions enabled configured for external services (e.g. solr, ldap)
 * All supported PHP versions
 * Zero-configuration approach
@@ -128,7 +128,7 @@ bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --ag
 
 Notes:
 * Moodle is configured to listen on `http://localhost:8000/`.
-* Mailhog is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
+* Mailpit is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
 * The admin `username` you need to use for logging in is `admin` by default. You can customize it by passing `--adminuser='myusername'`
 
 ## Use containers for running behat tests for the Moodle App

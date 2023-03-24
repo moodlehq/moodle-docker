@@ -2,8 +2,8 @@ version: "2"
 services:
   webserver:
     volumes:
-      - "${ASSETDIR}/web/apache2_mailhog.conf:/etc/apache2/conf-enabled/apache2_mailhog.conf"
+      - "${ASSETDIR}/web/apache2_mailpit.conf:/etc/apache2/conf-enabled/apache2_mailpit.conf"
     depends_on:
-      - mailhog
-  mailhog:
-    image: anatomicjc/mailhog
+      - mailpit
+  mailpit:
+    image: axllent/mailpit
