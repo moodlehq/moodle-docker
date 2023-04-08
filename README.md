@@ -130,6 +130,10 @@ Notes:
 * Moodle is configured to listen on `http://localhost:8000/`.
 * Mailpit is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
 * The admin `username` you need to use for logging in is `admin` by default. You can customize it by passing `--adminuser='myusername'`
+* During manual testing, if you are facing that your Moodle site is logging
+ you off continuously, putting the correct credentials, clean all cookies
+ for your Moodle site URL (usually `localhost`) from your browser. 
+ [More info](https://github.com/moodlehq/moodle-docker/issues/256).
 
 ## Use containers for running behat tests for the Moodle App
 
