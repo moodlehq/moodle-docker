@@ -112,6 +112,8 @@ IF "%MOODLE_DOCKER_BROWSER_TAG%"=="" (
 
 IF "%MOODLE_DOCKER_SELENIUM_REPOSITORY%"=="" (
     REM Default to official selenium images by default.
+    REM TODO: Once There is a Windows Docker Desktop for Arm64, we should make
+    REM this conditionally, surely checking for %PROCESSOR_ARCHITECTURE% or so.
     SET MOODLE_DOCKER_SELENIUM_REPOSITORY=selenium
 )
 
