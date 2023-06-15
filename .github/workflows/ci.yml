@@ -180,27 +180,23 @@ jobs:
       matrix:
         include:
           # PostgreSQL (highest, lowest php supported)
-          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic3, suite: app-development, app-version: "3.9.0"}
-          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic3, suite: app-development, app-version: "3.9.0"}
-          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic3, suite: app, app-version: "3.9.0"}
-          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic3, suite: app, app-version: "3.9.0"}
-
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app-development, app-version: "4.0.0"}
-          - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "4.0.0"}
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "4.0.0-dev"}
-          - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "4.0.0-dev"}
-          - { branch: MOODLE_401_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app-development, app-version: "4.0.0"}
-          - { branch: MOODLE_401_STABLE, php: "7.4", database: pgsql, runtime: ionic5, suite: app-development, app-version: "4.0.0"}
-          - { branch: MOODLE_401_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "4.0.0-dev"}
-          - { branch: MOODLE_401_STABLE, php: "7.4", database: pgsql, runtime: ionic5, suite: app, app-version: "4.0.0-dev"}
-          - { branch: MOODLE_400_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "4.0.0"}
-          - { branch: MOODLE_400_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app-development, app-version: "4.0.0"}
-          - { branch: MOODLE_400_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "4.0.0-dev"}
-          - { branch: MOODLE_400_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app, app-version: "4.0.0-dev"}
-          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "4.0.0"}
-          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app-development, app-version: "4.0.0"}
-          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "4.0.0-dev"}
-          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app, app-version: "4.0.0-dev"}
+          # First tests are for app developers.
+          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app-development, app-version: "latest"}
+          - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "latest"}
+          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app-development, app-version: "main" }
+          - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "main" }
+          # Tests for Moodle plugin developers who want to test against the next version of the app.
+          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "next-dev"}
+          - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "next-dev"}
+          # Tests for Moodle plugin developers testing against all supported versions of Moodle.
+          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_401_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_401_STABLE, php: "7.4", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_400_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_400_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
 
     steps:
       - name: Checking out moodle-docker
