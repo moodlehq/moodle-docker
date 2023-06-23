@@ -184,6 +184,12 @@ then
     dockercompose="${dockercompose} -f ${basedir}/bbb-mock.yml"
 fi
 
+# Matrix Mock
+if [[ ! -z "$MOODLE_DOCKER_MATRIX_MOCK" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/matrix-mock.yml"
+fi
+
 #  Faildump directory
 if [[ ! -z "$MOODLE_DOCKER_BEHAT_FAILDUMP" ]];
 then
