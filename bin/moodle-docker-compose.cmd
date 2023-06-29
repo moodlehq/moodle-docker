@@ -81,14 +81,6 @@ IF "%MOODLE_DOCKER_APP_NODE_VERSION%"=="" (
     )
 )
 
-IF "%MOODLE_DOCKER_BROWSER%"=="chrome" (
-    IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
-        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev-%MOODLE_DOCKER_APP_RUNTIME%.yml"
-    ) ELSE IF NOT "%MOODLE_DOCKER_APP_VERSION%"=="" (
-        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-%MOODLE_DOCKER_APP_RUNTIME%.yml"
-    )
-)
-
 IF NOT "%MOODLE_DOCKER_BROWSER%"=="" (
     REM Split MOODLE_DOCKER_BROWSER by : to get selenium tag if sepecified
     FOR /f "tokens=1,2 delims=:" %%i in ("%MOODLE_DOCKER_BROWSER%") do (
@@ -108,6 +100,14 @@ IF "%MOODLE_DOCKER_BROWSER_TAG%"=="" (
        IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
                SET MOODLE_DOCKER_BROWSER_TAG=3
        )
+)
+
+IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
+    IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
+        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev-%MOODLE_DOCKER_APP_RUNTIME%.yml"
+    ) ELSE IF NOT "%MOODLE_DOCKER_APP_VERSION%"=="" (
+        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-%MOODLE_DOCKER_APP_RUNTIME%.yml"
+    )
 )
 
 IF NOT "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
