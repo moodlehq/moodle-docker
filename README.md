@@ -265,6 +265,8 @@ read -r -d '' conf <<'EOF'
 ; Settings for Xdebug Docker configuration
 xdebug.mode = debug
 xdebug.client_host = host.docker.internal
+; Some IDEs (eg PHPSTORM, VSCODE) may require configuring an IDE key, uncomment if needed
+; xdebug.idekey=MY_FAV_IDE_KEY
 EOF
 moodle-docker-compose exec webserver bash -c "echo '$conf' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
 
