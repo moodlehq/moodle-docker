@@ -187,7 +187,7 @@ If `MOODLE_DOCKER_SELENIUM_VNC_PORT` is defined, selenium will expose a VNC sess
 For example, if you set `MOODLE_DOCKER_SELENIUM_VNC_PORT` to 5900..
 1. Download a VNC client: https://www.realvnc.com/en/connect/download/viewer/
 2. With the containers running, enter 0.0.0.0:5900 as the port in VNC Viewer. You will be prompted for a password. The password is 'secret'.
-3. You should be able to see an empty Desktop. When you run any Behat tests a browser will popup and you will see the tests execute.
+3. You should be able to see an empty Desktop. When you run any [Javascript requiring Behat tests](https://moodledev.io/general/development/tools/behat#javascript) (e.g. those tagged `@javascript`) a browser will popup and you will see the tests execute.
 
 ## Stop and restart containers
 
