@@ -266,6 +266,8 @@ read -r -d '' conf <<'EOF'
 ; Settings for Xdebug Docker configuration
 xdebug.mode = debug
 xdebug.client_host = host.docker.internal
+; Some IDEs (eg PHPSTORM, VSCODE) may require configuring an IDE key, uncomment if needed
+; xdebug.idekey=MY_FAV_IDE_KEY
 EOF
 moodle-docker-compose exec webserver bash -c "echo '$conf' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
 
@@ -274,7 +276,13 @@ moodle-docker-compose exec webserver docker-php-ext-enable xdebug
 moodle-docker-compose restart webserver
 ```
 
-While setting these XDebug settings depending on your local need, please take special care of the value of `xdebug.client_host` which is needed to connect from the container to the host. The given value `host.docker.internal` is a special DNS name for this purpose within Docker for Windows and Docker for Mac. If you are running on another Docker environment, you might want to try the value `localhost` instead or even set the hostname/IP of the host directly.
+While setting these XDebug settings depending on your local need, please take special care of the value of `xdebug.client_host` which is needed to connect from the container to the host. The given value `host.docker.internal` is a special DNS name for this purpose within Docker for Windows and Docker for Mac. If you are running on another Docker environment, you might want to try the value `localhost` instead or even set the hostname/IP of the host directly. Please turn off the firewall or open the port used in the `xdebug.client_port`.
+
+Open the port (9003 is the default one) by using the example command for Linux Ubuntu:
+```
+sudo ufw allow 9003
+```
+
 
 After these commands, XDebug ist enabled and ready to be used in the webserver container.
 If you want to disable and re-enable XDebug during the lifetime of the webserver container, you can achieve this with these additional commands:
