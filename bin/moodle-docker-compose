@@ -122,17 +122,6 @@ then
     fi
 fi
 
-# Mobile app for development
-if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
-then
-    dockercompose="${dockercompose} -f ${basedir}/moodle-app-dev-$MOODLE_DOCKER_APP_RUNTIME.yml"
-
-# Mobile app using a docker image
-elif [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]];
-then
-    dockercompose="${dockercompose} -f ${basedir}/moodle-app-$MOODLE_DOCKER_APP_RUNTIME.yml"
-fi
-
 # Selenium browser
 browserparts=(${MOODLE_DOCKER_BROWSER//:/ })
 export MOODLE_DOCKER_BROWSER_NAME=${browserparts[0]}
@@ -151,6 +140,19 @@ then
     elif [[ "$MOODLE_DOCKER_BROWSER_NAME" = "chrome" ]];
     then
         MOODLE_DOCKER_BROWSER_TAG=3
+    fi
+fi
+
+# Mobile app for development
+if [[ "$MOODLE_DOCKER_BROWSER_NAME" == "chrome" ]];
+then
+    if [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
+    then
+        dockercompose="${dockercompose} -f ${basedir}/moodle-app-dev-$MOODLE_DOCKER_APP_RUNTIME.yml"
+    elif [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]];
+    then
+        # Mobile app using a docker image
+        dockercompose="${dockercompose} -f ${basedir}/moodle-app-$MOODLE_DOCKER_APP_RUNTIME.yml"
     fi
 fi
 
