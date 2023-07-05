@@ -15,7 +15,12 @@ then
 
     if [[ $RUNTIME = ionic5 ]];
     then
-        docker run --volume $basedir/app:/app --workdir /app node:14 bash -c "npm install npm@7 -g && npm ci"
+        if [[ ! -f $basedir/app/.npmrc  || -z "$(cat $basedir/app/.npmrc | grep unsafe-perm)" ]];
+        then
+            echo -e "\nunsafe-perm=true" >> $basedir/app/.npmrc
+        fi
+
+        docker run --volume $basedir/app:/app --workdir /app node:14 bash -c "npm ci"
     else
         docker run --volume $basedir/app:/app --workdir /app node:11 npm run setup
         docker run --volume $basedir/app:/app --workdir /app node:11 npm ci
