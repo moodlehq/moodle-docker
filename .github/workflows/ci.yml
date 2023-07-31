@@ -11,9 +11,9 @@ jobs:
       matrix:
         include:
           # PostgreSQL (highest, lowest php supported)
-          - { branch: master,            php: "8.1", database: pgsql, suite: phpunit-full } # Full run only for master.
+          - { branch: master,            php: "8.2", database: pgsql, suite: phpunit-full } # Full run only for master.
           - { branch: master,            php: "8.0", database: pgsql, suite: phpunit-full }
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, suite: phpunit } # Other branches, quicker run.
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, suite: phpunit } # Other branches, quicker run.
           - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, suite: phpunit }
           - { branch: MOODLE_401_STABLE, php: "8.1", database: pgsql, suite: phpunit }
           - { branch: MOODLE_401_STABLE, php: "7.4", database: pgsql, suite: phpunit }
@@ -34,22 +34,22 @@ jobs:
           - { branch: MOODLE_310_STABLE, php: "7.2", database: mariadb, suite: phpunit }
           - { branch: MOODLE_39_STABLE,  php: "7.2", database: mariadb, suite: phpunit }
           # Other databases (highest php supported)
-          - { branch: master,            php: "8.1", database: mssql,  suite: phpunit }
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: mssql,  suite: phpunit }
+          - { branch: master,            php: "8.2", database: mssql,  suite: phpunit }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: mssql,  suite: phpunit }
           - { branch: MOODLE_401_STABLE, php: "8.1", database: mssql,  suite: phpunit }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: mssql,  suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: mssql,  suite: phpunit }
           - { branch: MOODLE_310_STABLE, php: "7.4", database: mssql,  suite: phpunit }
           - { branch: MOODLE_39_STABLE,  php: "7.4", database: mssql,  suite: phpunit }
-          - { branch: master,            php: "8.1", database: mysql,  suite: phpunit }
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: mysql,  suite: phpunit }
+          - { branch: master,            php: "8.2", database: mysql,  suite: phpunit }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: mysql,  suite: phpunit }
           - { branch: MOODLE_401_STABLE, php: "8.1", database: mysql,  suite: phpunit }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: mysql,  suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: mysql,  suite: phpunit }
           - { branch: MOODLE_310_STABLE, php: "7.4", database: mysql,  suite: phpunit }
           - { branch: MOODLE_39_STABLE,  php: "7.4", database: mysql,  suite: phpunit }
-          - { branch: master,            php: "8.1", database: oracle, suite: phpunit }
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: oracle, suite: phpunit }
+          - { branch: master,            php: "8.2", database: oracle, suite: phpunit }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: oracle, suite: phpunit }
           - { branch: MOODLE_401_STABLE, php: "8.1", database: oracle, suite: phpunit }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: oracle, suite: phpunit }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: oracle, suite: phpunit }
@@ -95,9 +95,9 @@ jobs:
       matrix:
         include:
           # PostgreSQL (highest, lowest php supported)
-          - { branch: master,            php: "8.1", database: pgsql, browser: chrome,  suite: behat }
+          - { branch: master,            php: "8.2", database: pgsql, browser: chrome,  suite: behat }
           - { branch: master,            php: "8.0", database: pgsql, browser: firefox, suite: behat }
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, browser: chrome,  suite: behat }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, browser: chrome,  suite: behat }
           - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, browser: firefox, suite: behat }
           - { branch: MOODLE_401_STABLE, php: "8.1", database: pgsql, browser: chrome,  suite: behat }
           - { branch: MOODLE_401_STABLE, php: "7.4", database: pgsql, browser: firefox, suite: behat }
@@ -118,22 +118,22 @@ jobs:
           - { branch: MOODLE_310_STABLE, php: "7.2", database: mariadb, browser: firefox, suite: behat }
           - { branch: MOODLE_39_STABLE,  php: "7.2", database: mariadb, browser: chrome,  suite: behat }
           # Other databases (highest php supported")
-          - { branch: master,            php: "8.1", database: mssql,  browser: firefox, suite: behat }
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: mssql,  browser: chrome,  suite: behat }
+          - { branch: master,            php: "8.2", database: mssql,  browser: firefox, suite: behat }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: mssql,  browser: chrome,  suite: behat }
           - { branch: MOODLE_401_STABLE, php: "8.1", database: mssql,  browser: firefox, suite: behat }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: mssql,  browser: chrome,  suite: behat }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: mssql,  browser: firefox, suite: behat }
           - { branch: MOODLE_310_STABLE, php: "7.4", database: mssql,  browser: chrome,  suite: behat }
           - { branch: MOODLE_39_STABLE,  php: "7.4", database: mssql,  browser: firefox, suite: behat }
-          - { branch: master,            php: "8.1", database: mysql,  browser: chrome,  suite: behat }
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: mysql,  browser: firefox, suite: behat }
+          - { branch: master,            php: "8.2", database: mysql,  browser: chrome,  suite: behat }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: mysql,  browser: firefox, suite: behat }
           - { branch: MOODLE_401_STABLE, php: "8.1", database: mysql,  browser: chrome,  suite: behat }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: mysql,  browser: firefox, suite: behat }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: mysql,  browser: chrome,  suite: behat }
           - { branch: MOODLE_310_STABLE, php: "7.4", database: mysql,  browser: firefox, suite: behat }
           - { branch: MOODLE_39_STABLE,  php: "7.4", database: mysql,  browser: chrome,  suite: behat }
-          - { branch: master,            php: "8.1", database: oracle, browser: firefox, suite: behat }
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: oracle, browser: chrome,  suite: behat }
+          - { branch: master,            php: "8.2", database: oracle, browser: firefox, suite: behat }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: oracle, browser: chrome,  suite: behat }
           - { branch: MOODLE_401_STABLE, php: "8.1", database: oracle, browser: firefox, suite: behat }
           - { branch: MOODLE_400_STABLE, php: "8.0", database: oracle, browser: chrome,  suite: behat }
           - { branch: MOODLE_311_STABLE, php: "8.0", database: oracle, browser: firefox, suite: behat }
@@ -181,15 +181,15 @@ jobs:
         include:
           # PostgreSQL (highest, lowest php supported)
           # First tests are for app developers.
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app-development, app-version: "latest"}
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app-development, app-version: "latest"}
           - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "latest"}
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app-development, app-version: "main" }
-          - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "main" }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app-development, app-version: "main" }
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app-development, app-version: "main" }
           # Tests for Moodle plugin developers who want to test against the next version of the app.
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "next-dev"}
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app, app-version: "next-dev"}
           - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "next-dev"}
           # Tests for Moodle plugin developers testing against all supported versions of Moodle.
-          - { branch: MOODLE_402_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
           - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
           - { branch: MOODLE_401_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
           - { branch: MOODLE_401_STABLE, php: "7.4", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
