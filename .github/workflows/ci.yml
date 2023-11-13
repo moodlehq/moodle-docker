@@ -3,7 +3,36 @@ name: moodle-docker CI
 on: [push, pull_request]
 
 jobs:
+  integration:
+    name: Integration checks
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checking out moodle-docker
+        uses: actions/checkout@v3
+
+      - name: Checking out moodle
+        uses: actions/checkout@v3
+        with:
+          repository: moodle/moodle
+          path: moodle
+          ref: ${{ matrix.branch }}
+
+      - name: Prepare moodle-docker environment
+        run: |
+          cp config.docker-template.php moodle/config.php
+          tests/integration-setup.sh
+
+      - name: Run moodle-docker tests
+        run: |
+          tests/integration-test.sh
+
+      - name: Stop moodle-docker
+        run: |
+          tests/integration-teardown.sh
+
   PHPUnit:
+    needs: integration
     runs-on: ubuntu-22.04
 
     strategy:
@@ -94,6 +123,7 @@ jobs:
           tests/phpunit-teardown.sh
 
   Behat:
+    needs: integration
     runs-on: ubuntu-22.04
 
     strategy:
@@ -185,6 +215,7 @@ jobs:
           tests/behat-teardown.sh
 
   App:
+    needs: integration
     runs-on: ubuntu-22.04
 
     strategy:
