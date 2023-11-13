@@ -6,4 +6,6 @@ services:
     depends_on:
       - mailpit
   mailpit:
-    image: axllent/mailpit
+    image: axllent/mailpit:v1.10
+    environment:
+      MP_WEBROOT: /_/mail/
