@@ -1,0 +1,25 @@
+version: "3"
+services:
+  webserver:
+    volumes:
+      - "${ASSETDIR}/certs/ca/ca.pem:/usr/local/share/ca-certificates/ca.crt"
+      - "${ASSETDIR}/certs/certs:/etc/ssl/certs/moodle"
+      - "${ASSETDIR}/certs/install_ca.sh:/docker-entrypoint-initdb.d/install_ca.sh"
+      - "${ASSETDIR}/certs/enable_ssl.sh:/docker-entrypoint-initdb.d/enable_ssl.sh"
+      - "${ASSETDIR}/certs/443-default.conf:/etc/apache2/conf-enabled/443-default.conf"
+    ports:
+      - "443:443"
+  exttests:
+    volumes:
+      - "${ASSETDIR}/certs/ca/ca.pem:/usr/local/share/ca-certificates/ca.crt"
+      - "${ASSETDIR}/certs/certs:/etc/ssl/certs/moodle"
+      - "${ASSETDIR}/certs/install_ca.sh:/docker-entrypoint-initdb.d/install_ca.sh"
+      - "${ASSETDIR}/certs/enable_ssl.sh:/docker-entrypoint-initdb.d/enable_ssl.sh"
+      - "${ASSETDIR}/certs/443-default.conf:/etc/apache2/conf-enabled/443-default.conf"
+    ports:
+      - 9443:9443
+  selenium:
+    volumes:
+      - "${ASSETDIR}/certs/ca/ca.pem:/usr/local/share/ca-certificates/ca.crt"
+      - "${ASSETDIR}/certs/certs:/etc/ssl/certs/moodle"
+      - "${ASSETDIR}/certs/install_ca.sh:/docker-entrypoint-initdb.d/install_ca.sh"

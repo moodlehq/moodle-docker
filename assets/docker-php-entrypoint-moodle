@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -Eeo pipefail
+
+docker_process_init_files() {
+  echo
+  local f
+  for f; do
+    case "$f" in
+      *.sh)
+        if [ -x "$f" ]; then
+          echo "$0: running $f"
+          "$f"
+        else
+          echo "$0: sourcing $f"
+          . "$f"
+        fi
+        ;;
+    esac
+  done
+}
+
+echo "Running entrypoint files from /docker-entrypoint-initdb.d/*"
+docker_process_init_files /docker-entrypoint-initdb.d/*
+
+echo "Starting docker=php-entrypoint with $@"
+/usr/local/bin/docker-php-entrypoint "$@"
