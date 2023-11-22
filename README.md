@@ -39,6 +39,17 @@ bin/moodle-docker-wait-for-db
 # Shut down and destroy containers
 bin/moodle-docker-compose down
 ```
+
+## Configuration
+
+If you are running a *nix-like OS such as Linux, or MacOS, then you can provide a local `.env` file to setup your default environment. This file only provides _default_ configuration for any environment variable not already set in your environment. If you wish to override a setting from the default you can do so in the normal way using an export command.
+
+An example environment file is provided in [`.env.example`](https://github.com/moodlehq/moodle-docker/master/blob/.env.example).
+
+Environment file configuration is loaded using [shdotenv](https://github.com/ko1nksm/shdotenv) and the `.env` file should be in the [POSIX dialect](https://github.com/ko1nksm/shdotenv/blob/main/docs/specification.md).
+
+Please note that this file _should not_ be added to your git repository. It is intended to contain your _local_ default configuration.
+
 ## Run several Moodle instances
 
 By default, the script will load a single instance. If you want to run two

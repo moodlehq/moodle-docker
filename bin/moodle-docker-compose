@@ -7,6 +7,19 @@ set -e
 thisfile=$( readlink "${BASH_SOURCE[0]}" ) || thisfile="${BASH_SOURCE[0]}"
 basedir="$( cd "$( dirname "$thisfile" )/../" && pwd -P )"
 
+# Check for an environent file, and import it if found.
+ENVFILE="${basedir}/.env"
+if [ -f "$ENVFILE" ]
+then
+     SHDOTENV="${basedir}/shdotenv"
+    if [ ! -f "${SHDOTENV}" ]
+    then
+        curl https://github.com/ko1nksm/shdotenv/releases/latest/download/shdotenv -L -o "${SHDOTENV}"
+        chmod +x "${SHDOTENV}"
+    fi
+    eval "$(./shdotenv || echo "exit $?")"
+fi
+
 if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
 then
     echo 'Error: $MOODLE_DOCKER_WWWROOT is not set or not an existing directory'
