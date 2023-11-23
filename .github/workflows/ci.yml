@@ -12,7 +12,7 @@ jobs:
         include:
           # PostgreSQL (highest, lowest php supported)
           - { branch: master,            php: "8.2", database: pgsql, suite: phpunit-full } # Full run only for master.
-          - { branch: master,            php: "8.0", database: pgsql, suite: phpunit-full }
+          - { branch: master,            php: "8.1", database: pgsql, suite: phpunit-full }
           - { branch: MOODLE_403_STABLE, php: "8.2", database: pgsql, suite: phpunit } # Other branches, quicker run.
           - { branch: MOODLE_403_STABLE, php: "8.0", database: pgsql, suite: phpunit }
           - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, suite: phpunit }
@@ -28,7 +28,7 @@ jobs:
           - { branch: MOODLE_39_STABLE,  php: "7.4", database: pgsql, suite: phpunit }
           - { branch: MOODLE_39_STABLE,  php: "7.2", database: pgsql, suite: phpunit }
           # MariaDB (lowest php supported)
-          - { branch: master,            php: "8.0", database: mariadb, suite: phpunit }
+          - { branch: master,            php: "8.1", database: mariadb, suite: phpunit }
           - { branch: MOODLE_403_STABLE, php: "8.0", database: mariadb, suite: phpunit }
           - { branch: MOODLE_402_STABLE, php: "8.0", database: mariadb, suite: phpunit }
           - { branch: MOODLE_401_STABLE, php: "7.4", database: mariadb, suite: phpunit }
