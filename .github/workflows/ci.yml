@@ -132,7 +132,7 @@ jobs:
         include:
           # PostgreSQL (highest, lowest php supported)
           - { branch: master,            php: "8.2", database: pgsql, browser: chrome,  suite: behat }
-          - { branch: master,            php: "8.0", database: pgsql, browser: firefox, suite: behat }
+          - { branch: master,            php: "8.1", database: pgsql, browser: firefox, suite: behat }
           - { branch: MOODLE_403_STABLE, php: "8.2", database: pgsql, browser: chrome,  suite: behat }
           - { branch: MOODLE_403_STABLE, php: "8.0", database: pgsql, browser: firefox, suite: behat }
           - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, browser: chrome,  suite: behat }
@@ -148,7 +148,7 @@ jobs:
           - { branch: MOODLE_39_STABLE,  php: "7.4", database: pgsql, browser: chrome,  suite: behat }
           - { branch: MOODLE_39_STABLE,  php: "7.2", database: pgsql, browser: firefox, suite: behat }
           # MariaDB (lowest php supported)
-          - { branch: master,            php: "8.0", database: mariadb, browser: chrome,  suite: behat }
+          - { branch: master,            php: "8.1", database: mariadb, browser: chrome,  suite: behat }
           - { branch: MOODLE_403_STABLE, php: "8.0", database: mariadb, browser: firefox, suite: behat }
           - { branch: MOODLE_402_STABLE, php: "8.0", database: mariadb, browser: firefox, suite: behat }
           - { branch: MOODLE_401_STABLE, php: "7.4", database: mariadb, browser: chrome,  suite: behat }
