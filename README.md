@@ -132,7 +132,7 @@ Notes:
 * The admin `username` you need to use for logging in is `admin` by default. You can customize it by passing `--adminuser='myusername'`
 * During manual testing, if you are facing that your Moodle site is logging
  you off continuously, putting the correct credentials, clean all cookies
- for your Moodle site URL (usually `localhost`) from your browser. 
+ for your Moodle site URL (usually `localhost`) from your browser.
  [More info](https://github.com/moodlehq/moodle-docker/issues/256).
 
 ## Use containers for running behat tests for the Moodle App
@@ -302,6 +302,37 @@ moodle-docker-compose restart webserver
 As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle-docker/blob/master/bin/moodle-docker-compose),
 this repo is just a series of Docker Compose configurations and light wrapper which make use of companion docker images. Each part
 is designed to be reusable and you are encouraged to use the docker [compose] commands as needed.
+
+## Quick start with Gitpod
+
+Gitpod is a free, cloud-based, development environment providing VS Code and a suitable development environment right in your browser.
+
+When launching a workspace in Gitpod, it will automatically:
+
+* Clone the Moodle repo into the `<workspace>/moodle` folder.
+* Initialise the Moodle database.
+* Start the Moodle webserver.
+
+<p>
+    <a href="https://gitpod.io/#https://github.com/moodlehq/moodle-docker" target="_blank" rel="noopener noreferrer">
+        <img loading="lazy" src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" class="img_ev3q">
+    </a>
+</p>
+
+> **IMPORTANT**: Gitpod is an alternative to local development and completely optional. We recommend setting up a local development environment if you plan to contribute regularly.
+
+The Moodle Gitpod template supports the following environment variables:
+
+* `MOODLE_REPOSITORY`. The Moodle repository to be cloned. The value should be URL encoded. If left undefined, the default repository `https://github.com/moodle/moodle.git` is used.
+* `MOODLE_BRANCH`. The Moodle branch to be cloned. If left undefined, the default branch `main` is employed.
+
+For a practical demonstration, launch a Gitpod workspace with the 'main' branch patch for [MDL-79912](https://tracker.moodle.org/browse/MDL-79912). Simply open the following URL in your web browser (note that MOODLE_REPOSITORY should be URL encoded). The password for the admin user is **test**:
+
+```
+https://gitpod.io/#MOODLE_REPOSITORY=https%3A%2F%2Fgithub.com%2Fsarjona%2Fmoodle.git,MOODLE_BRANCH=MDL-79912-main/https://github.com/moodlehq/moodle-docker
+```
+
+To optimize your browsing experience, consider integrating the [Tampermonkey extension](https://www.tampermonkey.net/) into your preferred web browser for added benefits. Afterward, install the Gitpod script, which can be accessed via the following URL: [Gitpod script](https://gist.githubusercontent.com/sarjona/9fc728eb2d2b41a783ea03afd6a6161e/raw/gitpod.js). This script efficiently incorporates a button adjacent to each branch within the Moodle tracker, facilitating the effortless initiation of a Gitpod workspace tailored to the corresponding patch for the issue you're currently viewing.
 
 ## Companion docker images
 

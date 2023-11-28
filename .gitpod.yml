@@ -1,0 +1,50 @@
+tasks:
+  - name: Moodle Docker
+
+    before: |
+      # Set up Moodle docker environment vars.
+      export COMPOSE_PROJECT_NAME=moodle-gitpod
+      export MOODLE_DOCKER_WWWROOT="$GITPOD_REPO_ROOT"/moodle
+      export MOODLE_DOCKER_DB=pgsql
+
+    init: |
+      # Set up Moodle repository.
+      .gitpod/setup-env.sh
+
+      # Ensure customized config.php for the Docker containers is in place
+      cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+
+      # Start up containers.
+      bin/moodle-docker-compose up -d
+
+      # Wait for DB to come up.
+      bin/moodle-docker-wait-for-db
+
+      # Initialize Moodle database for manual testing.
+      bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --summary="Docker moodle site" --adminpass="test" --adminemail="admin@example.com"
+
+      # Hack to avoid when the workspace is restarted.
+      # It can be removed when https://github.com/gitpod-io/gitpod/issues/17551 is fixed.
+      bin/moodle-docker-compose exec webserver bash -c 'rm -rf /var/log/apache2/*'
+
+      # Open Moodle site in browser.
+      gp ports await 8000 && gp preview $(gp url 8000)
+
+    command: |
+      # Update the patch to the latest version.
+      cd moodle
+      git fetch
+      git reset --hard
+      cd ..
+
+      # Start up containers.
+      bin/moodle-docker-compose up -d
+
+      # Wait for DB to come up.
+      bin/moodle-docker-wait-for-db
+
+ports:
+  - port: 8000
+    name: Moodle server
+    visibility: public
+    onOpen: ignore
