@@ -1,5 +1,5 @@
 # moodle-docker: Docker Containers for Moodle Developers
-[![Build Status](https://github.com/moodlehq/moodle-docker/workflows/moodle-docker%20CI/badge.svg?branch=master)](https://github.com/moodlehq/moodle-docker/actions/workflows/ci.yml?query=branch%3Amaster)
+[![Build Status](https://github.com/moodlehq/moodle-docker/workflows/moodle-docker%20CI/badge.svg?branch=main)](https://github.com/moodlehq/moodle-docker/actions/workflows/ci.yml?query=branch%3Amain)
 
 This repository contains Docker configuration aimed at Moodle developers and testers to easily deploy a testing environment for Moodle.
 
@@ -299,7 +299,7 @@ moodle-docker-compose restart webserver
 
 ## Advanced usage
 
-As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle-docker/blob/master/bin/moodle-docker-compose),
+As can be seen in [bin/moodle-docker-compose](https://github.com/moodlehq/moodle-docker/blob/main/bin/moodle-docker-compose),
 this repo is just a series of Docker Compose configurations and light wrapper which make use of companion docker images. Each part
 is designed to be reusable and you are encouraged to use the docker [compose] commands as needed.
 
