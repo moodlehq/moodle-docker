@@ -4,6 +4,9 @@ set -e
 thisfile=$( readlink "${BASH_SOURCE[0]}" ) || thisfile="${BASH_SOURCE[0]}"
 basedir="$( cd "$( dirname "$thisfile" )/../" && pwd -P )"
 
+# Load all environment settings.
+source "${basedir}/bin/include/env.sh"
+
 if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && ([[ ! -z "$MOODLE_DOCKER_APP_PATH" ]] || [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]] || [[ ! -z "$MOODLE_APP_VERSION" ]]);
 then
     until $basedir/bin/moodle-docker-compose logs moodleapp | grep -q -E 'dev server running: |Angular Live Development Server is listening|Configuration complete; ready for start up';
