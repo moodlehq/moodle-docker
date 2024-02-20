@@ -89,7 +89,13 @@ then
                 export MOODLE_DOCKER_APP_RUNTIME="ionic5"
             fi
         else
-            export MOODLE_DOCKER_APP_RUNTIME="ionic7"
+            # TODO always default to ionic7 after 4.4.0 release
+            if [[ $appversion = "latest"* ]];
+            then
+                export MOODLE_DOCKER_APP_RUNTIME="ionic5"
+            else
+                export MOODLE_DOCKER_APP_RUNTIME="ionic7"
+            fi
         fi
     fi
 fi
