@@ -1,7 +1,0 @@
-version: "2"
-services:
-  webserver:
-    environment:
-      MOODLE_DOCKER_APP: "true"
-  moodleapp:
-    image: "moodlehq/moodleapp:${MOODLE_DOCKER_APP_VERSION}"
