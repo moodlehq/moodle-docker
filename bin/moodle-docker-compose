@@ -154,7 +154,11 @@ fi
 export MOODLE_DOCKER_SELENIUM_SUFFIX=""
 if [[ $MOODLE_DOCKER_SELENIUM_VNC_PORT == *":"* ]] || [[ $MOODLE_DOCKER_SELENIUM_VNC_PORT -gt 0 ]]
 then
-    export MOODLE_DOCKER_SELENIUM_SUFFIX="-debug"
+    if [[ $(echo $MOODLE_DOCKER_BROWSER_TAG | sed 's/[^0-9].*//g') -lt 4 ]]
+    then
+        export MOODLE_DOCKER_SELENIUM_SUFFIX="-debug"
+    fi
+
     # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
     if [[ ! $MOODLE_DOCKER_SELENIUM_VNC_PORT == *":"* ]]
     then
