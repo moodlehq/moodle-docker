@@ -52,32 +52,42 @@ IF "%MOODLE_DOCKER_DB_PORT%"=="" (
     )
 )
 
-IF NOT "%MOODLE_APP_VERSION%"=="" (
-    ECHO Warning: MOODLE_APP_VERSION is deprecated, use MOODLE_DOCKER_APP_VERSION instead
+IF "%MOODLE_DOCKER_APP_RUNTIME%"=="" (
+    SET MOODLE_DOCKER_APP_RUNTIME=ionic7
+)
 
-    IF "%MOODLE_DOCKER_APP_VERSION%"=="" (
-        SET MOODLE_DOCKER_APP_VERSION=%MOODLE_APP_VERSION%
+REM Guess mobile app node version (only for local app development)
+IF "%MOODLE_DOCKER_APP_NODE_VERSION%"=="" (
+    IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
+        SET filenvmrc=%MOODLE_DOCKER_APP_PATH%\.nvmrc
+        IF EXIST "%filenvmrc%" (
+            SET /p NODE_VERSION=< "%filenvmrc%"
+            SET NODE_VERSION=%NODE_VERSION:v=%
+            ECHO %NODE_VERSION% | FINDSTR /r "[0-9.]*" >nul 2>&1
+            IF ERRORLEVEL 0 (
+                SET MOODLE_DOCKER_APP_NODE_VERSION=%NODE_VERSION%
+            )
+        )
     )
 )
 
-IF "%MOODLE_DOCKER_APP_RUNTIME%"=="" (
-    SET MOODLE_DOCKER_APP_RUNTIME=ionic5
+REM Guess mobile app port (only when using Docker app images)
+IF "%MOODLE_DOCKER_APP_PORT%"=="" (
+    IF NOT "%MOODLE_DOCKER_APP_VERSION%"=="" (
+        IF "%MOODLE_DOCKER_APP_RUNTIME%"=="ionic5" (
+            SET MOODLE_DOCKER_APP_PORT=80
+        ) ELSE (
+            SET MOODLE_DOCKER_APP_PORT=443
+        )
+    )
 )
 
-REM Guess mobile app node version
-IF "%MOODLE_DOCKER_APP_NODE_VERSION%"=="" (
-    IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
-        IF "%MOODLE_DOCKER_APP_RUNTIME%"=="ionic5" (
-            SET filenvmrc=%MOODLE_DOCKER_APP_PATH%\.nvmrc
-            IF EXIST "%filenvmrc%" (
-                SET /p NODE_VERSION=< "%filenvmrc%"
-                SET NODE_VERSION=%NODE_VERSION:v=%
-                ECHO %NODE_VERSION% | FINDSTR /r "[0-9.]*" >nul 2>&1
-                IF ERRORLEVEL 0 (
-                    SET MOODLE_DOCKER_APP_NODE_VERSION=%NODE_VERSION%
-                )
-            )
-        )
+REM Guess mobile app protocol
+IF "%MOODLE_DOCKER_APP_PROTOCOL%"=="" (
+    if "%MOODLE_DOCKER_APP_RUNTIME%"=="ionic5" (
+        SET MOODLE_DOCKER_APP_PROTOCOL=http
+    ) ELSE (
+        SET MOODLE_DOCKER_APP_PROTOCOL=https
     )
 )
 
@@ -98,15 +108,19 @@ IF "%MOODLE_DOCKER_BROWSER_TAG%"=="" (
                SET MOODLE_DOCKER_BROWSER_TAG=3
        )
        IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
-               SET MOODLE_DOCKER_BROWSER_TAG=3
+            IF "%MOODLE_DOCKER_APP_RUNTIME%"=="ionic5" (
+                SET MOODLE_DOCKER_BROWSER_TAG=3
+            ) ELSE (
+                SET MOODLE_DOCKER_BROWSER_TAG=120.0
+            )
        )
 )
 
 IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
     IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
-        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev-%MOODLE_DOCKER_APP_RUNTIME%.yml"
+        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev.yml"
     ) ELSE IF NOT "%MOODLE_DOCKER_APP_VERSION%"=="" (
-        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-%MOODLE_DOCKER_APP_RUNTIME%.yml"
+        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app.yml"
     )
 )
 
@@ -160,7 +174,9 @@ IF "%MOODLE_DOCKER_SELENIUM_VNC_PORT%"=="" (
     IF NOT "%MOODLE_DOCKER_SELENIUM_VNC_PORT%"=="%MOODLE_DOCKER_SELENIUM_VNC_PORT::=%" SET TRUE=1
     IF NOT "%MOODLE_DOCKER_SELENIUM_VNC_PORT%"=="0" SET TRUE=1
     IF DEFINED TRUE (
-        SET MOODLE_DOCKER_SELENIUM_SUFFIX=-debug
+        IF "%MOODLE_DOCKER_BROWSER_TAG%"=="3" (
+            SET MOODLE_DOCKER_SELENIUM_SUFFIX=-debug
+        )
         SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\selenium.debug.yml"
         REM If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
         IF "%MOODLE_DOCKER_SELENIUM_VNC_PORT%"=="%MOODLE_DOCKER_SELENIUM_VNC_PORT::=%" (

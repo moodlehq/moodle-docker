@@ -3,10 +3,11 @@ services:
   webserver:
     environment:
       MOODLE_DOCKER_APP: "true"
+      MOODLE_DOCKER_APP_PROTOCOL: ${MOODLE_DOCKER_APP_PROTOCOL}
   moodleapp:
-    image: node:${MOODLE_DOCKER_APP_NODE_VERSION:-14}
+    image: node:${MOODLE_DOCKER_APP_NODE_VERSION}
     working_dir: /app
-    command: npm start -- --host 0.0.0.0
+    command: [ "bash", "-c", "git config --global --add safe.directory /app && npm start -- --host 0.0.0.0"]
     volumes:
       - "${MOODLE_DOCKER_APP_PATH}:/app"
     expose:

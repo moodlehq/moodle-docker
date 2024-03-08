@@ -224,24 +224,24 @@ jobs:
         include:
           # PostgreSQL (highest, lowest php supported)
           # First tests are for app developers.
-          - { branch: MOODLE_403_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app-development, app-version: "latest"}
-          - { branch: MOODLE_403_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "latest"}
-          - { branch: MOODLE_403_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app-development, app-version: "main" }
-          - { branch: MOODLE_403_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app-development, app-version: "main" }
+          - { branch: MOODLE_403_STABLE, php: "8.2", suite: app-development, app-version: "latest" }
+          - { branch: MOODLE_403_STABLE, php: "8.0", suite: app-development, app-version: "latest" }
+          - { branch: MOODLE_403_STABLE, php: "8.2", suite: app-development, app-version: "main" }
+          - { branch: MOODLE_403_STABLE, php: "8.0", suite: app-development, app-version: "main" }
           # Tests for Moodle plugin developers who want to test against the next version of the app.
-          - { branch: MOODLE_403_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app, app-version: "next-dev"}
-          - { branch: MOODLE_403_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "next-dev"}
+          - { branch: MOODLE_403_STABLE, php: "8.2", suite: app, app-version: "next-test" }
+          - { branch: MOODLE_403_STABLE, php: "8.0", suite: app, app-version: "next-test" }
           # Tests for Moodle plugin developers testing against all supported versions of Moodle.
-          - { branch: MOODLE_403_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_403_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_402_STABLE, php: "8.2", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_402_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_401_STABLE, php: "8.1", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_401_STABLE, php: "7.4", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_400_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_400_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_311_STABLE, php: "8.0", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
-          - { branch: MOODLE_311_STABLE, php: "7.3", database: pgsql, runtime: ionic5, suite: app, app-version: "latest-dev"}
+          - { branch: MOODLE_403_STABLE, php: "8.2", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_403_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_402_STABLE, php: "8.2", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_402_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_401_STABLE, php: "8.1", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_401_STABLE, php: "7.4", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_400_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_400_STABLE, php: "7.3", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_311_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_311_STABLE, php: "7.3", suite: app, app-version: "latest-test" }
 
     steps:
       - name: Checking out moodle-docker
@@ -257,22 +257,19 @@ jobs:
       - name: Prepare moodle-docker environment
         run: |
           cp config.docker-template.php moodle/config.php
-          export MOODLE_DOCKER_DB="${{ matrix.database }}"
           export MOODLE_DOCKER_PHP_VERSION="${{ matrix.php }}"
           export SUITE="${{ matrix.suite }}"
-          export RUNTIME="${{ matrix.runtime }}"
           export MOODLE_DOCKER_APP_VERSION="${{ matrix.app-version }}"
           tests/app-setup.sh
 
       - name: Run moodle-docker tests
         run: |
-          export MOODLE_DOCKER_DB="${{ matrix.database }}"
+          export MOODLE_DOCKER_APP_VERSION="${{ matrix.app-version }}"
           export SUITE="${{ matrix.suite }}"
           tests/app-test.sh
 
       - name: Stop moodle-docker
         run: |
-          export MOODLE_DOCKER_DB="${{ matrix.database }}"
           export SUITE="${{ matrix.suite }}"
           export MOODLE_DOCKER_APP_VERSION="${{ matrix.app-version }}"
           tests/app-teardown.sh

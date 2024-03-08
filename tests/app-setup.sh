@@ -4,7 +4,8 @@ basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/init.php"
 
 export MOODLE_DOCKER_WWWROOT="${basedir}/moodle"
-export MOODLE_DOCKER_BROWSER="chrome"
+export MOODLE_DOCKER_BROWSER=chrome
+export MOODLE_DOCKER_DB=pgsql
 
 if [ "$SUITE" = "app-development" ];
 then
@@ -13,18 +14,14 @@ then
     git clone --branch "$MOODLE_DOCKER_APP_VERSION" --depth 1 https://github.com/moodlehq/moodleapp $basedir/app
     git clone --branch "$MOODLE_DOCKER_APP_VERSION" --depth 1 https://github.com/moodlehq/moodle-local_moodleappbehat $basedir/moodle/local/moodleappbehat
 
-    if [[ $RUNTIME = ionic5 ]];
+    if [[ ! -f $basedir/app/.npmrc  || -z "$(cat $basedir/app/.npmrc | grep unsafe-perm)" ]];
     then
-        if [[ ! -f $basedir/app/.npmrc  || -z "$(cat $basedir/app/.npmrc | grep unsafe-perm)" ]];
-        then
-            echo -e "\nunsafe-perm=true" >> $basedir/app/.npmrc
-        fi
-
-        docker run --volume $basedir/app:/app --workdir /app node:14 bash -c "npm ci"
-    else
-        docker run --volume $basedir/app:/app --workdir /app node:11 npm run setup
-        docker run --volume $basedir/app:/app --workdir /app node:11 npm ci
+        echo -e "\nunsafe-perm=true" >> $basedir/app/.npmrc
     fi
+
+    nodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | grep -oP '(\d+\.?)+' || true)"
+
+    docker run --volume $basedir/app:/app --workdir /app node:$nodeversion bash -c "npm ci"
 elif [ "$SUITE" = "app" ];
 then
     isdevelop=`echo $MOODLE_DOCKER_APP_VERSION | grep -E -o "(next)|(latest)"`
