@@ -69,7 +69,7 @@ if [ -z "$MOODLE_DOCKER_APP_RUNTIME" ];
 then
     if [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
     then
-        appversion="$(cat $MOODLE_DOCKER_APP_PATH/package.json | grep -oP '"version": "\K\d\.\d\.\d{1,2}(-\w+)?(?=")')"
+        appversion="$(cat $MOODLE_DOCKER_APP_PATH/package.json | sed -n -E 's/\s*"version": "([0-9]+\.[0-9]+\.[0-9]+)(.*)?",/\1/p')"
     elif [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]];
     then
         appversion=$MOODLE_DOCKER_APP_VERSION
@@ -77,10 +77,10 @@ then
 
     if [[ ! -z $appversion ]];
     then
-        if [[ ! -z "$(echo $appversion | grep -oP '\d\.\d\.\d{1,2}')" ]];
+        if [[ ! -z "$(echo $appversion | sed -n -E 's/([0-9]+\.[0-9]+\.[0-9]+)/\1/p')" ]];
         then
-            appmajorversion="$(echo $appversion | grep -oP '\d(?=\.\d\.\d{1,2})')"
-            appminorversion="$(echo $appversion | grep -oP '\d\.\K\d(?=\.\d{1,2})')"
+            appmajorversion="$(echo $appversion | sed -n -E 's/([0-9]+)\.[0-9]+\.[0-9]+/\1/p')"
+            appminorversion="$(echo $appversion | sed -n -E 's/[0-9]+\.([0-9]+)\.[0-9]+/\1/p')"
 
             if (( $appmajorversion > 4 || $appminorversion > 3));
             then
@@ -103,7 +103,7 @@ fi
 # Guess mobile app node version (only for local app development)
 if [[ -z "$MOODLE_DOCKER_APP_NODE_VERSION" ]]  && [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
 then
-    appnodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | grep -oP '(\d+\.?)+' || true)"
+    appnodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | sed -E "s/v(([0-9]+\.?)+)/\1/" || true)"
 
     export MOODLE_DOCKER_APP_NODE_VERSION="$appnodeversion"
 fi
