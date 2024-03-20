@@ -1,4 +1,3 @@
-version: "2"
 services:
   webserver:
     image: "moodlehq/moodle-php-apache:${MOODLE_DOCKER_PHP_VERSION}"

@@ -1,6 +1,5 @@
 # Here we support https://docs.docker.com/docker-for-mac/osxfs-caching/
 # for improved performance on mac
-version: "2"
 services:
   webserver:
     volumes:

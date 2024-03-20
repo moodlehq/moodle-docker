@@ -1,4 +1,3 @@
-version: "2"
 services:
   db:
     image: mysql:${MOODLE_DOCKER_DB_VERSION:-5.6}
