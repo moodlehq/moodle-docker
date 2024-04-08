@@ -1,5 +1,5 @@
 # moodle-docker: Docker Containers for Moodle Developers
-[![Build Status](https://github.com/moodlehq/moodle-docker/workflows/moodle-docker%20CI/badge.svg?branch=main)](https://github.com/moodlehq/moodle-docker/actions/workflows/ci.yml?query=branch%3Amain)
+[![moodle-docker CI](https://github.com/moodlehq/moodle-docker/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/moodlehq/moodle-docker/actions/workflows/ci.yml)
 
 This repository contains Docker configuration aimed at Moodle developers and testers to easily deploy a testing environment for Moodle.
 
