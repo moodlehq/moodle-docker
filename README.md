@@ -225,6 +225,19 @@ When you change them, use `bin/moodle-docker-compose down && bin/moodle-docker-c
 | `MOODLE_DOCKER_APP_PATH`                  | no        | path on your file system              | not set       | If set and the chrome browser is selected, it will start an instance of the Moodle app from your local codebase |
 | `MOODLE_DOCKER_APP_VERSION`               | no        | a valid [app docker image version](https://docs.moodle.org/dev/Moodle_App_Docker_images) | not set       | If set will start an instance of the Moodle app if the chrome browser is selected |
 
+In addition to that, `MOODLE_DOCKER_RUNNING=1` env variable is defined and available
+in the webserver container to flag being run by `moodle-docker`. Developer
+can use this to conditionally make changes in `config.php`. The common case is
+to load test-specific configuration:
+```
+// Load moodle-docker config file if we are in moodle-docker environment
+if (getenv('MOODLE_DOCKER_RUNNING')) {
+    require_once($CFG->dirroot . '/config.docker-template.php');
+}
+
+require_once($CFG->dirroot . '/lib/setup.php'); // Do not edit.
+```
+
 ## Local customisations
 
 In some situations you may wish to add local customisations, such as including additional containers, or changing existing containers.
