@@ -20,14 +20,14 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 ## Quick start
 
 ```bash
-# Get Moodle code (or get another version, or skip if you have a local copy)
-git clone -b MOODLE_403_STABLE git://git.moodle.org/moodle.git
-
 # Set up path to Moodle code
 export MOODLE_DOCKER_WWWROOT=./moodle
 
 # Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
 export MOODLE_DOCKER_DB=pgsql
+
+# Get Moodle code, you could select another version branch (skip this if you already got the code)
+git clone -b MOODLE_403_STABLE git://git.moodle.org/moodle.git $MOODLE_DOCKER_WWWROOT
 
 # Ensure customized config.php for the Docker containers is in place
 cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
