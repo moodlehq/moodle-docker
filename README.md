@@ -20,7 +20,7 @@ This repository contains Docker configuration aimed at Moodle developers and tes
 ## Quick start
 
 ```bash
-# Set up path to Moodle code
+# Change ./moodle to your /path/to/moodle if you already have it checked out
 export MOODLE_DOCKER_WWWROOT=./moodle
 
 # Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
