@@ -236,10 +236,10 @@ to load test-specific configuration:
 ```
 // Load moodle-docker config file if we are in moodle-docker environment
 if (getenv('MOODLE_DOCKER_RUNNING')) {
-    require_once($CFG->dirroot . '/config.docker-template.php');
+    require_once(__DIR__ . '/config.docker-template.php');
 }
 
-require_once($CFG->dirroot . '/lib/setup.php'); // Do not edit.
+require_once(__DIR__ . '/lib/setup.php'); // Do not edit.
 ```
 
 ## Local customisations
