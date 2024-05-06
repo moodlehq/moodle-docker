@@ -33,6 +33,12 @@ tasks:
       # Change permissions to allow installation of plugins.
       bin/moodle-docker-compose exec webserver bash -c 'chmod -R 777 .'
 
+      # Add some data if the file exists.
+      if [ -r "moodle/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature" ];
+      then
+        bin/moodle-docker-compose exec webserver php admin/tool/generator/cli/runtestscenario.php --feature=./../tests/fixtures/gitpod-basic-scenario.feature
+      fi
+
     command: |
       # Update the patch to the latest version.
       cd moodle
