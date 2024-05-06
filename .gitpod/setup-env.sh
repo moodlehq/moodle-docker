@@ -16,3 +16,19 @@ if [ -n "$DATAFILE" ];
 then
     wget -O moodle/admin/tool/generator/tests/fixtures/gitpod-basic-scenario.feature "${DATAFILE}"
 fi
+
+# Install adminer.
+if [ -n "$INSTALLADMINER" ];
+then
+cat << EOF > local.yml
+services:
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - "db"
+EOF
+fi
