@@ -30,6 +30,9 @@ tasks:
       # Open Moodle site in browser.
       gp ports await 8000 && gp preview $(gp url 8000)
 
+      # Change permissions to allow installation of plugins.
+      bin/moodle-docker-compose exec webserver bash -c 'chmod -R 777 .'
+
     command: |
       # Update the patch to the latest version.
       cd moodle
