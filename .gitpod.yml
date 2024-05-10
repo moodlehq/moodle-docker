@@ -42,7 +42,7 @@ tasks:
     command: |
       # Update the patch to the latest version.
       cd moodle
-      git fetch
+      git fetch  $(git rev-parse --symbolic-full-name --abbrev-ref @{upstream} | sed 's!/! !')
       git reset --hard
       cd ..
 
