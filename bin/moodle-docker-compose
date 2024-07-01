@@ -229,6 +229,8 @@ then
     dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
 fi
 
+# Behat test timeout factor
+export MOODLE_DOCKER_TIMEOUT_FACTOR=${MOODLE_DOCKER_TIMEOUT_FACTOR:-1}
 
 # Mac OS Compatbility
 if [[ "$(uname)" == "Darwin" ]]; then
