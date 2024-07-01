@@ -24,12 +24,14 @@ then
     docker run --volume $basedir/app:/app --workdir /app node:$nodeversion bash -c "npm ci"
 elif [ "$SUITE" = "app" ];
 then
-    isdevelop=`echo $MOODLE_DOCKER_APP_VERSION | grep -E -o "(next)|(latest)"`
+    branch=`echo $MOODLE_DOCKER_APP_VERSION | grep -P -o "next|latest|\d\.\d\.\d"`
 
-    branch="latest"
-    if [ "$isdevelop" = "next" ];
+    if [ "$branch" = "next" ];
     then
         branch="main"
+    elif [ "$branch" != "latest" ];
+    then
+        branch="v$branch"
     fi
 
     git clone --branch "$branch" --depth 1 https://github.com/moodlehq/moodle-local_moodleappbehat $basedir/moodle/local/moodleappbehat
