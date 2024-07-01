@@ -252,10 +252,10 @@ jobs:
           - { branch: MOODLE_402_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
           - { branch: MOODLE_401_STABLE, php: "8.1", suite: app, app-version: "latest-test" }
           - { branch: MOODLE_401_STABLE, php: "7.4", suite: app, app-version: "latest-test" }
-          - { branch: MOODLE_400_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
-          - { branch: MOODLE_400_STABLE, php: "7.3", suite: app, app-version: "latest-test" }
-          - { branch: MOODLE_311_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
-          - { branch: MOODLE_311_STABLE, php: "7.3", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_400_STABLE, php: "8.0", suite: app, app-version: "4.3.0-test" }
+          - { branch: MOODLE_400_STABLE, php: "7.3", suite: app, app-version: "4.3.0-test" }
+          - { branch: MOODLE_311_STABLE, php: "8.0", suite: app, app-version: "4.3.0-test" }
+          - { branch: MOODLE_311_STABLE, php: "7.3", suite: app, app-version: "4.3.0-test" }
 
     steps:
       - name: Checking out moodle-docker
