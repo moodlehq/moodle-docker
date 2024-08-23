@@ -136,18 +136,7 @@ fi
 
 if [[ -z "$MOODLE_DOCKER_BROWSER_TAG" ]];
 then
-    if [[ "$MOODLE_DOCKER_BROWSER_NAME" = "firefox" ]];
-    then
-        MOODLE_DOCKER_BROWSER_TAG=3
-    elif [[ "$MOODLE_DOCKER_BROWSER_NAME" = "chrome" ]];
-    then
-        if [[ "$MOODLE_DOCKER_APP_RUNTIME" = "ionic5" ]];
-        then
-            MOODLE_DOCKER_BROWSER_TAG=3
-        else
-            MOODLE_DOCKER_BROWSER_TAG="120.0"
-        fi
-    fi
+    MOODLE_DOCKER_BROWSER_TAG=4
 fi
 
 # Mobile app for development
