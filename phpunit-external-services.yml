@@ -9,7 +9,7 @@ services:
   mongo:
     image: mongo:4.0
   redis:
-    image: redis:3
+    image: redis:5
   solr:
     image: solr:6.5
     entrypoint:
