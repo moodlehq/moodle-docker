@@ -119,6 +119,12 @@ elif [ "$SWITCH1" = "--reload" ]; then
     # Reloads all docker images
     ${basedir}/bin/moodle-docker-compose start
 
+# Reload php setting in webserver image
+elif [ "$SWITCH1" = "--php" ]; then
+    # reloads
+    ${basedir}/bin/moodle-docker-compose restart webserver 
+    echo "Reloading PHP configuration by restarting webserver image."
+
 # Behat
 elif [ "$SWITCH1" = "--behat" ]; then
     # Add in unit tests initialization.
