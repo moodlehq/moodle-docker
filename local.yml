@@ -1,0 +1,31 @@
+version: "2"
+services:
+  webserver:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "${ASSETDIR}/php/10-docker-php-moodle.ini:/usr/local/etc/php/conf.d/10-docker-php-moodle.ini"
+    environment:
+      XDEBUG_MODE: debug,develop
+      XDEBUG_CONFIG:
+        client_host=host.docker.internal
+        start_with_request=yes
+        log=./tmp/xdebug.log
+        log_level=10
+        idekey=VSCODE
+        discover_client_host=1
+       
+  adminer:
+    image: adminer:latest
+    container_name: "${COMPOSE_PROJECT_NAME}-Adminer"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+      ADMINER_PLUGINS: tables-filter
+      MYSQL_DATABASE: moodle
+      MYSQL_USER: moodle
+      MYSQL_PASSWORD: m@0dl3ing
+    build:
+      context: "./bin/Adminer/"
+    ports:
+      - 8089:8080
+
