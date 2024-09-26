@@ -4,7 +4,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-      - "${ASSETDIR}/php/10-docker-php-moodle.ini:/usr/local/etc/php/conf.d/10-docker-php-moodle.ini"
+       - "${ASSETDIR}/php/10-docker-php-moodle.ini:/usr/local/etc/php/conf.d/10-docker-php-moodle.ini"
     environment:
       XDEBUG_MODE: debug,develop
       XDEBUG_CONFIG:
@@ -14,7 +14,7 @@ services:
         log_level=10
         idekey=VSCODE
         discover_client_host=1
-       
+        
   adminer:
     image: adminer:latest
     container_name: "${COMPOSE_PROJECT_NAME}-Adminer"

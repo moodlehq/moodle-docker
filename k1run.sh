@@ -18,11 +18,24 @@ help_messages () {
     echo
     echo "--build    Start the site and initialize the site."
     echo "--down     Stop the site. Keep data"
-    echo "--destroy  Stop the site, destory data" 
+    echo "--destroy  Stop the site, destory data"
     echo "--reboot   Restart the site - destroy all containers and re-initialize"
     echo "--load     Reload the site, use existing data"
     echo "--phpunit  Initialize for phpunit tests"
-    echo "--behat    Initialize for behat tests" 
+    echo "--behat    Initialize for behat tests"
+}
+
+exists_in_list() {
+    LIST=$1
+    DELIMITER=$2
+    VALUE=$3
+    LIST_WHITESPACES=`echo $LIST | tr "$DELIMITER" " "`
+    for x in $LIST_WHITESPACES; do
+        if [ "$x" = "$VALUE" ]; then
+            return 1
+        fi
+    done
+    return 0
 }
 
 if [ $# -eq 0 ];  then
@@ -30,8 +43,8 @@ if [ $# -eq 0 ];  then
     help_messages
     return
 fi
-
-
+#Count the variables passed in.
+variablecount=$#
 if [ $# -lt 2 ] || [ $# -gt 3 ] ;  then
     echo "Invalid number of arguments passed in. Must be between 2 and 3 arguments"
     help_messages
@@ -59,13 +72,33 @@ if [ "$SWITCH" = "--help" ]; then
     help_messages
 fi
 
+# Check to see if the options are valied.
+
+list_of_options="--build --down --destroy --reboot --load --phpunit --behat"
+
+if  exists_in_list "$list_of_options" " " $SWITCH;  then
+    echo "Invalid option $SWITCH"
+    help_messages
+    return
+fi
+
+if [ "$variablecount" -eq 3 ]; then 
+    if  exists_in_list "$list_of_options" " " $SWITCH2;  then
+        echo "Invalid option $SWITCH2"
+        help_messages
+        return
+    fi
+fi
+
 # Always use mariadb as a database.
 
 export MOODLE_DOCKER_DB=mariadb
 export MOODLE_DOCKER_WWWROOT=${folder}
+#export MOODLE_DOCKER_PHP_VERSION=8.3
 
-# Use the local.yml for multiple sites.
-cp local.yml_many local.yml
+# Use the local.yml_single for one site - includes adminer..
+cp local.yml_single local.yml
+cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 
 # Build
 if [ "$SWITCH" = "--build" ]; then
