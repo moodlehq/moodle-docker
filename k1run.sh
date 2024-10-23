@@ -76,11 +76,6 @@ if [ "$SWITCH" = "--help" ]; then
     help_messages
 fi
 
-# if no variable passed in then build the site.
-if [ -z "$SWITCH" ]; then
-   SWITCH='--build'
-fi
-
 list_of_options="--build --down --destroy --reboot --load --phpunit --behat"
 
 if  exists_in_list "$list_of_options" " " $SWITCH;  then
