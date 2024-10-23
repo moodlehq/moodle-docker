@@ -152,12 +152,15 @@ fi
 
 # PNPUNIT ONLY
 if [ "$SWITCH" = "--phpunit" ]; then
-   # Start up containers
-   bin/moodle-docker-compose up -d
-   # Wait for DB to come up
-   bin/moodle-docker-wait-for-db
-   bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
-   adminer_plugins
+    # Only start the containers if they are not running.
+    if ! docker ps | grep -q 'moodlehq'; then
+        # Start up containers
+        bin/moodle-docker-compose up -d
+        # Wait for DB to come up
+        bin/moodle-docker-wait-for-db
+    fi
+    bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
+    adminer_plugins
 fi
 
 # BEHAT ONLY
