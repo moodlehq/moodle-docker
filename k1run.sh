@@ -4,19 +4,22 @@ adminer_plugins () {
      # Add in Adminer plugins
     docker cp assets/adminer/plugins/readable-dates.php docker-Adminer:/var/www/html/plugins/readable-dates.php
     docker cp assets/adminer/plugins/table-header-scroll.php docker-Adminer:/var/www/html/plugins/table-header-scroll.php
-    docker cp assets/adminer/plugins/pretty-json-column.php docker-Adminer:/var/www/html/plugins/pretty-json-column.php    
+    docker cp assets/adminer/plugins/pretty-json-column.php docker-Adminer:/var/www/html/plugins/pretty-json-column.php
     docker cp assets/adminer/plugins/002-readable-dates.php docker-Adminer:/var/www/html/plugins-enabled/002-readable-dates.php
     docker cp assets/adminer/plugins/003-table-header-scroll.php docker-Adminer:/var/www/html/plugins-enabled/003-table-header-scroll.php
     docker cp assets/adminer/plugins/004-pretty-json-column.php docker-Adminer:/var/www/html/plugins-enabled/004-pretty-json-column.php
 }
 
 help_messages () {
-    echo "Usage: sh k1run.sh [folder] [option] [option2]"
-    echo "Script that automate managing docker."
     echo
-    echo "If no parameter is passed then boot and initialize the site."
+    echo "Script that automates managing docker."
+    echo
+    echo "Usage: sh k1run.sh [folder] [option] [option2]"
+    echo
+    echo "If no parameter is passed then display this help message."
     echo
     echo "--build    Start the site and initialize the site."
+    echo "--build --phpunit|--behat Start the containers, install Moodle then initialize Behat or PHPUnit"
     echo "--down     Stop the site. Keep data"
     echo "--destroy  Stop the site, destory data"
     echo "--reboot   Restart the site - destroy all containers and re-initialize"
@@ -39,9 +42,8 @@ exists_in_list() {
 }
 
 if [ $# -eq 0 ];  then
-    echo "No arguments supplied"
     help_messages
-    return
+    exit 1
 fi
 
 #Count the variables passed in.
