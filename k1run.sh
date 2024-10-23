@@ -165,10 +165,14 @@ fi
 
 # BEHAT ONLY
 if [ "$SWITCH" = "--behat" ]; then
-   # Start up containers
-   bin/moodle-docker-compose up -d
-   # Wait for DB to come up
-   bin/moodle-docker-wait-for-db
+    # Only start the containers if they are not running.
+    if ! docker ps | grep -q 'moodlehq'; then
+        # Start up containers
+        bin/moodle-docker-compose up -d
+        # Wait for DB to come up
+        bin/moodle-docker-wait-for-db
+        adminer_plugins
+    fi
    bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 fi
 
