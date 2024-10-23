@@ -10,6 +10,14 @@ adminer_plugins () {
     docker cp assets/adminer/plugins/004-pretty-json-column.php docker-Adminer:/var/www/html/plugins-enabled/004-pretty-json-column.php
 }
 
+error_message() {
+    RED='\033[0;31m'
+    NC='\033[0m' # No Color
+    echo
+    echo "${RED}$1${NC}"
+    echo
+}
+
 help_messages () {
     echo
     echo "Script that automates managing docker."
@@ -49,7 +57,7 @@ fi
 #Count the variables passed in.
 variablecount=$#
 if [ $# -lt 1 ] || [ $# -gt 3 ] ;  then
-    echo "Invalid number of arguments passed in. Must be between 1 and 3 arguments"
+    error_message "Invalid number of arguments passed in. Must be between 1 and 3 arguments"
     help_messages
     exit 1
 fi
@@ -60,7 +68,8 @@ folder="${1}"
 
 folder="${cwd}/${folder}"
 if [ ! -d "${folder}" ]; then
-   echo "${folder} is not valid"
+   error_message "${folder} is not valid"
+   help_messages
    exit 1
 fi
 
@@ -80,14 +89,14 @@ fi
 list_of_options="--build --down --destroy --reboot --load --phpunit --behat"
 
 if  exists_in_list "$list_of_options" " " $SWITCH;  then
-    echo "Invalid option $SWITCH"
+    error_message "Invalid option $SWITCH"
     help_messages
     exit 1
 fi
 
 if [ "$variablecount" -eq 3 ]; then
     if  exists_in_list "$list_of_options" " " $SWITCH2;  then
-        echo "Invalid option $SWITCH2"
+        error_message "Invalid option $SWITCH2"
         help_messages
         exit 1
     fi
@@ -111,7 +120,8 @@ cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 if [ "$SWITCH" = "--build" ]; then
     # Check to see if the docker containers are running.
     if [ -n "$(docker ps -f "name=docker-webserver-1" -f "status=running" -q )" ]; then
-       echo "The Webserver is already running!. It cannot be re-initialized."
+       error_message "The Webserver is already running!. It cannot be re-initialized."
+       help_messages
        exit 1
     fi
     # Start up containers
@@ -134,7 +144,7 @@ fi
 # DESTROY
 if [ "$SWITCH" = "--destroy" ]; then
     if ! docker ps | grep -q 'moodlehq'; then
-        echo "No containers running. Nothing to shutdown"
+        error_message "No containers running. Nothing to shutdown"
         exit 1
     fi
     bin/moodle-docker-compose down
@@ -163,7 +173,7 @@ fi
 if [ "$SWITCH" = "--reboot" ]; then
     # Stop the containers
     if ! docker ps | grep -q 'moodlehq'; then
-        echo "No containers running. Nothing to reboot"
+        error_message "No containers running. Nothing to reboot"
         exit 1
     fi
     bin/moodle-docker-compose stop
@@ -176,7 +186,7 @@ fi
 if [ "$SWITCH" = "--down" ]; then
     # Check to see if containers are running.
     if ! docker ps | grep -q 'moodlehq'; then
-        echo "No containers running. Nothing to shutdown"
+        error_message "No containers running. Nothing to shutdown"
         exit 1
     fi
     # Stop the containers
