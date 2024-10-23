@@ -187,6 +187,7 @@ if [ "$SWITCH" = "--reboot" ]; then
     sleep 3
     # Re-start up containers
     bin/moodle-docker-compose start
+    adminer_plugins
 fi
 
 # DOWN
