@@ -158,9 +158,9 @@ if [ "$SWITCH" = "--phpunit" ]; then
         bin/moodle-docker-compose up -d
         # Wait for DB to come up
         bin/moodle-docker-wait-for-db
+        adminer_plugins
     fi
     bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
-    adminer_plugins
 fi
 
 # BEHAT ONLY
