@@ -51,7 +51,7 @@ variablecount=$#
 if [ $# -lt 1 ] || [ $# -gt 3 ] ;  then
     echo "Invalid number of arguments passed in. Must be between 1 and 3 arguments"
     help_messages
-    return
+    exit 1
 fi
 
 cwd=$( dirname "$PWD" )
@@ -61,7 +61,7 @@ folder="${1}"
 folder="${cwd}/${folder}"
 if [ ! -d "${folder}" ]; then
    echo "${folder} is not valid"
-   return
+   exit 1
 fi
 
 SWITCH=$2
@@ -74,6 +74,7 @@ SWITCH2=$3
 
 if [ "$SWITCH" = "--help" ]; then
     help_messages
+    exit 1
 fi
 
 list_of_options="--build --down --destroy --reboot --load --phpunit --behat"
@@ -81,19 +82,18 @@ list_of_options="--build --down --destroy --reboot --load --phpunit --behat"
 if  exists_in_list "$list_of_options" " " $SWITCH;  then
     echo "Invalid option $SWITCH"
     help_messages
-    return
+    exit 1
 fi
 
 if [ "$variablecount" -eq 3 ]; then
     if  exists_in_list "$list_of_options" " " $SWITCH2;  then
         echo "Invalid option $SWITCH2"
         help_messages
-        return
+        exit 1
     fi
 fi
 
 # Always use mariadb as a database.
-
 export MOODLE_DOCKER_DB=mariadb
 export MOODLE_DOCKER_WWWROOT=${folder}
 
@@ -112,7 +112,7 @@ if [ "$SWITCH" = "--build" ]; then
     # Check to see if the docker containers are running.
     if [ -n "$(docker ps -f "name=docker-webserver-1" -f "status=running" -q )" ]; then
        echo "The Webserver is already running!. It cannot be re-initialized."
-       return;
+       exit 1
     fi
     # Start up containers
     bin/moodle-docker-compose up -d
@@ -190,4 +190,4 @@ if [ "$SWITCH" = "--load" ]; then
     adminer_plugins
 fi
 
-return
+exit 0
