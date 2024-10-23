@@ -7,10 +7,21 @@ help_messages () {
     echo "--build       Start the site and initialize the sites."
     echo "--destroy     Stop the sites. Destroy all data"
     echo "--help        display this message"
+    echo "--restart     Restart all running sites."
+    echo "--start       Start all stopped sites."
+    echo "--stop        Stop all running sites."
+
     echo "{folder1}     -folder pointing to first Moodle site (Mandatory)"
     echo "{folder2}     -folder pointing to second Moodle site (optional)"
     echo "{folder3}     -folder pointing to third Moodle site (optional)"
-
+    echo "
+        Examples:
+            sh k1many.sh --build M405            # Start a site with the folder in docker/M405 folder
+            sh k1many.sh --build M405 M401 MT    # Start three sites with based in docker/M405, docker/M401, docker/MT
+            sh k1many.sh --start                 # Start all stopped sites
+            sh k1many.sh --stop                  # Stop all stopped sites
+            sh k1many.sh --destroy               # Stop and destroy sites
+        "
 }
 
 exists_in_list() {
@@ -48,14 +59,14 @@ if [ "$SWITCH" = "--help" ]; then
     return
 fi
 
-if [ $# -lt 2 ] || [ $# -gt 4 ] ;  then
-    echo "Invalid number of arguments passed in. Must be between 2 and 4 arguments"
+if [ $# -lt 1 ] || [ $# -gt 4 ] ;  then
+    echo "Invalid number of arguments passed in. Must be between 1 and 4 arguments"
     help_messages
     return
 fi
 
 # Check to see if the options are valid.
-list_of_options="--build --down --destroy --reboot --load "
+list_of_options="--build --down --destroy --reboot --load --stop --start --restart"
 
 if  exists_in_list "$list_of_options" " " $SWITCH;  then
     echo "Invalid option $SWITCH"
@@ -63,12 +74,12 @@ if  exists_in_list "$list_of_options" " " $SWITCH;  then
     return
 fi
 
-#Count the variables passed in.
+# Count the variables passed in.
 variablecount=$#
 
 cwd=$( dirname "$PWD" )
 
-#Check to be sure that all folders are valid.
+# Check to be sure that all folders are valid.
 folder1="${2}"
 folder1="${cwd}/${folder1}"
 if [ ! -d "${folder1}" ]; then
@@ -120,10 +131,8 @@ if [ "$SWITCH" = "--build" ]; then
     moodlever=$(grep "$branch   = '405';" $folder1/version.php)
     if [ "$moodlever" ]; then
        export MOODLE_DOCKER_PHP_VERSION=8.3
-       return
     fi
     cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
-
     # Start up containers
     bin/moodle-docker-compose up -d
     # Wait for DB to come up
@@ -171,4 +180,35 @@ if [ "$SWITCH" = "--build" ]; then
         fi
     fi
 fi
+
+# Restart
+if [ "$SWITCH" = "--restart" ]; then
+    if ! docker ps | grep -q 'moodlehq'; then
+        echo "No containers running. Nothing to reboot"
+        exit 1
+    fi
+    docker restart $(docker ps -q)
+    echo "All sites restarted"
+fi
+
+# Start
+if [ "$SWITCH" = "--start" ]; then
+    if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
+        echo "Sites are already running."
+        return;
+    fi
+    docker start $(docker ps -a -q -f status=exited)
+    echo "All sites started"
+fi
+
+# Stop
+if [ "$SWITCH" = "--stop" ]; then
+    if ! docker ps | grep -q 'moodlehq'; then
+        echo "No containers running. Nothing to stop"
+        exit 1
+    fi
+    docker stop $(docker ps -q)
+    echo "All sites stopped"
+fi
+
 return
