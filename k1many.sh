@@ -24,6 +24,16 @@ help_messages () {
         "
 }
 
+start_server() {
+     # Start the server
+     bin/moodle-docker-compose up -d
+     # Sleep for 6 seconds to allow database to come up
+     sleep 6
+     # Just in case there is still some latency.
+     bin/moodle-docker-wait-for-db
+     return 0
+}
+
 exists_in_list() {
     LIST=$1
     DELIMITER=$2
@@ -37,73 +47,6 @@ exists_in_list() {
     return 0
 }
 
-if [ $# -eq 0 ];  then
-    echo "No arguments supplied"
-    help_messages
-    return
-fi
-
-SWITCH=$1
-
-if [ "$SWITCH" = "--destroy" ]; then
-   # Stop containers.
-   docker stop $(docker ps -a -q)
-   # Remove all containers.
-   docker rm $(docker ps -a -q)
-   echo "All sites shutdown and destroyed"
-   return
-fi
-
-if [ "$SWITCH" = "--help" ]; then
-    help_messages
-    return
-fi
-
-if [ $# -lt 1 ] || [ $# -gt 4 ] ;  then
-    echo "Invalid number of arguments passed in. Must be between 1 and 4 arguments"
-    help_messages
-    return
-fi
-
-# Check to see if the options are valid.
-list_of_options="--build --down --destroy --reboot --load --stop --start --restart"
-
-if  exists_in_list "$list_of_options" " " $SWITCH;  then
-    echo "Invalid option $SWITCH"
-    help_messages
-    return
-fi
-
-# Count the variables passed in.
-variablecount=$#
-
-cwd=$( dirname "$PWD" )
-
-# Check to be sure that all folders are valid.
-folder1="${2}"
-folder1="${cwd}/${folder1}"
-if [ ! -d "${folder1}" ]; then
-   echo "${folder1} is not valid"
-   return
-fi
-
-if [ "$variablecount" -gt 2 ]; then
-   folder2="${3}"
-   folder2="${cwd}/${folder2}"
-   if [ ! -d "${folder2}" ]; then
-      echo "${folder2} is not valid"
-      return
-   fi
-   if [ "$variablecount" -gt 3 ]; then
-      folder3="${4}"
-      folder3="${cwd}/${folder3}"
-      if [ ! -d "${folder3}" ]; then
-        echo "${folder3} is not valid"
-        return
-      fi
-    fi
-fi
-
 # Variables
 # MOODLE_DOCKER_DB          - database used by Moodle - default maria db
 # MOODLE_DOCKER_WWWROOT     - folder where the Moodle code is located;
@@ -111,104 +54,129 @@ fi
 # MOODLE_DOCKER_PHP_VERSION - php version used in Moodle - default 8.1;
 # COMPOSE_PROJECT_NAME      - Docker project name - used to identify sites;
 
-# Always use mariadb as a database.
+if [ $# -eq 0 ];  then
+    echo "No arguments supplied"
+    help_messages
+    exit 1
+fi
 
-export MOODLE_DOCKER_DB=mariadb
-export MOODLE_DOCKER_WWWROOT=${folder1}
-export COMPOSE_PROJECT_NAME=site1
+if [ $# -lt 1 ] || [ $# -gt 4 ] ;  then
+    echo "Invalid number of arguments passed in. Must be between 1 and 4 arguments"
+    help_messages
+    exit 1
+fi
 
-# Use the local.yml for multiple sites.
-cp local.yml_many local.yml
+ist_of_options="--build  --destroy --help --reboot --stop --start --restart"
+cwd=$( dirname "$PWD" )
+count=0
+for var in "$@"
+do
+    count=$((count+1))
+    if [ "$count" -eq 1 ]; then
+        SWITCH=${var}
+        # Check to see if the list of arguments is valid.
+        if  exists_in_list "$list_of_options" " " $SWITCH;  then
+            echo "Invalid option $SWITCH"
+            help_messages
+            exit 1
+        fi
+        # Check for any swithes that don't need options.
+        case $SWITCH in
+           "--build")
+                if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
+                    echo "The first site is already running!. It cannot be re-initialized."
+                    exit 1
+                fi
+                # Do the basics to start the site.
+                export MOODLE_DOCKER_DB=mariadb
+                export COMPOSE_PROJECT_NAME=site1
+                cp local.yml_many local.yml
+                ;;
+           "--help")
+              help_messages
+              exit 1
+              ;;
+            "--destroy")
+                if ! docker ps | grep -q 'moodlehq'; then
+                   echo "No containers running. Nothing to shutdown"
+                   exit 1
+                fi
+                docker stop $(docker ps -a -q)
+                docker rm $(docker ps -a -q)
+                echo "All containers shut down and removed."
+                exit 1
+                ;;
+             # Restart
+            "--restart")
+                if ! docker ps | grep -q 'moodlehq'; then
+                     echo "No containers running. Nothing to reboot"
+                     exit 1
+                fi
+                docker restart $(docker ps -q)
+                echo "All sites restarted"
+                exit 1
+                ;;
+            # Start
+            "--start")
+                if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
+                     echo "Sites are already running."
+                     exit 1
+                fi
+                docker start $(docker ps -a -q -f status=exited)
+                echo "All sites started"
+                exit 1
+                ;;
+            # Stop
+            "--stop")
+                if ! docker ps | grep -q 'moodlehq'; then
+                   echo "No containers running. Nothing to stop"
+                   exit 1
+               fi
+               docker stop $(docker ps -q)
+               echo "All sites stopped"
+               exit 1
+               ;;
 
-# Build
-if [ "$SWITCH" = "--build" ]; then
-    if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
-        echo "The first site is already running!. It cannot be re-initialized."
-        return;
-    fi
-    # Check the Moodle version. If its 4.5 then set php version to 8.3
-    export MOODLE_DOCKER_PHP_VERSION=8.1
-    moodlever=$(grep "$branch   = '405';" $folder1/version.php)
-    if [ "$moodlever" ]; then
-       export MOODLE_DOCKER_PHP_VERSION=8.3
-    fi
-    cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
-    # Start up containers
-    bin/moodle-docker-compose up -d
-    # Wait for DB to come up
-    bin/moodle-docker-wait-for-db
-    # Initialize the database
-    bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site1" --shortname="site1" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
-    echo "${folder1} site started - port 8000"
-
-    if [ "$variablecount" -gt 2 ]; then
-        # Check to see if the docker containers are running.
+        esac
+    else
+        folder="${cwd}/${var}"
+        if [ ! -d "${folder}" ]; then
+            echo "${folder} is not valid"
+            exit 1
+        fi
+        # Start the site
+        # Check the Moodle version. If its 4.5 then set php version to 8.3
         export MOODLE_DOCKER_PHP_VERSION=8.1
-        moodlever=$(grep "$branch   = '405';" $folder2/version.php)
+        moodlever=$(grep "$branch   = '405';" $folder/version.php)
         if [ "$moodlever" ]; then
            export MOODLE_DOCKER_PHP_VERSION=8.3
         fi
-        export MOODLE_DOCKER_WEB_PORT=1234
-        export MOODLE_DOCKER_WWWROOT=${folder2}
-        export COMPOSE_PROJECT_NAME=site2
+        export MOODLE_DOCKER_WWWROOT=${folder}
         cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
-        # Start up containers
-        bin/moodle-docker-compose up -d
-        # Wait for DB to come up
-        bin/moodle-docker-wait-for-db
-        # Initialize the database
-        bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site2" --shortname="site2" --summary="Site 2" --adminpass="test" --adminemail="admin@example.com"
-        echo "${folder2} site started - port 1234"
-
-        if [ "$variablecount" -gt 3 ]; then
-            export MOODLE_DOCKER_PHP_VERSION=8.1
-            moodlever=$(grep "$branch   = '405';" $folder3/version.php)
-            if [ "$moodlever" ]; then
-               export MOODLE_DOCKER_PHP_VERSION=8.3
-            fi
-            export MOODLE_DOCKER_WEB_PORT=6789
-            export MOODLE_DOCKER_WWWROOT=${folder3}
-            export COMPOSE_PROJECT_NAME=site3
-            cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
-            # Start up containers
-            bin/moodle-docker-compose up -d
-            # Wait for DB to come up
-            bin/moodle-docker-wait-for-db
-            # Initialize the database
-            bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site3" --shortname="site3" --summary="Site 3" --adminpass="test" --adminemail="admin@example.com"
-            echo "${folder3} site started - port 6789"
-        fi
+        case $count in
+           "2")
+               export COMPOSE_PROJECT_NAME=site1
+               export MOODLE_DOCKER_WEB_PORT=8000
+               start_server
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site1" --shortname="site1" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
+               echo "${folder} site started - port 8000"
+            ;;
+            "3")
+               export COMPOSE_PROJECT_NAME=site2
+               export MOODLE_DOCKER_WEB_PORT=1234
+               start_server
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site2" --shortname="site1" --summary="Site 2" --adminpass="test" --adminemail="admin@example.com"
+               echo "${folder} site started - port 1234"
+            ;;
+            "4")
+               export COMPOSE_PROJECT_NAME=site3
+               export MOODLE_DOCKER_WEB_PORT=6789
+               start_server
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site3" --shortname="site3" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
+               echo "${folder} site started - port 6789"
+            ;;
+         esac
     fi
-fi
-
-# Restart
-if [ "$SWITCH" = "--restart" ]; then
-    if ! docker ps | grep -q 'moodlehq'; then
-        echo "No containers running. Nothing to reboot"
-        exit 1
-    fi
-    docker restart $(docker ps -q)
-    echo "All sites restarted"
-fi
-
-# Start
-if [ "$SWITCH" = "--start" ]; then
-    if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
-        echo "Sites are already running."
-        return;
-    fi
-    docker start $(docker ps -a -q -f status=exited)
-    echo "All sites started"
-fi
-
-# Stop
-if [ "$SWITCH" = "--stop" ]; then
-    if ! docker ps | grep -q 'moodlehq'; then
-        echo "No containers running. Nothing to stop"
-        exit 1
-    fi
-    docker stop $(docker ps -q)
-    echo "All sites stopped"
-fi
+done
 
 return
