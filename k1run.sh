@@ -4,19 +4,30 @@ adminer_plugins () {
      # Add in Adminer plugins
     docker cp assets/adminer/plugins/readable-dates.php docker-Adminer:/var/www/html/plugins/readable-dates.php
     docker cp assets/adminer/plugins/table-header-scroll.php docker-Adminer:/var/www/html/plugins/table-header-scroll.php
-    docker cp assets/adminer/plugins/pretty-json-column.php docker-Adminer:/var/www/html/plugins/pretty-json-column.php    
+    docker cp assets/adminer/plugins/pretty-json-column.php docker-Adminer:/var/www/html/plugins/pretty-json-column.php
     docker cp assets/adminer/plugins/002-readable-dates.php docker-Adminer:/var/www/html/plugins-enabled/002-readable-dates.php
     docker cp assets/adminer/plugins/003-table-header-scroll.php docker-Adminer:/var/www/html/plugins-enabled/003-table-header-scroll.php
     docker cp assets/adminer/plugins/004-pretty-json-column.php docker-Adminer:/var/www/html/plugins-enabled/004-pretty-json-column.php
 }
 
-help_messages () {
-    echo "Usage: sh k1run.sh [folder] [option] [option2]"
-    echo "Script that automate managing docker."
+error_message() {
+    RED='\033[0;31m'
+    NC='\033[0m' # No Color
     echo
-    echo "If no parameter is passed then boot and initialize the site."
+    echo "${RED}$1${NC}"
+    echo
+}
+
+help_messages () {
+    echo
+    echo "Script that automates managing docker."
+    echo
+    echo "Usage: sh k1run.sh [folder] [option] [option2]"
+    echo
+    echo "If no parameter is passed then display this help message."
     echo
     echo "--build    Start the site and initialize the site."
+    echo "--build --phpunit|--behat Start the containers, install Moodle then initialize Behat or PHPUnit"
     echo "--down     Stop the site. Keep data"
     echo "--destroy  Stop the site, destory data"
     echo "--reboot   Restart the site - destroy all containers and re-initialize"
@@ -39,17 +50,16 @@ exists_in_list() {
 }
 
 if [ $# -eq 0 ];  then
-    echo "No arguments supplied"
     help_messages
-    return
+    exit 1
 fi
 
 #Count the variables passed in.
 variablecount=$#
 if [ $# -lt 1 ] || [ $# -gt 3 ] ;  then
-    echo "Invalid number of arguments passed in. Must be between 1 and 3 arguments"
+    error_message "Invalid number of arguments passed in. Must be between 1 and 3 arguments"
     help_messages
-    return
+    exit 1
 fi
 
 cwd=$( dirname "$PWD" )
@@ -58,8 +68,9 @@ folder="${1}"
 
 folder="${cwd}/${folder}"
 if [ ! -d "${folder}" ]; then
-   echo "${folder} is not valid"
-   return
+   error_message "${folder} is not valid"
+   help_messages
+   exit 1
 fi
 
 SWITCH=$2
@@ -72,31 +83,26 @@ SWITCH2=$3
 
 if [ "$SWITCH" = "--help" ]; then
     help_messages
-fi
-
-# if no variable passed in then build the site.
-if [ -z "$SWITCH" ]; then
-   SWITCH='--build'
+    exit 1
 fi
 
 list_of_options="--build --down --destroy --reboot --load --phpunit --behat"
 
 if  exists_in_list "$list_of_options" " " $SWITCH;  then
-    echo "Invalid option $SWITCH"
+    error_message "Invalid option $SWITCH"
     help_messages
-    return
+    exit 1
 fi
 
 if [ "$variablecount" -eq 3 ]; then
     if  exists_in_list "$list_of_options" " " $SWITCH2;  then
-        echo "Invalid option $SWITCH2"
+        error_message "Invalid option $SWITCH2"
         help_messages
-        return
+        exit 1
     fi
 fi
 
 # Always use mariadb as a database.
-
 export MOODLE_DOCKER_DB=mariadb
 export MOODLE_DOCKER_WWWROOT=${folder}
 
@@ -114,8 +120,9 @@ cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 if [ "$SWITCH" = "--build" ]; then
     # Check to see if the docker containers are running.
     if [ -n "$(docker ps -f "name=docker-webserver-1" -f "status=running" -q )" ]; then
-       echo "The Webserver is already running!. It cannot be re-initialized."
-       return;
+       error_message "The Webserver is already running!. It cannot be re-initialized."
+       help_messages
+       exit 1
     fi
     # Start up containers
     bin/moodle-docker-compose up -d
@@ -137,7 +144,7 @@ fi
 # DESTROY
 if [ "$SWITCH" = "--destroy" ]; then
     if ! docker ps | grep -q 'moodlehq'; then
-        echo "No containers running. Nothing to shutdown"
+        error_message "No containers running. Nothing to shutdown"
         exit 1
     fi
     bin/moodle-docker-compose down
@@ -145,20 +152,27 @@ fi
 
 # PNPUNIT ONLY
 if [ "$SWITCH" = "--phpunit" ]; then
-   # Start up containers
-   bin/moodle-docker-compose up -d
-   # Wait for DB to come up
-   bin/moodle-docker-wait-for-db
-   bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
-   adminer_plugins
+    # Only start the containers if they are not running.
+    if ! docker ps | grep -q 'moodlehq'; then
+        # Start up containers
+        bin/moodle-docker-compose up -d
+        # Wait for DB to come up
+        bin/moodle-docker-wait-for-db
+        adminer_plugins
+    fi
+    bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
 fi
 
 # BEHAT ONLY
 if [ "$SWITCH" = "--behat" ]; then
-   # Start up containers
-   bin/moodle-docker-compose up -d
-   # Wait for DB to come up
-   bin/moodle-docker-wait-for-db
+    # Only start the containers if they are not running.
+    if ! docker ps | grep -q 'moodlehq'; then
+        # Start up containers
+        bin/moodle-docker-compose up -d
+        # Wait for DB to come up
+        bin/moodle-docker-wait-for-db
+        adminer_plugins
+    fi
    bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 fi
 
@@ -166,20 +180,21 @@ fi
 if [ "$SWITCH" = "--reboot" ]; then
     # Stop the containers
     if ! docker ps | grep -q 'moodlehq'; then
-        echo "No containers running. Nothing to reboot"
+        error_message "No containers running. Nothing to reboot"
         exit 1
     fi
     bin/moodle-docker-compose stop
     sleep 3
     # Re-start up containers
     bin/moodle-docker-compose start
+    adminer_plugins
 fi
 
 # DOWN
 if [ "$SWITCH" = "--down" ]; then
     # Check to see if containers are running.
     if ! docker ps | grep -q 'moodlehq'; then
-        echo "No containers running. Nothing to shutdown"
+        error_message "No containers running. Nothing to shutdown"
         exit 1
     fi
     # Stop the containers
@@ -193,4 +208,4 @@ if [ "$SWITCH" = "--load" ]; then
     adminer_plugins
 fi
 
-return
+exit 0
