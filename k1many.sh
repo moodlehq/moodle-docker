@@ -24,6 +24,16 @@ help_messages () {
         "
 }
 
+# Decorator to output information message to the user.
+# Takes 1 param, then message to be displayed.
+info_message() {
+    CYAN='\033[0;36m'
+    NC='\033[0m' # No Color
+    echo
+    echo "${CYAN}$1${NC}"
+    echo
+}
+
 start_server() {
      # Start the server
      bin/moodle-docker-compose up -d
@@ -76,7 +86,7 @@ do
         SWITCH=${var}
         # Check to see if the list of arguments is valid.
         if  exists_in_list "$list_of_options" " " $SWITCH;  then
-            echo "Invalid option $SWITCH"
+            echo "Invalid option $SWITCH."
             help_messages
             exit 1
         fi
@@ -98,42 +108,42 @@ do
               ;;
             "--destroy")
                 if ! docker ps | grep -q 'moodlehq'; then
-                   echo "No containers running. Nothing to shutdown"
+                   info_message "No containers running. Nothing to shutdown."
                    exit 1
                 fi
                 docker stop $(docker ps -a -q)
                 docker rm $(docker ps -a -q)
-                echo "All containers shut down and removed."
+                info_message "All containers shut down and removed."
                 exit 1
                 ;;
              # Restart
             "--restart")
                 if ! docker ps | grep -q 'moodlehq'; then
-                     echo "No containers running. Nothing to reboot"
+                     info_message "No containers running. Nothing to reboot."
                      exit 1
                 fi
                 docker restart $(docker ps -q)
-                echo "All sites restarted"
+                info_message "All sites restarted."
                 exit 1
                 ;;
             # Start
             "--start")
                 if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
-                     echo "Sites are already running."
+                     info_message "Sites are already running."
                      exit 1
                 fi
                 docker start $(docker ps -a -q -f status=exited)
-                echo "All sites started"
+                info_message "All sites started."
                 exit 1
                 ;;
             # Stop
             "--stop")
                 if ! docker ps | grep -q 'moodlehq'; then
-                   echo "No containers running. Nothing to stop"
+                   info_message "No containers running. Nothing to stop."
                    exit 1
                fi
                docker stop $(docker ps -q)
-               echo "All sites stopped"
+               info_message "All sites stopped."
                exit 1
                ;;
 
@@ -165,21 +175,21 @@ do
                export MOODLE_DOCKER_WEB_PORT=8000
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
-               echo "${folder} site started - port 8000"
+               info_message "${folder} site started - port 8000"
             ;;
             "3")
                export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=1234
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
-               echo "${folder} site started - port 1234"
+               info_message "${folder} site started - port 1234"
             ;;
             "4")
                export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=6789
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
-               echo "${folder} site started - port 6789"
+               info_message "${folder} site started - port 6789"
             ;;
          esac
     fi
