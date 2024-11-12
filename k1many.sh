@@ -83,7 +83,7 @@ do
         # Check for any swithes that don't need options.
         case $SWITCH in
            "--build")
-                if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
+                if [ -n "$(docker ps -f "name=${var}-webserver-1" -f "status=running" -q )" ]; then
                     echo "The first site is already running!. It cannot be re-initialized."
                     exit 1
                 fi
@@ -164,21 +164,21 @@ do
                export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=8000
                start_server
-               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site1" --shortname="site1" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
                echo "${folder} site started - port 8000"
             ;;
             "3")
                export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=1234
                start_server
-               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site2" --shortname="site1" --summary="Site 2" --adminpass="test" --adminemail="admin@example.com"
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
                echo "${folder} site started - port 1234"
             ;;
             "4")
                export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=6789
                start_server
-               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site3" --shortname="site3" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
                echo "${folder} site started - port 6789"
             ;;
          esac
