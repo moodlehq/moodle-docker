@@ -34,6 +34,16 @@ info_message() {
     echo
 }
 
+# Decorator to output error message to the user.
+# Takes 1 param, then message to be displayed.
+error_message() {
+    RED='\033[0;31m'
+    NC='\033[0m' # No Color
+    echo
+    echo "${RED}$1${NC}"
+    echo
+}
+
 start_server() {
      # Start the server
      bin/moodle-docker-compose up -d
