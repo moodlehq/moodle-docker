@@ -66,7 +66,7 @@ if [ $# -lt 1 ] || [ $# -gt 4 ] ;  then
     exit 1
 fi
 
-ist_of_options="--build  --destroy --help --reboot --stop --start --restart"
+list_of_options="--build  --destroy --help --reboot --stop --start --restart"
 cwd=$( dirname "$PWD" )
 count=0
 for var in "$@"
