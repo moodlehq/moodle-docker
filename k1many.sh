@@ -139,11 +139,17 @@ do
 
         esac
     else
+        # Used to name the project according to the folder name
+        # which makes it easier to recognize who is who in Docker.
+        projectname="${var}"
+
+        # Full path of the folder containing the Moodle files.
         folder="${cwd}/${var}"
         if [ ! -d "${folder}" ]; then
             echo "${folder} is not valid"
             exit 1
         fi
+
         # Start the site
         # Check the Moodle version. If its 4.5 then set php version to 8.3
         export MOODLE_DOCKER_PHP_VERSION=8.1
@@ -155,21 +161,21 @@ do
         cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
         case $count in
            "2")
-               export COMPOSE_PROJECT_NAME=site1
+               export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=8000
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site1" --shortname="site1" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
                echo "${folder} site started - port 8000"
             ;;
             "3")
-               export COMPOSE_PROJECT_NAME=site2
+               export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=1234
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site2" --shortname="site1" --summary="Site 2" --adminpass="test" --adminemail="admin@example.com"
                echo "${folder} site started - port 1234"
             ;;
             "4")
-               export COMPOSE_PROJECT_NAME=site3
+               export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=6789
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site3" --shortname="site3" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
