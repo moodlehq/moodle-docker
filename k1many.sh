@@ -183,20 +183,26 @@ do
         case $count in
            "2")
                export MOODLE_DOCKER_WEB_PORT=8000
+               # Starts the container and wait for DB.
                start_server
+               # Install Moodle.
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
+               # Set the session cookie to avoid login problem between instances.
+               bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=sessioncookie --set="${projectname}"
                info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
             "3")
                export MOODLE_DOCKER_WEB_PORT=1234
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
+               bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=sessioncookie --set="${projectname}"
                info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
             "4")
                export MOODLE_DOCKER_WEB_PORT=6789
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
+               bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=sessioncookie --set="${projectname}"
                info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
          esac
