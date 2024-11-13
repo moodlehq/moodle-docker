@@ -178,28 +178,26 @@ do
            export MOODLE_DOCKER_PHP_VERSION=8.3
         fi
         export MOODLE_DOCKER_WWWROOT=${folder}
+        export COMPOSE_PROJECT_NAME=${projectname}
         cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
         case $count in
            "2")
-               export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=8000
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
-               info_message "${folder} site started - port 8000"
+               info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
             "3")
-               export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=1234
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
-               info_message "${folder} site started - port 1234"
+               info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
             "4")
-               export COMPOSE_PROJECT_NAME=${projectname}
                export MOODLE_DOCKER_WEB_PORT=6789
                start_server
                bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
-               info_message "${folder} site started - port 6789"
+               info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
          esac
     fi
