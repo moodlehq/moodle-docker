@@ -75,13 +75,13 @@ exists_in_list() {
 # COMPOSE_PROJECT_NAME      - Docker project name - used to identify sites;
 
 if [ $# -eq 0 ];  then
-    echo "No arguments supplied"
+    error_message "No arguments supplied"
     help_messages
     exit 1
 fi
 
 if [ $# -lt 1 ] || [ $# -gt 4 ] ;  then
-    echo "Invalid number of arguments passed in. Must be between 1 and 4 arguments"
+    error_message "Invalid number of arguments passed in. Must be between 1 and 4 arguments"
     help_messages
     exit 1
 fi
@@ -96,7 +96,7 @@ do
         SWITCH=${var}
         # Check to see if the list of arguments is valid.
         if  exists_in_list "$list_of_options" " " $SWITCH;  then
-            echo "Invalid option $SWITCH."
+            error_message "Invalid option $SWITCH."
             help_messages
             exit 1
         fi
