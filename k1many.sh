@@ -24,6 +24,26 @@ help_messages () {
         "
 }
 
+# Decorator to output information message to the user.
+# Takes 1 param, then message to be displayed.
+info_message() {
+    CYAN='\033[0;36m'
+    NC='\033[0m' # No Color
+    echo
+    echo "${CYAN}$1${NC}"
+    echo
+}
+
+# Decorator to output error message to the user.
+# Takes 1 param, then message to be displayed.
+error_message() {
+    RED='\033[0;31m'
+    NC='\033[0m' # No Color
+    echo
+    echo "${RED}$1${NC}"
+    echo
+}
+
 start_server() {
      # Start the server
      bin/moodle-docker-compose up -d
@@ -55,13 +75,13 @@ exists_in_list() {
 # COMPOSE_PROJECT_NAME      - Docker project name - used to identify sites;
 
 if [ $# -eq 0 ];  then
-    echo "No arguments supplied"
+    error_message "No arguments supplied"
     help_messages
     exit 1
 fi
 
 if [ $# -lt 1 ] || [ $# -gt 4 ] ;  then
-    echo "Invalid number of arguments passed in. Must be between 1 and 4 arguments"
+    error_message "Invalid number of arguments passed in. Must be between 1 and 4 arguments"
     help_messages
     exit 1
 fi
@@ -76,14 +96,14 @@ do
         SWITCH=${var}
         # Check to see if the list of arguments is valid.
         if  exists_in_list "$list_of_options" " " $SWITCH;  then
-            echo "Invalid option $SWITCH"
+            error_message "Invalid option $SWITCH."
             help_messages
             exit 1
         fi
         # Check for any swithes that don't need options.
         case $SWITCH in
            "--build")
-                if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
+                if [ -n "$(docker ps -f "name=${var}-webserver-1" -f "status=running" -q )" ]; then
                     echo "The first site is already running!. It cannot be re-initialized."
                     exit 1
                 fi
@@ -98,52 +118,58 @@ do
               ;;
             "--destroy")
                 if ! docker ps | grep -q 'moodlehq'; then
-                   echo "No containers running. Nothing to shutdown"
+                   info_message "No containers running. Nothing to shutdown."
                    exit 1
                 fi
                 docker stop $(docker ps -a -q)
                 docker rm $(docker ps -a -q)
-                echo "All containers shut down and removed."
+                info_message "All containers shut down and removed."
                 exit 1
                 ;;
              # Restart
             "--restart")
                 if ! docker ps | grep -q 'moodlehq'; then
-                     echo "No containers running. Nothing to reboot"
+                     info_message "No containers running. Nothing to reboot."
                      exit 1
                 fi
                 docker restart $(docker ps -q)
-                echo "All sites restarted"
+                info_message "All sites restarted."
                 exit 1
                 ;;
             # Start
             "--start")
                 if [ -n "$(docker ps -f "name=site1-webserver-1" -f "status=running" -q )" ]; then
-                     echo "Sites are already running."
+                     info_message "Sites are already running."
                      exit 1
                 fi
                 docker start $(docker ps -a -q -f status=exited)
-                echo "All sites started"
+                info_message "All sites started."
                 exit 1
                 ;;
             # Stop
             "--stop")
                 if ! docker ps | grep -q 'moodlehq'; then
-                   echo "No containers running. Nothing to stop"
+                   info_message "No containers running. Nothing to stop."
                    exit 1
                fi
                docker stop $(docker ps -q)
-               echo "All sites stopped"
+               info_message "All sites stopped."
                exit 1
                ;;
 
         esac
     else
+        # Used to name the project according to the folder name
+        # which makes it easier to recognize who is who in Docker.
+        projectname="${var}"
+
+        # Full path of the folder containing the Moodle files.
         folder="${cwd}/${var}"
         if [ ! -d "${folder}" ]; then
             echo "${folder} is not valid"
             exit 1
         fi
+
         # Start the site
         # Check the Moodle version. If its 4.5 then set php version to 8.3
         export MOODLE_DOCKER_PHP_VERSION=8.1
@@ -152,28 +178,32 @@ do
            export MOODLE_DOCKER_PHP_VERSION=8.3
         fi
         export MOODLE_DOCKER_WWWROOT=${folder}
+        export COMPOSE_PROJECT_NAME=${projectname}
         cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
         case $count in
            "2")
-               export COMPOSE_PROJECT_NAME=site1
                export MOODLE_DOCKER_WEB_PORT=8000
+               # Starts the container and wait for DB.
                start_server
-               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site1" --shortname="site1" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
-               echo "${folder} site started - port 8000"
+               # Install Moodle.
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
+               # Set the session cookie to avoid login problem between instances.
+               bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=sessioncookie --set="${projectname}"
+               info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
             "3")
-               export COMPOSE_PROJECT_NAME=site2
                export MOODLE_DOCKER_WEB_PORT=1234
                start_server
-               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site2" --shortname="site1" --summary="Site 2" --adminpass="test" --adminemail="admin@example.com"
-               echo "${folder} site started - port 1234"
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
+               bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=sessioncookie --set="${projectname}"
+               info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
             "4")
-               export COMPOSE_PROJECT_NAME=site3
                export MOODLE_DOCKER_WEB_PORT=6789
                start_server
-               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="site3" --shortname="site3" --summary="Site 1" --adminpass="test" --adminemail="admin@example.com"
-               echo "${folder} site started - port 6789"
+               bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="${projectname}" --shortname="${projectname}" --summary="${projectname}" --adminpass="test" --adminemail="admin@example.com"
+               bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=sessioncookie --set="${projectname}"
+               info_message "${folder} site started - http://localhost:${MOODLE_DOCKER_WEB_PORT}"
             ;;
          esac
     fi
