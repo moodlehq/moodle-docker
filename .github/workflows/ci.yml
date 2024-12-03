@@ -248,26 +248,22 @@ jobs:
         include:
           # PostgreSQL (highest, lowest php supported)
           # First tests are for app developers.
-          - { branch: MOODLE_404_STABLE, php: "8.3", suite: app-development, app-version: "latest" }
-          - { branch: MOODLE_404_STABLE, php: "8.1", suite: app-development, app-version: "latest" }
-          - { branch: MOODLE_404_STABLE, php: "8.3", suite: app-development, app-version: "main" }
-          - { branch: MOODLE_404_STABLE, php: "8.1", suite: app-development, app-version: "main" }
+          - { branch: MOODLE_405_STABLE, php: "8.3", suite: app-development, app-version: "latest" }
+          - { branch: MOODLE_405_STABLE, php: "8.1", suite: app-development, app-version: "latest" }
+          - { branch: MOODLE_405_STABLE, php: "8.3", suite: app-development, app-version: "main" }
+          - { branch: MOODLE_405_STABLE, php: "8.1", suite: app-development, app-version: "main" }
           # Tests for Moodle plugin developers who want to test against the next version of the app.
-          - { branch: MOODLE_404_STABLE, php: "8.3", suite: app, app-version: "next-test" }
-          - { branch: MOODLE_404_STABLE, php: "8.1", suite: app, app-version: "next-test" }
+          - { branch: MOODLE_405_STABLE, php: "8.3", suite: app, app-version: "next-test" }
+          - { branch: MOODLE_405_STABLE, php: "8.1", suite: app, app-version: "next-test" }
           # Tests for Moodle plugin developers testing against all supported versions of Moodle.
+          - { branch: MOODLE_405_STABLE, php: "8.3", suite: app, app-version: "latest-test" }
+          - { branch: MOODLE_405_STABLE, php: "8.1", suite: app, app-version: "latest-test" }
           - { branch: MOODLE_404_STABLE, php: "8.3", suite: app, app-version: "latest-test" }
           - { branch: MOODLE_404_STABLE, php: "8.1", suite: app, app-version: "latest-test" }
           - { branch: MOODLE_403_STABLE, php: "8.2", suite: app, app-version: "latest-test" }
           - { branch: MOODLE_403_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
-          - { branch: MOODLE_402_STABLE, php: "8.2", suite: app, app-version: "latest-test" }
-          - { branch: MOODLE_402_STABLE, php: "8.0", suite: app, app-version: "latest-test" }
           - { branch: MOODLE_401_STABLE, php: "8.1", suite: app, app-version: "latest-test" }
           - { branch: MOODLE_401_STABLE, php: "7.4", suite: app, app-version: "latest-test" }
-          - { branch: MOODLE_400_STABLE, php: "8.0", suite: app, app-version: "4.3.0-test" }
-          - { branch: MOODLE_400_STABLE, php: "7.3", suite: app, app-version: "4.3.0-test" }
-          - { branch: MOODLE_311_STABLE, php: "8.0", suite: app, app-version: "4.3.0-test" }
-          - { branch: MOODLE_311_STABLE, php: "7.3", suite: app, app-version: "4.3.0-test" }
 
     steps:
       - name: Checking out moodle-docker
