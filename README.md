@@ -27,7 +27,7 @@ export MOODLE_DOCKER_WWWROOT=./moodle
 export MOODLE_DOCKER_DB=pgsql
 
 # Get Moodle code, you could select another version branch (skip this if you already got the code)
-git clone -b MOODLE_403_STABLE git://git.moodle.org/moodle.git $MOODLE_DOCKER_WWWROOT
+git clone -b MOODLE_405_STABLE git://git.moodle.org/moodle.git $MOODLE_DOCKER_WWWROOT
 
 # Ensure customized config.php for the Docker containers is in place
 cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
