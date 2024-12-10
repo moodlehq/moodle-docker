@@ -2,9 +2,7 @@ services:
   webserver:
     environment:
       MOODLE_DOCKER_APP: "true"
-      MOODLE_DOCKER_APP_PORT: ${MOODLE_DOCKER_APP_PORT}
+      MOODLE_DOCKER_APP_PORT: ${MOODLE_DOCKER_APP_INTERNAL_PORT}
       MOODLE_DOCKER_APP_PROTOCOL: ${MOODLE_DOCKER_APP_PROTOCOL}
   moodleapp:
     image: "moodlehq/moodleapp:${MOODLE_DOCKER_APP_VERSION}"
-    ports:
-      - "8100:$MOODLE_DOCKER_APP_PORT"
