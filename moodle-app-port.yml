@@ -1,0 +1,4 @@
+services:
+  moodleapp:
+    ports:
+      - "$MOODLE_DOCKER_APP_PORT:$MOODLE_DOCKER_APP_INTERNAL_PORT"
