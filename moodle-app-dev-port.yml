@@ -1,0 +1,6 @@
+services:
+  moodleapp:
+    ports:
+      - "$MOODLE_DOCKER_APP_PORT:8100"
+      - "35729:35729"
+      - "53703:53703"
