@@ -139,4 +139,11 @@ if (getenv('MOODLE_DOCKER_MATRIX_MOCK')) {
     define('TEST_COMMUNICATION_MATRIX_MOCK_SERVER', "http://matrixmock/{$mockhash}");
 }
 
+if (getenv('MOODLE_DOCKER_MLBACKEND')) {
+    define('TEST_MLBACKEND_PYTHON_HOST', 'mlbackendpython');
+    define('TEST_MLBACKEND_PYTHON_PORT', 5000);
+    define('TEST_MLBACKEND_PYTHON_USERNAME', 'default');
+    define('TEST_MLBACKEND_PYTHON_PASSWORD', 'sshhhh');
+}
+
 require_once(__DIR__ . '/lib/setup.php');

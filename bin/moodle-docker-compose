@@ -203,6 +203,12 @@ then
     dockercompose="${dockercompose} -f ${basedir}/matrix-mock.yml"
 fi
 
+# Machine Learning backend
+if [[ ! -z "$MOODLE_DOCKER_MLBACKEND" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/mlbackend.yml"
+fi
+
 #  Faildump directory
 if [[ ! -z "$MOODLE_DOCKER_BEHAT_FAILDUMP" ]];
 then
