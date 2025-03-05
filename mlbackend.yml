@@ -1,0 +1,6 @@
+services:
+  webserver:
+    environment:
+      MOODLE_DOCKER_MLBACKEND: "true"
+  mlbackendpython:
+    image: moodlehq/moodle-mlbackend-python:3.0.5-python3.7.5

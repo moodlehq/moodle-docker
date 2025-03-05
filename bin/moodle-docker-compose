@@ -33,7 +33,7 @@ dockercompose="${dockercompose} -f ${basedir}/base.yml"
 dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 
 # PHP Version.
-export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-8.1}
+export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-8.2}
 
 # Database flavour.
 dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
@@ -201,6 +201,12 @@ fi
 if [[ ! -z "$MOODLE_DOCKER_MATRIX_MOCK" ]];
 then
     dockercompose="${dockercompose} -f ${basedir}/matrix-mock.yml"
+fi
+
+# Machine Learning backend
+if [[ ! -z "$MOODLE_DOCKER_MLBACKEND" ]];
+then
+    dockercompose="${dockercompose} -f ${basedir}/mlbackend.yml"
 fi
 
 #  Faildump directory

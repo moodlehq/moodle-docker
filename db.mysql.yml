@@ -4,7 +4,7 @@ services:
       MOODLE_DOCKER_DBTYPE: mysqli
       MOODLE_DOCKER_DBCOLLATION: utf8mb4_bin
   db:
-    image: mysql:${MOODLE_DOCKER_DB_VERSION:-8.0}
+    image: mysql:${MOODLE_DOCKER_DB_VERSION:-8.4}
     command: >
                 --character-set-server=utf8mb4
                 --collation-server=utf8mb4_bin
