@@ -3,7 +3,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
-       - "${ASSETDIR}/php/10-docker-php-moodle.ini:/usr/local/etc/php/conf.d/10-docker-php-moodle.ini"    
+       - "${ASSETDIR}/php/10-docker-php-moodle.ini:/usr/local/etc/php/conf.d/10-docker-php-moodle.ini"
+       - "${ASSETDIR}/php/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
     environment:
       XDEBUG_MODE: debug,develop
       XDEBUG_CONFIG:
@@ -13,5 +14,3 @@ services:
         log_level=10
         idekey=VSCODE
         discover_client_host=1
-        
- 
