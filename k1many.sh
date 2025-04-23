@@ -130,6 +130,14 @@ build_instances() {
     # available, a notification will be sent to site admins.
     php admin/cli/cfg.php --name=updateautocheck --set=0
 
+    # Notify about new builds
+    # If enabled, the available update for Moodle code is also reported when a
+    # new build for the current version is available. Builds are continuous
+    # improvements of a given Moodle version. They are generally released every week.
+    # If disabled, the available update will be reported only when there is a
+    # higher version of Moodle released. Checks for plugins are not affected by this setting.
+    php admin/cli/cfg.php --name=updatenotifybuilds --set=0
+
     # Allow guest access to Dashboard
     # If enabled guests can access Dashboard, otherwise guests are
     # redirected to the site front page.
