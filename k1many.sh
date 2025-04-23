@@ -142,6 +142,22 @@ build_instances() {
     # then you should enable this setting.
     php admin/cli/cfg.php --name=forcelogin --set=1
 
+    # Default country
+    # If you set a country here, then this country will be selected by default
+    # on new user accounts. To force users to choose a country, just leave this unset.
+    php admin/cli/cfg.php --name=country --set=CA
+
+    # Default city
+    # A city entered here will be the default city when creating new user accounts.
+    php admin/cli/cfg.php --name=defaultcity --set=Montreal
+
+    # Default timezone
+    # This is the default timezone for displaying dates - each user can override
+    # this setting in their profile. Cron tasks and other server settings are
+    # specified in this timezone. You should change the setting if it shows
+    # as "Invalid timezone"
+    php admin/cli/cfg.php --name=timezone --set=America/Toronto
+
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
     bin/moodle-docker-compose exec webserver pecl install xdebug
