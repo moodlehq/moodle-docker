@@ -158,6 +158,10 @@ build_instances() {
     # as "Invalid timezone"
     php admin/cli/cfg.php --name=timezone --set=America/Toronto
 
+    # Guest login button
+    # You can hide or show the guest login button on the login page.
+    php admin/cli/cfg.php --name=guestloginbutton --set=0
+
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
     bin/moodle-docker-compose exec webserver pecl install xdebug
