@@ -120,6 +120,11 @@ build_instances() {
     # Enable course recycle bin
     bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=coursebinenable --set=0
 
+    # Include users in course backup
+    # Sets the default for whether to include users in backups.
+    php admin/cli/cfg.php --component=backup --name=backup_general_users --set=0
+
+
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
     bin/moodle-docker-compose exec webserver pecl install xdebug
