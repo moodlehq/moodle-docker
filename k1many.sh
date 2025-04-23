@@ -170,6 +170,19 @@ build_instances() {
     # You can hide or show the guest login button on the login page.
     php admin/cli/cfg.php --name=guestloginbutton --set=0
 
+    # Analytics
+    # Analytics models, such as 'Students at risk of dropping out' or 'Upcoming activities due',
+    # can generate predictions, send insight notifications and offer further actions
+    # such as messaging users.
+    php admin/cli/cfg.php --name=enableanalytics --set=0
+
+    # Enable statistics
+    # If you choose 'yes' here, Moodle's cronjob will process the logs and gather some statistics.
+    # Depending on the amount of traffic on your site, this can take awhile. If you enable this,
+    # you will be able to see some interesting graphs and statistics about each of your courses,
+    # or on a sitewide basis.
+    php admin/cli/cfg.php --name=enablestats --set=0
+
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
     bin/moodle-docker-compose exec webserver pecl install xdebug
