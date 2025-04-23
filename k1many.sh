@@ -128,7 +128,19 @@ build_instances() {
     # If enabled, your site will automatically check for available updates
     # for both Moodle code and all additional plugins. If there is a new update
     # available, a notification will be sent to site admins.
-    php admin/cli/cfg.php --component=backup --name=updateautocheck --set=0
+    php admin/cli/cfg.php --name=updateautocheck --set=0
+
+    # Allow guest access to Dashboard
+    # If enabled guests can access Dashboard, otherwise guests are
+    # redirected to the site front page.
+    php admin/cli/cfg.php --name=allowguestmymoodle --set=0
+
+    # Force users to log in
+    # Normally, the front page of the site and the course listings (but not courses)
+    # can be read by people without logging in to the site. If you want to force
+    # people to log in before they do ANYTHING on the site,
+    # then you should enable this setting.
+    php admin/cli/cfg.php --name=forcelogin --set=1
 
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
