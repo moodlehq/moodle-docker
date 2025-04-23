@@ -124,6 +124,11 @@ build_instances() {
     # Sets the default for whether to include users in backups.
     php admin/cli/cfg.php --component=backup --name=backup_general_users --set=0
 
+    # Automatically check for available updates
+    # If enabled, your site will automatically check for available updates
+    # for both Moodle code and all additional plugins. If there is a new update
+    # available, a notification will be sent to site admins.
+    php admin/cli/cfg.php --component=backup --name=updateautocheck --set=0
 
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
