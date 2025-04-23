@@ -117,6 +117,9 @@ build_instances() {
     # Set the session cookie to avoid login problem between instances.
     bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=sessioncookie --set="${projectname}"
 
+    # Enable course recycle bin
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=coursebinenable --set=0
+
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
     bin/moodle-docker-compose exec webserver pecl install xdebug
