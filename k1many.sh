@@ -122,13 +122,13 @@ build_instances() {
 
     # Include users in course backup
     # Sets the default for whether to include users in backups.
-    php admin/cli/cfg.php --component=backup --name=backup_general_users --set=0
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --component=backup --name=backup_general_users --set=0
 
     # Automatically check for available updates
     # If enabled, your site will automatically check for available updates
     # for both Moodle code and all additional plugins. If there is a new update
     # available, a notification will be sent to site admins.
-    php admin/cli/cfg.php --name=updateautocheck --set=0
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=updateautocheck --set=0
 
     # Notify about new builds
     # If enabled, the available update for Moodle code is also reported when a
@@ -136,52 +136,52 @@ build_instances() {
     # improvements of a given Moodle version. They are generally released every week.
     # If disabled, the available update will be reported only when there is a
     # higher version of Moodle released. Checks for plugins are not affected by this setting.
-    php admin/cli/cfg.php --name=updatenotifybuilds --set=0
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=updatenotifybuilds --set=0
 
     # Allow guest access to Dashboard
     # If enabled guests can access Dashboard, otherwise guests are
     # redirected to the site front page.
-    php admin/cli/cfg.php --name=allowguestmymoodle --set=0
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=allowguestmymoodle --set=0
 
     # Force users to log in
     # Normally, the front page of the site and the course listings (but not courses)
     # can be read by people without logging in to the site. If you want to force
     # people to log in before they do ANYTHING on the site,
     # then you should enable this setting.
-    php admin/cli/cfg.php --name=forcelogin --set=1
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=forcelogin --set=1
 
     # Default country
     # If you set a country here, then this country will be selected by default
     # on new user accounts. To force users to choose a country, just leave this unset.
-    php admin/cli/cfg.php --name=country --set=CA
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=country --set=CA
 
     # Default city
     # A city entered here will be the default city when creating new user accounts.
-    php admin/cli/cfg.php --name=defaultcity --set=Montreal
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=defaultcity --set=Montreal
 
     # Default timezone
     # This is the default timezone for displaying dates - each user can override
     # this setting in their profile. Cron tasks and other server settings are
     # specified in this timezone. You should change the setting if it shows
     # as "Invalid timezone"
-    php admin/cli/cfg.php --name=timezone --set=America/Toronto
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=timezone --set=America/Toronto
 
     # Guest login button
     # You can hide or show the guest login button on the login page.
-    php admin/cli/cfg.php --name=guestloginbutton --set=0
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=guestloginbutton --set=0
 
     # Analytics
     # Analytics models, such as 'Students at risk of dropping out' or 'Upcoming activities due',
     # can generate predictions, send insight notifications and offer further actions
     # such as messaging users.
-    php admin/cli/cfg.php --name=enableanalytics --set=0
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=enableanalytics --set=0
 
     # Enable statistics
     # If you choose 'yes' here, Moodle's cronjob will process the logs and gather some statistics.
     # Depending on the amount of traffic on your site, this can take awhile. If you enable this,
     # you will be able to see some interesting graphs and statistics about each of your courses,
     # or on a sitewide basis.
-    php admin/cli/cfg.php --name=enablestats --set=0
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=enablestats --set=0
 
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
