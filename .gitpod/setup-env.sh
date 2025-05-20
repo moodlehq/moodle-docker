@@ -18,6 +18,10 @@ fi
 # Clone Moodle repository.
 cd "${GITPOD_REPO_ROOT}" && git clone ${FASTCLONE} --branch "${MOODLE_BRANCH}" --single-branch "${MOODLE_REPOSITORY}" moodle
 
+cd moodle
+git submodule update --init --recursive ${FASTCLONE}
+cd ..
+
 # Download the data file (if given). It will be used to generate some data.
 if [ -n "$DATAFILE" ];
 then
