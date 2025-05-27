@@ -183,6 +183,9 @@ build_instances() {
     # or on a sitewide basis.
     bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=enablestats --set=0
 
+    # Enable course recycle bin
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=coursebinenable --set=0
+
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
     bin/moodle-docker-compose exec webserver pecl install xdebug
