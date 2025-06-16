@@ -6,6 +6,7 @@ set -e
 # This is needed because macOS does not have GNU realpath.
 thisfile=$( readlink "${BASH_SOURCE[0]}" ) || thisfile="${BASH_SOURCE[0]}"
 basedir="$( cd "$( dirname "$thisfile" )/../" && pwd -P )"
+export $(awk '/^[^#]/ {print $1}' "${basedir}/moodle.env")
 
 if [ ! -d "$MOODLE_DOCKER_WWWROOT" ];
 then

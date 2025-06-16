@@ -3,6 +3,7 @@ set -e
 
 thisfile=$( readlink "${BASH_SOURCE[0]}" ) || thisfile="${BASH_SOURCE[0]}"
 basedir="$( cd "$( dirname "$thisfile" )/../" && pwd -P )"
+export $(awk '/^[^#]/ {print $1}' "${basedir}/moodle.env")
 
 if [[ ! -z "$MOODLE_DOCKER_BROWSER" ]] && [[ "$MOODLE_DOCKER_BROWSER" == "chrome" ]] && ([[ ! -z "$MOODLE_DOCKER_APP_PATH" ]] || [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]]);
 then
