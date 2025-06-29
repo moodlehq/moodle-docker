@@ -68,13 +68,15 @@ to see more about `docker-compose` environment variables.
 
 ## Use containers for running behat tests
 
+> Note: If using tool with versions of Moodle 5.0 and earlier, `public/` command prefix is not required.
+
 ```bash
 # Initialize behat environment
-bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
+bin/moodle-docker-compose exec webserver php public/admin/tool/behat/cli/init.php
 # [..]
 
 # Run behat tests
-bin/moodle-docker-compose exec -u www-data webserver php admin/tool/behat/cli/run.php --tags=@auth_manual
+bin/moodle-docker-compose exec -u www-data webserver php public/admin/tool/behat/cli/run.php --tags=@auth_manual
 Running single behat site:
 Moodle 3.4dev (Build: 20171006), 33a3ec7c9378e64c6f15c688a3c68a39114aa29d
 Php: 7.1.9, pgsql: 9.6.5, OS: Linux 4.9.49-moby x86_64
@@ -95,9 +97,11 @@ Notes:
 
 ## Use containers for running phpunit tests
 
+> Note: If using tool with versions of Moodle 5.0 and earlier, `public/` command prefix is not required.
+
 ```bash
 # Initialize phpunit environment
-bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/init.php
+bin/moodle-docker-compose exec webserver php public/admin/tool/phpunit/cli/init.php
 # [..]
 
 # Run phpunit tests
@@ -118,7 +122,7 @@ Notes:
 * If you want to run tests with code coverage reports:
 ```
 # Build component configuration
-bin/moodle-docker-compose exec webserver php admin/tool/phpunit/cli/util.php --buildcomponentconfigs
+bin/moodle-docker-compose exec webserver php public/admin/tool/phpunit/cli/util.php --buildcomponentconfigs
 # Execute tests for component
 bin/moodle-docker-compose exec webserver php -d pcov.enabled=1 -d pcov.directory=. vendor/bin/phpunit --configuration reportbuilder --coverage-text
 ```
@@ -128,11 +132,11 @@ bin/moodle-docker-compose exec webserver php -d pcov.enabled=1 -d pcov.directory
 
 ```bash
 # Initialize Moodle database for manual testing
-bin/moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --summary="Docker moodle site" --adminpass="test" --adminemail="admin@example.com"
+bin/moodle-docker-compose exec webserver php public/admin/cli/install_database.php --agree-license --fullname="Docker moodle" --shortname="docker_moodle" --summary="Docker moodle site" --adminpass="test" --adminemail="admin@example.com"
 ```
 
 Notes:
-* Moodle is configured to listen on `http://localhost:8000/`.
+* Moodle is configured to listen on `http://localhost:8000/public`.
 * Mailpit is listening on `http://localhost:8000/_/mail` to view emails which Moodle has sent out.
 * The admin `username` you need to use for logging in is `admin` by default. You can customize it by passing `--adminuser='myusername'`
 * During manual testing, if you are facing that your Moodle site is logging
@@ -157,11 +161,11 @@ For both options, you also need to set `MOODLE_DOCKER_BROWSER` to "chrome".
 git clone https://github.com/moodlehq/moodle-local_moodleappbehat "$MOODLE_DOCKER_WWWROOT/local/moodleappbehat"
 
 # Initialize behat environment
-bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
+bin/moodle-docker-compose exec webserver php public/admin/tool/behat/cli/init.php
 # (you should see "Configured app tests for version X.X.X" here)
 
 # Run behat tests
-bin/moodle-docker-compose exec -u www-data webserver php admin/tool/behat/cli/run.php --tags="@app&&@mod_login"
+bin/moodle-docker-compose exec -u www-data webserver php public/admin/tool/behat/cli/run.php --tags="@app&&@mod_login"
 Running single behat site:
 Moodle 4.0dev (Build: 20200615), a2b286ce176fbe361f0889abc8f30f043cd664ae
 Php: 7.2.30, pgsql: 11.8 (Debian 11.8-1.pgdg90+1), OS: Linux 5.3.0-61-generic x86_64

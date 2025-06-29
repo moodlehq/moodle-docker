@@ -46,6 +46,10 @@ if (strpos($_SERVER['HTTP_HOST'], '.gitpod.io') !== false) {
             $CFG->wwwroot .= ":{$port}";
         }
     }
+    if (file_exists(__DIR__ . '/public')) {
+        // New Moodle 5.1 public directory structure compatibility.
+        $CFG->wwwroot .= '/public';
+    }
 }
 
 $CFG->dataroot  = '/var/www/moodledata';
@@ -71,6 +75,11 @@ define('TEST_EXTERNAL_FILES_HTTP_URL', 'http://exttests:9000');
 define('TEST_EXTERNAL_FILES_HTTPS_URL', 'http://exttests:9000');
 
 $CFG->behat_wwwroot   = 'http://webserver';
+if (file_exists(__DIR__ . '/public')) {
+    // New Moodle 5.1 public directory structure compatibility.
+    $CFG->behat_wwwroot .= '/public';
+}
+
 $CFG->behat_dataroot  = '/var/www/behatdata';
 $CFG->behat_prefix = 'b_';
 $CFG->behat_profiles = array(
