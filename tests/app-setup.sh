@@ -19,7 +19,8 @@ then
         echo -e "\nunsafe-perm=true" >> $basedir/app/.npmrc
     fi
 
-    nodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | grep -oP '(\d+\.?)+' || true)"
+    nodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | sed -E "s/v(([0-9]+\.?)+)/\1/" || true)"
+    nodeversion="${nodeversion//\//-}"
 
     docker run --volume $basedir/app:/app --workdir /app node:$nodeversion bash -c "npm ci"
 elif [ "$SUITE" = "app" ];

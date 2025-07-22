@@ -98,6 +98,7 @@ fi
 if [[ -z "$MOODLE_DOCKER_APP_NODE_VERSION" ]]  && [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
 then
     appnodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | sed -E "s/v(([0-9]+\.?)+)/\1/" || true)"
+    appnodeversion="${appnodeversion//\//-}"
 
     export MOODLE_DOCKER_APP_NODE_VERSION="$appnodeversion"
 fi
