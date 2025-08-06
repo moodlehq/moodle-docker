@@ -150,6 +150,13 @@ build_instances() {
     # then you should enable this setting.
     bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=forcelogin --set=1
 
+    # Force users to log in for profiles
+    # This setting forces people to log in as a real (non-guest) account before viewing any
+    # user's profile. If you disabled this setting, you may find that some users post
+    # advertising (spam) or other inappropriate content in their profiles, which is
+    # then visible to the whole world.
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=forceloginforprofiles --set=1
+
     # Default country
     # If you set a country here, then this country will be selected by default
     # on new user accounts. To force users to choose a country, just leave this unset.
@@ -188,6 +195,18 @@ build_instances() {
 
     # Enable category recycle bin
     bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=categorybinenable --set=0
+
+    # Allow indexing by search engines
+    # This determines whether to allow search engines to index your site. "Everywhere" will allow
+    # the search engines to search everywhere including login and signup pages, which means sites
+    # with Force Login turned on are still indexed. To avoid the risk of spam involved with the
+    # signup page being searchable, use "Everywhere except login and signup pages".
+    # "Nowhere" will tell search engines not to index any page. Note this is only a tag in the
+    # header of the site. It is up to the search engine to respect the tag.
+    # 0 = Everywhere except login and signup pages
+    # 1 = Everywhere
+    # 2 = Nowhere
+    bin/moodle-docker-compose exec webserver php admin/cli/cfg.php --name=allowsearchengines --set=2
 
     # Install xdebug extention in the new webserser.
     # If already installed, the install will just fail.
