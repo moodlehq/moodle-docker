@@ -100,20 +100,11 @@ IF NOT "%MOODLE_DOCKER_BROWSER%"=="" (
 )
 
 IF "%MOODLE_DOCKER_BROWSER_NAME%"=="" (
-       SET MOODLE_DOCKER_BROWSER_NAME=firefox
+        SET MOODLE_DOCKER_BROWSER_NAME=firefox
 )
 
 IF "%MOODLE_DOCKER_BROWSER_TAG%"=="" (
-       IF "%MOODLE_DOCKER_BROWSER_NAME%"=="firefox" (
-               SET MOODLE_DOCKER_BROWSER_TAG=3
-       )
-       IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
-            IF "%MOODLE_DOCKER_APP_RUNTIME%"=="ionic5" (
-                SET MOODLE_DOCKER_BROWSER_TAG=3
-            ) ELSE (
-                SET MOODLE_DOCKER_BROWSER_TAG=120.0
-            )
-       )
+        SET MOODLE_DOCKER_BROWSER_TAG=4
 )
 
 IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (

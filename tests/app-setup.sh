@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 set -e
 basedir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
-initcmd="bin/moodle-docker-compose exec -T webserver php admin/tool/behat/cli/init.php"
 
 export MOODLE_DOCKER_WWWROOT="${basedir}/moodle"
+if [ -d "${MOODLE_DOCKER_WWWROOT}/public" ];
+then
+    MOODLE_BEHAT_CLI_ROOT="public/admin/tool/behat/cli"
+else
+    MOODLE_BEHAT_CLI_ROOT="admin/tool/behat/cli"
+fi
+
 export MOODLE_DOCKER_BROWSER=chrome
 export MOODLE_DOCKER_DB=pgsql
+
+initcmd="bin/moodle-docker-compose exec -T webserver php ${MOODLE_BEHAT_CLI_ROOT}/init.php"
 
 if [ "$SUITE" = "app-development" ];
 then
@@ -19,7 +27,8 @@ then
         echo -e "\nunsafe-perm=true" >> $basedir/app/.npmrc
     fi
 
-    nodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | grep -oP '(\d+\.?)+' || true)"
+    nodeversion="$(cat $MOODLE_DOCKER_APP_PATH/.nvmrc | sed -E "s/v(([0-9]+\.?)+)/\1/" || true)"
+    nodeversion="${nodeversion//\//-}"
 
     docker run --volume $basedir/app:/app --workdir /app node:$nodeversion bash -c "npm ci"
 elif [ "$SUITE" = "app" ];
