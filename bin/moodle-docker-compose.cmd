@@ -71,15 +71,19 @@ IF "%MOODLE_DOCKER_APP_NODE_VERSION%"=="" (
     )
 )
 
-REM Guess mobile app port (only when using Docker app images)
-IF "%MOODLE_DOCKER_APP_PORT%"=="" (
+IF "%MOODLE_DOCKER_APP_INTERNAL_PORT%"=="" (
     IF NOT "%MOODLE_DOCKER_APP_VERSION%"=="" (
+        REM Guess mobile app port (only when using Docker app images)
         IF "%MOODLE_DOCKER_APP_RUNTIME%"=="ionic5" (
-            SET MOODLE_DOCKER_APP_PORT=80
+            SET MOODLE_DOCKER_APP_INTERNAL_PORT=80
         ) ELSE (
-            SET MOODLE_DOCKER_APP_PORT=443
+            SET MOODLE_DOCKER_APP_INTERNAL_PORT=443
         )
     )
+)
+
+IF "%MOODLE_DOCKER_APP_PORT%"=="" (
+    SET MOODLE_DOCKER_APP_PORT=8100
 )
 
 REM Guess mobile app protocol
@@ -109,9 +113,17 @@ IF "%MOODLE_DOCKER_BROWSER_TAG%"=="" (
 
 IF "%MOODLE_DOCKER_BROWSER_NAME%"=="chrome" (
     IF NOT "%MOODLE_DOCKER_APP_PATH%"=="" (
-        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev.yml"
+        IF NOT "%MOODLE_DOCKER_APP_PORT%"=="0" (
+            SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev.yml" -f "%BASEDIR%\moodle-app-dev-port.yml"
+        ) ELSE (
+            SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app-dev.yml"
+        )
     ) ELSE IF NOT "%MOODLE_DOCKER_APP_VERSION%"=="" (
-        SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app.yml"
+        IF NOT "%MOODLE_DOCKER_APP_PORT%"=="0" (
+            SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app.yml" -f "%BASEDIR%\moodle-app-port.yml"
+        ) ELSE (
+            SET DOCKERCOMPOSE=%DOCKERCOMPOSE% -f "%BASEDIR%\moodle-app.yml"
+        )
     )
 )
 

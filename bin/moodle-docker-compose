@@ -103,15 +103,21 @@ then
     export MOODLE_DOCKER_APP_NODE_VERSION="$appnodeversion"
 fi
 
-# Guess mobile app port (only when using Docker app images)
-if [[ -z "$MOODLE_DOCKER_APP_PORT" ]] && [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]];
+
+if [[ -z "$MOODLE_DOCKER_APP_INTERNAL_PORT" ]] && [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]];
 then
+    # Guess mobile app port (only when using Docker app images)
     if [[ "$MOODLE_DOCKER_APP_RUNTIME" = "ionic5" ]];
     then
-        export MOODLE_DOCKER_APP_PORT="80"
+        export MOODLE_DOCKER_APP_INTERNAL_PORT="80"
     else
-        export MOODLE_DOCKER_APP_PORT="443"
+        export MOODLE_DOCKER_APP_INTERNAL_PORT="443"
     fi
+fi
+
+if [[ -z "$MOODLE_DOCKER_APP_PORT" ]];
+then
+    export MOODLE_DOCKER_APP_PORT="8100"
 fi
 
 # Guess mobile app protocol
@@ -146,10 +152,20 @@ then
     if [[ ! -z "$MOODLE_DOCKER_APP_PATH" ]];
     then
         dockercompose="${dockercompose} -f ${basedir}/moodle-app-dev.yml"
+
+        if [[ "$MOODLE_DOCKER_APP_PORT" != "0" ]];
+        then
+            dockercompose="${dockercompose} -f ${basedir}/moodle-app-dev-port.yml"
+        fi
     elif [[ ! -z "$MOODLE_DOCKER_APP_VERSION" ]];
     then
         # Mobile app using a docker image
         dockercompose="${dockercompose} -f ${basedir}/moodle-app.yml"
+
+        if [[ "$MOODLE_DOCKER_APP_PORT" != "0" ]];
+        then
+            dockercompose="${dockercompose} -f ${basedir}/moodle-app-port.yml"
+        fi
     fi
 fi
 
