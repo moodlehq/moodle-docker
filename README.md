@@ -44,6 +44,37 @@ bin/moodle-docker-wait-for-db
 # Shut down and destroy containers
 bin/moodle-docker-compose down
 ```
+
+### Windows PowerShell quick start
+
+PowerShell uses a different environment variable syntax and the Windows
+wrapper scripts in `bin`.
+
+```powershell
+# Change .\moodle to your \path\to\moodle if you already have it checked out
+$Env:MOODLE_DOCKER_WWWROOT = ".\moodle"
+
+# Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
+$Env:MOODLE_DOCKER_DB = "pgsql"
+
+# Get Moodle code, you could select another version branch (skip this if you already got the code)
+git clone -b [MOODLE_BRANCH] https://github.com/moodle/moodle.git $Env:MOODLE_DOCKER_WWWROOT
+
+# Ensure customized config.php for the Docker containers is in place
+Copy-Item .\config.docker-template.php -Destination (Join-Path $Env:MOODLE_DOCKER_WWWROOT "config.php")
+
+# Start up containers
+.\bin\moodle-docker-compose.cmd up -d
+
+# Wait for DB to come up (important for oracle/mssql)
+.\bin\moodle-docker-wait-for-db.cmd
+
+# Work with the containers (see below)
+# [..]
+
+# Shut down and destroy containers
+.\bin\moodle-docker-compose.cmd down
+```
 ## Run several Moodle instances
 
 By default, the script will load a single instance. If you want to run two
