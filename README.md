@@ -269,17 +269,20 @@ services:
       - "/opt/data:/opt/data:cached"
 ```
 
-## Using XDebug for live debugging
+## Using Xdebug for live debugging
 
-The XDebug PHP Extension is not included in this setup and there are reasons not to include it by default.
+The Moodle PHP Apache images for PHP 7.4 and later already include Xdebug.
+For these images, you only need to enable and configure the extension inside
+the running webserver container.
 
-However, if you want to work with XDebug, especially for live debugging, you can add XDebug to a running webserver container easily:
+If you want to work with Xdebug, especially for live debugging, you can enable
+it in a running webserver container easily:
 
 ```
-# Install XDebug extension with PECL
-moodle-docker-compose exec webserver pecl install xdebug
+# Enable Xdebug extension in Apache.
+moodle-docker-compose exec webserver docker-php-ext-enable xdebug
 
-# Set some wise setting for live debugging - change this as needed
+# Set live debugging options - change these as needed.
 read -r -d '' conf <<'EOF'
 ; Settings for Xdebug Docker configuration
 xdebug.mode = debug
@@ -289,12 +292,25 @@ xdebug.client_host = host.docker.internal
 EOF
 moodle-docker-compose exec webserver bash -c "echo '$conf' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
 
-# Enable XDebug extension in Apache and restart the webserver container
-moodle-docker-compose exec webserver docker-php-ext-enable xdebug
+# Restart the webserver container.
 moodle-docker-compose restart webserver
 ```
 
-While setting these XDebug settings depending on your local need, please take special care of the value of `xdebug.client_host` which is needed to connect from the container to the host. The given value `host.docker.internal` is a special DNS name for this purpose within Docker for Windows and Docker for Mac. If you are running on another Docker environment, you might want to try the value `localhost` instead or even set the hostname/IP of the host directly. Please turn off the firewall or open the port used in the `xdebug.client_port`.
+If you are using an older PHP image that does not include Xdebug, install a
+compatible Xdebug version before running `docker-php-ext-enable`.
+
+While setting these Xdebug settings depending on your local need, please take special care of the value of `xdebug.client_host` which is needed to connect from the container to the host. The given value `host.docker.internal` is a special DNS name for this purpose within Docker for Windows and Docker for Mac. If you are running on another Docker environment, you might want to try the value `localhost` instead or even set the hostname/IP of the host directly. Please turn off the firewall or open the port used in the `xdebug.client_port`.
+
+On Linux, `host.docker.internal` may need to be mapped explicitly. You can do
+this by adding a `local.yml` file:
+
+``` file="local.yml"
+version: "2"
+services:
+  webserver:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+```
 
 Open the port (9003 is the default one) by using the example command for Linux Ubuntu:
 ```
@@ -302,15 +318,15 @@ sudo ufw allow 9003
 ```
 
 
-After these commands, XDebug ist enabled and ready to be used in the webserver container.
-If you want to disable and re-enable XDebug during the lifetime of the webserver container, you can achieve this with these additional commands:
+After these commands, Xdebug is enabled and ready to be used in the webserver container.
+If you want to disable and re-enable Xdebug during the lifetime of the webserver container, you can achieve this with these additional commands:
 
 ```
-# Disable XDebug extension in Apache and restart the webserver container
+# Disable Xdebug extension in Apache and restart the webserver container
 moodle-docker-compose exec webserver sed -i 's/^zend_extension=/; zend_extension=/' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 moodle-docker-compose restart webserver
 
-# Enable XDebug extension in Apache and restart the webserver container
+# Enable Xdebug extension in Apache and restart the webserver container
 moodle-docker-compose exec webserver sed -i 's/^; zend_extension=/zend_extension=/' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 moodle-docker-compose restart webserver
 ```
