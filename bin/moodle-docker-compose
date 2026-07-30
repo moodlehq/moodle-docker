@@ -23,7 +23,7 @@ export ASSETDIR="${basedir}/assets"
 
 # Test if we have docker compose v2 or v5, and keep quiet if we don't.
 ver=$(docker compose version > /dev/null 2>&1 && docker compose version --short) || true
-if [[ $ver =~ ^v?[2|5] ]]; then
+if [[ $ver =~ ^v?([2-9]|1[0-9]) ]]; then
   dockercompose="docker compose"
 else
   echo "Compose ${ver} is not available in Docker CLI, falling back to use docker-compose script"
