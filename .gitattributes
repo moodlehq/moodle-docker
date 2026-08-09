@@ -1,1 +1,2 @@
 bin/moodle-docker-compose.cmd eol=crlf
+bin/moodle-docker-wait-for-db.cmd eol=crlf
