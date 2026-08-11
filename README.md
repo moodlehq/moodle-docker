@@ -229,6 +229,7 @@ When you change them, use `bin/moodle-docker-compose down && bin/moodle-docker-c
 | `MOODLE_DOCKER_SELENIUM_VNC_PORT`         | no        | any integer value (or bind_ip:integer)| not set       | If set, the selenium node will expose a vnc session on the port specified. Similar to MOODLE_DOCKER_WEB_PORT, you can optionally define the host IP to bind to. If you just set the port, VNC binds to 127.0.0.1 |
 | `MOODLE_DOCKER_APP_PATH`                  | no        | path on your file system              | not set       | If set and the chrome browser is selected, it will start an instance of the Moodle app from your local codebase |
 | `MOODLE_DOCKER_APP_VERSION`               | no        | a valid [app docker image version](https://docs.moodle.org/dev/Moodle_App_Docker_images) | not set       | If set will start an instance of the Moodle app if the chrome browser is selected |
+| `MOODLE_DOCKER_APP_PORT`                  | no        | any integer value                     | 8100          | The app will be served on this port, 0 will mean the app is not available on the host machine |
 | `MOODLE_DOCKER_TIMEOUT_FACTOR`            | no        | any integer value                     | 1             | If set the timeouts in behat will be multiplied by the factor                |
 
 In addition to that, `MOODLE_DOCKER_RUNNING=1` env variable is defined and available
