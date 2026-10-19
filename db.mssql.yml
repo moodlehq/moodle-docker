@@ -7,4 +7,5 @@ services:
     image: moodlehq/moodle-db-mssql:${MOODLE_DOCKER_DB_VERSION:-latest}
     environment:
         ACCEPT_EULA: "y"
-        SA_PASSWORD: "m@0dl3ing"
+        MSSQL_SA_PASSWORD: "m@0dl3ing"
+        MSSQL_WAIT4READY: ${MOODLE_DOCKER_DB_WAIT4READY:-60}
